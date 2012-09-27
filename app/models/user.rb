@@ -5,7 +5,16 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  # attr_accessible :title, :body
+  #attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :first_name, :second_name, :email, :password, :password_confirmation
+
+  #Email addresses in database are case insensitive so ensure all the same  
+  before_save { self.email.downcase! }
+
+  validates :email, presence: true, uniqueness: { case_sensitive: false }
+
+  def is_admin?
+    return true if self.email == "test@example.com"
+    return false
+  end
 end
