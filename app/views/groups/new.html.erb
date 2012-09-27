@@ -1,0 +1,13 @@
+<h2>Create New Group</h2>
+
+<%= form_for(@group) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <div><%= f.label :name %><br />
+    <%= f.text_field :name %></div>
+
+    <div><%= f.label :description %><br />
+    <%= f.text_field :description %></div>
+
+    <div><%= f.submit "Create Group" %></div>
+<% end %>

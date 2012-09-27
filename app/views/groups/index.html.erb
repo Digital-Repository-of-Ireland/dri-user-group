@@ -1,0 +1,8 @@
+<h1> All groups </h1>
+
+<ul class="groups">
+<% Group.all.each do |group| %>
+    <%= link_to group.name, group %> | <%= link_to "delete", group, method: :delete, confirm: "Are you sure?" %><br />
+<% end %>
+
+</ul>

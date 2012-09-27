@@ -1,0 +1,17 @@
+<p>Group EDIT</p>
+
+<%= form_for(@group) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <div><%= f.label :name %><br />
+    <%= f.text_field :name %></div>
+
+    <div><%= f.label :description %><br />
+    <%= f.text_field :description %></div>
+
+    <div><%= f.submit "Update" %></div>
+
+<% end %>
+
+<h3>Delete Group</h3>
+<%= link_to "delete", @group, method: :delete, confirm: "Are you sure?" %>
