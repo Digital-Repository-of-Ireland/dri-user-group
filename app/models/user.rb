@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   before_save { self.email.downcase! }
 
   validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :first_name, presence: true, length: { maximum: 50 }
+  validates :second_name, presence: true, length: { maximum: 50 }
 
   def is_admin?
     return true if self.email == "test@example.com"

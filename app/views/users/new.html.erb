@@ -1,9 +1,13 @@
 <h2>Sign up</h2>
 
 <%= form_for(@user) do |f| %>
-    <%= render 'shared/error_messages' %>
+    <%= render 'shared/error_messages', object: f.object %>
 
-  <%#= devise_error_messages! %>
+  <div><%= f.label :first_name %><br />
+  <%= f.text_field :first_name %></div>
+
+    <div><%= f.label :second_name %><br />
+  <%= f.text_field :second_name %></div>
 
   <div><%= f.label :email %><br />
   <%= f.email_field :email %></div>

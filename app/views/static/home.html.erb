@@ -4,6 +4,10 @@
     
     <p> <%= current_user.email %> is logged in</p>
 <% else %>
-    <%= link_to "Login/Register", new_user_session_path %>
+    <%= link_to "Login", new_user_session_path %> 
+    <%= link_to "Register", new_user_path %>
+    
 <% end %>
+
+<%= render 'debug_routes' %>
 

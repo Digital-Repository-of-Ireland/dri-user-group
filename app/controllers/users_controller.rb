@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     def index
     end
     
-    # 'home page for user'
+    # 'home page' for user
     def show
     end
 
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
         @user = User.new
     end
     
-    #made a create which saves a user
+    #made a create which also saves a user
     def create
         @user = User.new(params[:user])
         if @user.save
@@ -29,11 +29,11 @@ class UsersController < ApplicationController
         end
     end
 
-    # 'edit page for user'
+    # 'edit form' for user
     def edit
     end
 
-    # 'saving changes from edit submission'
+    # saving changes from edit submission
     def update
         #13.43 lesson 9 error check
         if @user.update_attributes(params[:user])
