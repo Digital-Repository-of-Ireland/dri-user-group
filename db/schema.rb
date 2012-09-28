@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20120927143037) do
     t.datetime "updated_at",  :null => false
   end
 
-  add_index "groups", ["name"], :name => "index_groups_on_name"
+  add_index "groups", ["name"], :name => "index_groups_on_name", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

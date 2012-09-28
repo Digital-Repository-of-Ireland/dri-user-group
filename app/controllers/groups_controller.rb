@@ -48,7 +48,7 @@ class GroupsController < ApplicationController
     end
 
     def destroy
-        #Does not use @user for some reason described in tutorials
+        #Does not use @group for some reason described in tutorials
         deleting_group = Group.find(params[:id])
         #Need error check
         #Should do group deletion etc...
