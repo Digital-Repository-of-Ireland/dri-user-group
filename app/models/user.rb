@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  has_many :memberships, dependent: :destroy
+  has_many :groups, through: :memberships, uniq: true
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -17,6 +20,19 @@ class User < ActiveRecord::Base
 
   def is_admin?
     return true if self.email == "test@example.com"
-    return false
+  end
+
+  def member?(group_id)
+    return true if self.memberships.find_by_group_id(group_id)
+  end
+
+  #What happens if already member?
+  def join_group(group_id)
+      self.memberships.create(group_id: group_id)
+  end
+
+  #What happens if not in group (Crashes)
+  def leave_group(group_id)
+        self.memberships.find_by_group_id(group_id).destroy
   end
 end

@@ -1,2 +1,11 @@
 <%= @user.email %>
 <%= link_to "EDIT", edit_user_path %>
+
+<h3>Groups</h3>
+
+Groups: <%= @user.groups.count %>
+Memberships: <%= @user.memberships.count %>
+<br />
+<% @user.groups.each do |group| %>
+    <%= link_to group.name, group_path(group) %> (Date joined?) <br />
+<% end %>

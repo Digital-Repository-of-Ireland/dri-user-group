@@ -7,4 +7,5 @@ UserGroup::Application.routes.draw do
   devise_for :users, :skip => :registration
   resources :users
   resources :groups
+  #resources :memberships
 end

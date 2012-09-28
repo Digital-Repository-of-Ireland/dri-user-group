@@ -2,3 +2,15 @@
 
 <%= @group.name.titleize %>
 <%= link_to "EDIT", edit_group_path %>
+
+<br />
+
+
+<h3>Members</h3>
+
+Users: <%= @group.users.count %>
+Memberships: <%= @group.memberships.count %>
+<br />
+<% @group.users.each do |user| %>
+    <%= link_to user.email, edit_user_path(user) %> (Date joined?) <br />
+<% end %>
