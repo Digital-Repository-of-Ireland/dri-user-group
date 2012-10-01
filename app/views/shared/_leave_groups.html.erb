@@ -1,0 +1,9 @@
+<br /><b>Leave Groups</b>
+<% object.memberships.each do |membership| %>
+    <%= form_for(membership, html: {:method => :delete}) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        <%= f.hidden_field :group_id %>
+        <%= f.hidden_field :user_id %>
+        <%= f.submit "Leave group: "+ membership.group_id.to_s + ": "+membership.user_id.to_s %>
+    <% end %>
+<% end %>

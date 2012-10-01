@@ -20,19 +20,20 @@ class User < ActiveRecord::Base
 
   def is_admin?
     return true if self.email == "test@example.com"
+    return true if self.email == "fakeemail@fakeemail.fakeemail"
   end
 
   def member?(group_id)
     return true if self.memberships.find_by_group_id(group_id)
   end
 
-  #What happens if already member?
   def join_group(group_id)
       self.memberships.create(group_id: group_id)
   end
 
-  #What happens if not in group (Crashes)
+  #TODO::(Check fix) What happens if not in group (Crashes)
   def leave_group(group_id)
-        self.memberships.find_by_group_id(group_id).destroy
+        membership = self.memberships.find_by_group_id(group_id)
+        membership.destroy unless membership.nil?
   end
 end

@@ -16,8 +16,7 @@
 
       <div><%= f.label :second_name %><br />
       <%= f.text_field :second_name %></div>
-    </div>
-
+  </div>
 
 
   <div><%#= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
@@ -36,3 +35,7 @@
 <p>Unhappy? <%= link_to "Delete your account", @user, method: :delete, confirm: "Are you sure?" %>.</p>
 
 <%= link_to "Back", :back %>
+
+<% #Rendering the other way does odd things %>
+<%= render 'shared/leave_groups', object: @user %>
+<%= render 'shared/join_groups', object: @user %>

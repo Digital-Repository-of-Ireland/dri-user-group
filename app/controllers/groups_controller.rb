@@ -58,8 +58,20 @@ class GroupsController < ApplicationController
         flash[:success] = "Group has been deleted"
     end
 
-    private
+    #Should these have their own controller and views?
+    #TDOO:: Test what happens if user gets deleted while being member of group and vice versa
+    #POST? PUT
+    def add_user
+        user_id = params[:user_id]
+        @group = Group.find(params[:id])
+        @group.join_group(user_id)
+    end
 
+    #DELETE
+    def remove_user
+    end
+
+    private
         #copy of method from static controller and users controller
         def admin_users
             if !current_user.is_admin?

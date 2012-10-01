@@ -15,3 +15,11 @@
 
 <h3>Delete Group</h3>
 <%= link_to "delete", @group, method: :delete, confirm: "Are you sure?" %>
+
+<br />
+<h3> Group Membership </h3>
+<b>Add</b>
+
+<% #Rendering the other way does odd things %>
+<%= render 'shared/leave_groups', object: @group %>
+<%= render 'shared/join_groups', object: @group %>
