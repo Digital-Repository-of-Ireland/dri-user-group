@@ -1,14 +1,5 @@
 class GroupsController < ApplicationController
-    #:index
-    #:show
-    #:new
-    #:create
-    #:edit
-    #:update
-    #:destroy
-
     before_filter :authenticate_user!
-    #Unsure about index being for admins only (if users want to request a group to join)
     before_filter :admin_users, except: [:index]
     
     def index
@@ -57,26 +48,4 @@ class GroupsController < ApplicationController
         redirect_to groups_path
         flash[:success] = "Group has been deleted"
     end
-
-    #Should these have their own controller and views?
-    #TDOO:: Test what happens if user gets deleted while being member of group and vice versa
-    #POST? PUT
-    def add_user
-        user_id = params[:user_id]
-        @group = Group.find(params[:id])
-        @group.join_group(user_id)
-    end
-
-    #DELETE
-    def remove_user
-    end
-
-    private
-        #copy of method from static controller and users controller
-        def admin_users
-            if !current_user.is_admin?
-                flash[:error] = "You must be an admin"
-                redirect_to(root_url)
-            end
-        end
 end

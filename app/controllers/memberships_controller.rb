@@ -14,13 +14,13 @@ class MembershipsController < ApplicationController
             flash[:success] = "Joined Group"
             respond_with @user
         else
+            #I dont really want to render this (Need error message)
             render 'users/edit'
         end
         #respond_with @user#, edit_user_path(@user)
         #redirect_to edit_user_path @user
     end
 
-    #Must be themselves or ADMIN
     def destroy
         action = @user.leave_group(params[:membership][:group_id])
         if action.errors.count == 0
@@ -33,26 +33,8 @@ class MembershipsController < ApplicationController
 
 
 private
-    #Need a better check than email
-    def modifying_current_user? (user_to_modify)
-        return false unless current_user.email == user_to_modify.email
-        return true
-    end
-    
     def can_modify
         user_to_modify = User.find(params[:membership][:user_id])
-        if ! (current_user.is_admin? || modifying_current_user?(user_to_modify) )
-            flash[:error] = "You do not have permission"
-            redirect_to(root_url)
-        end
-        @user = user_to_modify
+        can_modify_base(user_to_modify)
     end
-
-    #copy of method from static controller
-    def admin_users
-        if !current_user.is_admin?
-            flash[:error] = "You must be an admin"
-            redirect_to(root_url)
-        end
-    end    
 end
