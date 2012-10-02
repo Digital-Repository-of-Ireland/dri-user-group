@@ -1,11 +1,47 @@
-<%= @user.email %>
-<%= link_to "EDIT", edit_user_path %>
-
-<h3>Groups</h3>
-
-Groups: <%= @user.groups.count %>
-Memberships: <%= @user.memberships.count %>
+<h2 class="no_bottom_margin"><%= @user.first_name %> <%= @user.second_name %></h2>
 <br />
-<% @user.groups.each do |group| %>
-    <%= link_to group.name, group_path(group) %> (Date joined?) <br />
+<div class="tab"><%= @user.email %></div>
+Created At: <%= @user.created_at %><br />
+<% if @user.created_at != @user.updated_at %>
+    Updated At: <%= @user.updated_at %><br />
+<% end %>
+<% if @user.is_admin? %>
+    <div>Admin User</div>
+<% else %>
+    <div>Registered User</div>
+<% end %>
+<br />
+
+<%#= @user.user_signed_in? %>
+<%# https://groups.google.com/forum/?fromgroups=#!topic/plataformatec-devise/tOKU_jcWNp0 %>
+
+<%= link_to "EDIT", edit_user_path %><br />
+
+<h3 class="no_bottom_margin">Sessions</h3>
+Total Signin's: <%=@user.sign_in_count %><br />
+
+<h4> Previous Signin 1</h4>
+Time: <%= @user.current_sign_in_at %><br />
+IP: <%= @user.current_sign_in_ip %>
+
+<h4> Previous Signin 2</h4>
+Time: <%= @user.last_sign_in_at %><br />
+IP: <%= @user.last_sign_in_ip %><br />
+
+<h3><%= pluralize(@user.groups.count, "Membership") %>:</h3>
+<% if @user.groups.count > 0 %>
+    <table border="0" class="table">
+        <tr>
+            <th>Group</th>
+            <th>Join Date</th>
+            <th>Leave</th>
+        </tr>
+    <% @user.groups.each do |group| %>
+        <tr>
+            <td><%= link_to group.name, groups_path %></td>
+            <td><%= group.memberships.find_by_user_id(@user.id).created_at %></td>
+            <td><%#= button_to "X", membership_path(user_id: @user.id, group_id: group.id), method: :delete, remote: true, confirm: 'Are you sure?' %></td>
+        </tr>
+    <% end %>
+    </table>
 <% end %>

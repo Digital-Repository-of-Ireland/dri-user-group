@@ -15,12 +15,93 @@
 
 
 /*TEMPORARY*/
+#menu-wrapper{
+  clear: both;
+  padding-bottom: 2.5em;
+  margin:auto;
+  margin-bottom: 50px;
+  background: #C0C0C0;
+  /*Doesnt center...*/
+  text-align: center;
+}
+
+#menu-wrapper ul{
+    list-style: none;
+    padding: 0;
+    margin: auto;
+}
+
+#menu-wrapper li{
+  clear: both;
+  height: 2em;
+  display: inline;
+  /*Doesnt center...*/
+  text-align: center;
+}
+
+
+#menu-wrapper li a{
+  float:left;
+  padding:5px;
+}
+
+#menu-wrapper li a:hover{
+  color: green;
+}
+
+#menu-wrapper li ul{
+  display: none;
+  position: absolute;
+  width:100px;
+  margin-top:2em;
+  margin-left:195px;
+  background: #C0C0C0;
+}
+
+#menu-wrapper li:hover ul, li.over ul{
+  display: block;
+}
+
+#menu-name{
+  display:inline-block;
+  float:right;
+ }
+
+.group-index-group{
+  margin-bottom: 15px;
+  display: block;
+  margin-left: 40%;
+  text-align: left;
+  width: auto;
+  float:left;
+  clear: both;
+}
+
+.clear{
+  clear: both;
+}
+
+.tab{
+  margin-left: 15px;
+}
+
+.no_bottom_margin{
+  margin-bottom:0px !important;
+}
+
+.table{
+  margin:auto;
+}
+
  body {
   background-color: #fff;
   color: #333;
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
-  line-height: 18px; }
+  line-height: 18px; 
+  text-align: center;
+
+}
 
 p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;

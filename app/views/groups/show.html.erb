@@ -1,16 +1,28 @@
-<p>Group SHow</p>
+<h2 class="no_bottom_margin"><%= @group.name.titleize %></h2>
+<div class="tab"><%= @group.description %></div>
+Created At: <%= @group.created_at %>
 
-<%= @group.name.titleize %>
-<%= link_to "EDIT", edit_group_path %>
+<% if @group.created_at != @group.updated_at %>
+    <br />Updated At: <%= @group.updated_at %>
+<% end %>
 
+<div class="clear"></div><br />
+ <%= link_to "Edit Group", edit_group_path %>
 <br />
 
 
-<h3>Members</h3>
-
-Users: <%= @group.users.count %>
-Memberships: <%= @group.memberships.count %>
-<br />
-<% @group.users.each do |user| %>
-    <%= link_to user.email, edit_user_path(user) %> (Date joined?) <br />
+<h3><%= pluralize(@group.users.count, "Member") %>:</h3>
+<% if @group.users.count > 0 %>
+    <table border="0" class="table">
+    <tr>
+        <th>Email</th>
+        <th>Join Date</th>
+    </tr>
+    <% @group.users.each do |user| %>
+        <tr>
+            <td><%= link_to user.email, user_path(user) %></td>
+            <td><%= user.memberships.find_by_group_id(@group.id).created_at %></td>
+        </tr>
+    <% end %>
+    </table>
 <% end %>

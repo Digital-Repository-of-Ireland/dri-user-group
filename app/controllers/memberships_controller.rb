@@ -21,6 +21,7 @@ class MembershipsController < ApplicationController
         if action.errors.count > 0
             #I dont really want to render this (Need error message)
             #Render back to where the partials are
+            #redirect_to :back ??
             render 'users/edit'
         else
             flash[:success] = "Joined Group"
@@ -31,6 +32,7 @@ class MembershipsController < ApplicationController
     end
 
     def destroy
+        raise Exception
         action = @user.leave_group(params[:membership][:group_id])
         if action.errors.count == 0
             flash[:success] = "Left Group"

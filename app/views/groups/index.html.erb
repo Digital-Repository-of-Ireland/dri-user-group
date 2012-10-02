@@ -1,9 +1,17 @@
-<h1> All groups </h1>
+<h2> All groups </h2>
 
-<ul class="groups">
 <% Group.all.each do |group| %>
-    <%= link_to group.name.titleize, group %> | <%= link_to "delete", group, method: :delete, confirm: "Are you sure?" %><br />
-    <p>Request to join TODO</p>
+    <div class="group-index-group">
+        <% if current_user.is_admin? %>
+            <%= link_to group.name.titleize, group %> 
+            |
+            <%= link_to "delete", group, method: :delete, confirm: "Are you sure?" %>
+        <% else %>
+            <b> <%= group.name.titleize %> </b>
+            |
+            <i>Request to join TODO</i>
+        <% end %>
+        <p><%= group.description %></p>
+        <i>Members:</i> <%= group.memberships.count %>
+    </div>
 <% end %>
-
-</ul>
