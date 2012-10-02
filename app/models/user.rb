@@ -19,8 +19,8 @@ class User < ActiveRecord::Base
   validates :second_name, presence: true, length: { maximum: 50 }
 
   def is_admin?
-    return true if self.email == "test@example.com"
-    return true if self.email == "fakeemail@fakeemail.fakeemail"
+    #saved as lowercase
+    return true if self.groups.find_by_name("admin")
   end
 
   def member?(group_id)

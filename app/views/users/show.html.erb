@@ -2,7 +2,7 @@
 <br />
 <div class="tab"><%= @user.email %></div>
 Created At: <%= @user.created_at %><br />
-<% if @user.created_at != @user.updated_at %>
+<% if @user.created_at.to_s != @user.updated_at.to_s %>
     Updated At: <%= @user.updated_at %><br />
 <% end %>
 <% if @user.is_admin? %>

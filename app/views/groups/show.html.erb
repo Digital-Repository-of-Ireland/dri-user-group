@@ -2,7 +2,7 @@
 <div class="tab"><%= @group.description %></div>
 Created At: <%= @group.created_at %>
 
-<% if @group.created_at != @group.updated_at %>
+<% if @group.created_at.to_s != @group.updated_at.to_s %>
     <br />Updated At: <%= @group.updated_at %>
 <% end %>
 
