@@ -1,22 +1,19 @@
 class UsersController < ApplicationController
     before_filter :authenticate_user!, except: [:new, :create]
     before_filter :admin_users, only: [:index]
-    #:can_modify also sets @user
+    #:can_modify (through can_modify_base) also sets @user
     before_filter :can_modify, only: [:show, :edit, :update, :destroy]
 
     def index
     end
     
-    # 'home page' for user
     def show
     end
 
-    #not sure what this does
     def new
         @user = User.new
     end
     
-    #made a create which also saves a user
     def create
         @user = User.new(params[:user])
         if @user.save
@@ -29,11 +26,9 @@ class UsersController < ApplicationController
         end
     end
 
-    # 'edit form' for user
     def edit
     end
 
-    # saving changes from edit submission
     def update
         #13.43 lesson 9 error check
         if @user.update_attributes(params[:user])
@@ -67,7 +62,14 @@ class UsersController < ApplicationController
 
 private
     def can_modify
-        user_to_modify = User.find(params[:id])
+        begin
+            user_to_modify = User.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+              flash[:error] = "Could not find user"
+              #should change later
+              redirect_to root_path
+              return
+        end
         can_modify_base(user_to_modify)
     end
 end

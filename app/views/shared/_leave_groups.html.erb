@@ -1,4 +1,3 @@
-<br /><b>Leave Groups</b>
 <% object.memberships.each do |membership| %>
     <%= form_for(membership, html: {:method => :delete}) do |f| %>
         <%= render 'shared/error_messages', object: f.object %>
