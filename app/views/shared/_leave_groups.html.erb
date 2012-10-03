@@ -3,6 +3,12 @@
         <%= render 'shared/error_messages', object: f.object %>
         <%= f.hidden_field :group_id %>
         <%= f.hidden_field :user_id %>
-        <%= f.submit "Leave group: "+ membership.group_id.to_s + ": "+membership.user_id.to_s %>
+        <% if object.is_a?(User) %>
+            <% group = Group.find_by_id(membership.group_id) %>
+            <%= f.submit "Leave: " + group.name.capitalize unless group.nil? %>
+        <% elsif object.is_a?(Group) %>
+            <% user = User.find_by_id(membership.user_id) %>
+            <%= f.submit "Remove: " + user.email unless user.nil? %>
+        <% end %>
     <% end %>
 <% end %>

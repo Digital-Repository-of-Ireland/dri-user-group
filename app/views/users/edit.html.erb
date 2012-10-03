@@ -37,5 +37,7 @@
 <%= link_to "Back", :back %>
 
 <% #Rendering the other way does odd things %>
+<br /><b>Leave</b><br />
 <%= render 'shared/leave_groups', object: @user %>
+<b>Join</b>
 <%= render 'shared/join_groups', object: @user %>

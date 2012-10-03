@@ -18,8 +18,10 @@
 
 <br />
 <h3> Group Membership </h3>
-<b>Add</b>
+
 
 <% #Rendering the other way does odd things %>
+<b>Remove</b>
 <%= render 'shared/leave_groups', object: @group %>
+<b>Add</b>
 <%= render 'shared/join_groups', object: @group %>

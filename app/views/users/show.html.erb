@@ -38,7 +38,7 @@ IP: <%= @user.last_sign_in_ip %><br />
         </tr>
     <% @user.groups.each do |group| %>
         <tr>
-            <td><%= link_to group.name, groups_path %></td>
+            <td><%= link_to group.name.capitalize, groups_path %></td>
             <td><%= group.memberships.find_by_user_id(@user.id).created_at %></td>
             <td><%#= button_to "X", membership_path(user_id: @user.id, group_id: group.id), method: :delete, remote: true, confirm: 'Are you sure?' %></td>
         </tr>

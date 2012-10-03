@@ -27,12 +27,28 @@ class User < ActiveRecord::Base
     return true if self.memberships.find_by_group_id(group_id)
   end
 
-  def join_group(group_id)
+  def join_group(group_id_or_name)
+      group_id = group_id_or_name
+      if(not_positive_integer?(group_id_or_name))
+        group = Group.find_by_name(group_id_or_name.downcase)
+        group_id = group.id unless group.nil?
+      end 
       self.memberships.create(group_id: group_id)
   end
 
-  def leave_group(group_id)
-        membership = self.memberships.find_by_group_id(group_id)
-        membership.destroy unless membership.nil?
+  def leave_group(group_id_or_name)
+      group_id = group_id_or_name
+      if(not_positive_integer?(group_id_or_name))
+          group = self.groups.find_by_name(group_id_or_name.downcase)
+          group_id = group.id unless group.nil?
+      end
+      membership = self.memberships.find_by_group_id(group_id)
+      membership.destroy unless membership.nil?
+  end
+
+  private
+  def not_positive_integer?(string)
+    return false if string =~ /^[0-9]+$/
+    return true
   end
 end

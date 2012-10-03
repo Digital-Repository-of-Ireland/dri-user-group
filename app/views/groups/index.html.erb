@@ -3,11 +3,11 @@
 <% Group.all.each do |group| %>
     <div class="group-index-group">
         <% if current_user.is_admin? %>
-            <%= link_to group.name.titleize, group %> 
+            <%= link_to group.name.capitalize, group %> 
             |
             <%= link_to "delete", group, method: :delete, confirm: "Are you sure?" %>
         <% else %>
-            <b> <%= group.name.titleize %> </b>
+            <b> <%= group.name.capitalize %> </b>
             |
             <i>Request to join TODO</i>
         <% end %>
