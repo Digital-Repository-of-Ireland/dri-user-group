@@ -1,6 +1,6 @@
-<p>Group EDIT</p>
-
 <%= form_for(@group) do |f| %>
+    <div><%= link_to "Back", @group %></div><br />
+
     <%= render 'shared/error_messages', object: f.object %>
 
     <div><%= f.label :name %><br />
@@ -14,14 +14,12 @@
 <% end %>
 
 <h3>Delete Group</h3>
-<%= link_to "delete", @group, method: :delete, confirm: "Are you sure?" %>
+<%= link_to "Delete", @group, method: :delete, confirm: "Are you sure?" %>
 
 <br />
 <h3> Group Membership </h3>
-
-
 <% #Rendering the other way does odd things %>
-<b>Remove</b>
+<h4 class="no_bottom_margin">Remove</h4>
 <%= render 'shared/leave_groups', object: @group %>
-<b>Add</b>
+<h4 class="no_bottom_margin">Add</h4>
 <%= render 'shared/join_groups', object: @group %>

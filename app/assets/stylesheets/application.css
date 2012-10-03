@@ -12,9 +12,7 @@
  *= require_tree .
  */
 
-
-
-/*TEMPORARY*/
+/* Menu */
 #menu-wrapper{
   clear: both;
   padding-bottom: 2.5em;
@@ -26,46 +24,51 @@
 }
 
 #menu-wrapper ul{
-    list-style: none;
-    padding: 0;
-    margin: auto;
-}
-
-#menu-wrapper li{
-  clear: both;
-  height: 2em;
-  display: inline;
-  /*Doesnt center...*/
-  text-align: center;
-}
-
-
-#menu-wrapper li a{
-  float:left;
-  padding:5px;
+  list-style: none;
+  padding: 0;
+  margin: auto;
 }
 
 #menu-wrapper li a:hover{
   color: green;
 }
 
-#menu-wrapper li ul{
-  display: none;
-  position: absolute;
-  width:100px;
-  margin-top:2em;
-  margin-left:195px;
-  background: #C0C0C0;
+#menu-wrapper-left li{
+  clear: both;
+  height: 2em;
+  display: inline;
 }
 
-#menu-wrapper li:hover ul, li.over ul{
+#menu-wrapper-left li a{
+  float:left;
+  padding:5px;
+}
+/*End Left*/
+
+#menu-wrapper-right li:hover ul, li.over ul{
   display: block;
 }
 
-#menu-name{
-  display:inline-block;
+#menu-wrapper-right{
   float:right;
- }
+}
+
+#menu-wrapper-right li ul{
+  display:none;
+  background: silver;
+}
+
+#menu-wrapper-right ul li{
+  text-align: right;
+}
+
+#menu-wrapper-right-name{
+  font-weight: bold;
+}
+#menu-wrapper-right-email{
+  text-decoration:underline;
+}
+/*End Right*/
 
 .group-index-group{
   margin-bottom: 15px;
@@ -75,6 +78,9 @@
   width: auto;
   float:left;
   clear: both;
+  border-bottom:5px solid gray;
+  border-right:0px;
+  border-style: outset;
 }
 
 .clear{
@@ -123,7 +129,8 @@ a {
 
 div {
   &.field, &.actions {
-    margin-bottom: 10px; } }
+    margin-bottom: 10px; } 
+}
 
 .alert{
     color: green;
@@ -136,13 +143,14 @@ div {
 .field_with_errors {
   padding: 2px;
   background-color: red;
-  display: table; }
+  display: inline-block; 
+}
 
 .error_explanation {
-  width: 450px;
-  border: 2px solid red;
   padding: 7px;
   padding-bottom: 0;
+  border-bottom: 1px solid red;
+  display:inline-block;
   margin-bottom: 20px;
   background-color: #f0f0f0;
   h2 {
@@ -153,7 +161,14 @@ div {
     margin: -7px;
     margin-bottom: 0px;
     background-color: #c00;
-    color: #fff; }
+    color: #fff; 
+  }
   ul li {
     font-size: 12px;
-    list-style: square; } }
+    list-style: square; 
+    } 
+}
+
+.error_messages li{
+  display:block;
+}
