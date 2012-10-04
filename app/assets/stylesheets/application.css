@@ -70,7 +70,7 @@
 }
 /*End Right*/
 
-.group-index-group{
+.index-element{
   margin-bottom: 15px;
   display: block;
   margin-left: 40%;
@@ -78,8 +78,8 @@
   width: auto;
   float:left;
   clear: both;
+  border:0px;
   border-bottom:5px solid gray;
-  border-right:0px;
   border-style: outset;
 }
 

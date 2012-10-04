@@ -2,5 +2,11 @@
 
 <h2> All users (<%= User.count %>)</h2> 
 <% User.all.each do |user| %>
-    <%= link_to user.email, user %> | <%= link_to "delete", user, method: :delete, confirm: "Are you sure?" %><br />
+    <div class="index-element">
+        <%= link_to user.first_name + " " + user.second_name, user %> | Delete<%#= link_to "delete", user, method: :delete, confirm: "Are you sure?" %>
+        <p> <%= user.email %> </p>
+        <% if user.is_admin? %>
+        <p style="color:green">Admin User</p>
+        <% end %>
+    </div>
 <% end %>

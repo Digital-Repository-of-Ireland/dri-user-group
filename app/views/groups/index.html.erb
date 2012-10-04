@@ -5,7 +5,7 @@
 <h2> All groups (<%= Group.count %>)</h2> 
 
 <% Group.all.each do |group| %>
-    <div class="group-index-group">
+    <div class="index-element">
         <% if current_user.is_admin? %>
             <%= link_to group.name.capitalize, group %> 
             | Delete
