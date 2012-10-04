@@ -17,17 +17,13 @@ class Group < ActiveRecord::Base
   validates_with NotPositiveIntegerValidator
   validates :description, presence: true
 
-  def is_locked?
-    return true if self.name == "admin"
-    return false
-  end
 
-  private
-    def toggle_lock
-      #if self.lock 
-      #  self.lock = false
-      #else
-      #  self.lock = true
-      #end
+  #is it ok having this public?
+  def toggle_lock
+    if self.is_locked 
+       self.is_locked = false
+    else
+      self.is_locked = true
     end
+  end
 end

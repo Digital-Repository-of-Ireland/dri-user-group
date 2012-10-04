@@ -54,10 +54,15 @@ class GroupsController < ApplicationController
             flash[:success] = "Group has been deleted"
         end
     end
-    #is this the right way (I think so)
-    def set_lock_status
+
+    def lock
         @group = Group.find(params[:id])
         @group.toggle_lock
-        redirect_to @group
+        @group.save
+        if(@group.is_locked)
+            render 'show'
+        else 
+            render 'edit'
+        end
     end
 end

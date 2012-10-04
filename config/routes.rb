@@ -6,7 +6,10 @@ UserGroup::Application.routes.draw do
   
   devise_for :users, :skip => :registration
   resources :users
-  resources :groups
-
+  resources :groups do
+    member do
+        put :lock
+    end
+  end
   resources :memberships, only: [:create, :destroy]
 end

@@ -2,20 +2,25 @@
     <div><%= link_to "Back", @group %></div><br />
 
     <%= render 'shared/error_messages', object: f.object %>
+    <% if @group.is_locked %>
+        <p>Account details cannot be modified</p>
+        <%= link_to "Unlock Group", lock_group_path(@group), method: :put %>
+    <% else %>
+        <div><%= f.label :name %><br />
+        <%= f.text_field :name , value: @group.name.titleize %></div>
 
-    <div><%= f.label :name %><br />
-    <%= f.text_field :name , value: @group.name.titleize %></div>
+        <div><%= f.label :description %><br />
+        <%= f.text_field :description %></div>
 
-    <div><%= f.label :description %><br />
-    <%= f.text_field :description %></div>
-
-    <div><%= f.submit "Update" %></div>
-
+        <div><%= f.submit "Update" %></div>
+        <br />
+        <%= link_to "Lock Group", lock_group_path(@group), method: :put, confirm: "Locking the group protects the name and description from being changed. The group cannot be deleted. Proceed?" %>
+    <% end %>
 <% end %>
-
-<h3>Delete Group</h3>
-<%= link_to "Delete", @group, method: :delete, confirm: "Are you sure?" %>
-
+<% if !@group.is_locked %>
+    <h3>Delete Group</h3>
+    <%= link_to "Delete", @group, method: :delete, confirm: "Are you sure?" %>
+<% end %>
 <br />
 <h3> Group Membership </h3>
 <% #Rendering the other way does odd things %>
