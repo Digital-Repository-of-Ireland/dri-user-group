@@ -34,7 +34,14 @@
 
 <h3> Group Membership </h3>
 <% #Rendering the other way does odd things %>
-<h4 class="no_bottom_margin">Remove</h4>
+<h4 class="no_bottom_margin">Cancel</h4>
 <%= render 'shared/leave_groups', object: @user %>
-<h4 class="no_bottom_margin">Add</h4>
-<%= render 'shared/join_groups', object: @user %>
+<h4 class="no_bottom_margin">Pending</h4>
+<%= render 'shared/pending_groups', object: @user %>
+<% if current_user.is_admin? %>
+  <h4 class="no_bottom_margin">Add</h4>
+  <%= render 'shared/join_groups', object: @user %>
+<% else %>
+  <p>Want to join some groups? </p>
+  <%= link_to "Groups", groups_path %>
+<% end %>

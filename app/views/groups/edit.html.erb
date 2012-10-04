@@ -26,5 +26,9 @@
 <% #Rendering the other way does odd things %>
 <h4 class="no_bottom_margin">Remove</h4>
 <%= render 'shared/leave_groups', object: @group %>
+<h4 class="no_bottom_margin">Pending</h4>
+<%= render 'shared/pending_groups', object: @group %>
 <h4 class="no_bottom_margin">Add</h4>
 <%= render 'shared/join_groups', object: @group %>
+
+

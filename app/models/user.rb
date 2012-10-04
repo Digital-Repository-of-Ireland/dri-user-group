@@ -18,13 +18,18 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :second_name, presence: true, length: { maximum: 50 }
 
+  def full_name
+    return self.first_name + " " + self.second_name
+  end
+  
   def is_admin?
-    #saved as lowercase
-    return true if self.groups.find_by_name("admin")
+    group = Group.find_by_name("admin")
+    return true if !group.nil? && self.member?(group.id)
   end
 
   def member?(group_id)
-    return true if self.memberships.find_by_group_id(group_id)
+    membership = self.memberships.find_by_group_id(group_id)
+    return true if !membership.nil? && membership.approved?
   end
 
   def join_group(group_id_or_name)
@@ -33,7 +38,7 @@ class User < ActiveRecord::Base
         group = Group.find_by_name(group_id_or_name.downcase)
         group_id = group.id unless group.nil?
       end 
-      self.memberships.create(group_id: group_id)
+      membership = self.memberships.create(group_id: group_id)
   end
 
   def leave_group(group_id_or_name)
@@ -47,8 +52,7 @@ class User < ActiveRecord::Base
   end
 
   private
-  def not_positive_integer?(string)
-    return false if string =~ /^[0-9]+$/
-    return true
-  end
+    def not_positive_integer?(string)
+      return true unless string =~ /^[0-9]+$/
+    end
 end

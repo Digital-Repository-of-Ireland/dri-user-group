@@ -13,7 +13,15 @@
         <% else %>
             <b> <%= group.name.capitalize %> </b>
             |
-            <i>Request to join TODO</i>
+            <%= form_for(group.memberships.build, url: { controller: :memberships, action: :pending}) do |f| %>
+                <%= render 'shared/error_messages', object: f.object %>
+
+                    <%= f.hidden_field :user_id, value: current_user.id %>
+                    <%= f.hidden_field :group_id , value: group.id %>
+
+                <%= f.submit "Join Group (Pend)" %>
+            <% end %>
+      
         <% end %>
         <p><%= group.description %></p>
         <i>Members:</i> <%= group.memberships.count %>

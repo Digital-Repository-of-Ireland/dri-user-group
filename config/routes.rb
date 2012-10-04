@@ -11,5 +11,12 @@ UserGroup::Application.routes.draw do
         put :lock
     end
   end
-  resources :memberships, only: [:create, :destroy]
+  resources :memberships, only: [:create, :destroy] do
+    member do
+        put :approve
+    end
+    collection do
+        post :pending
+    end
+end
 end

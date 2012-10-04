@@ -1,0 +1,25 @@
+<% # should not be in shared %>
+<% object.memberships.each do |membership| %>
+    <% unless membership.approved? %>
+        <% identifier = nil %>
+        <% if object.is_a?(User) %>
+            <% group = Group.find_by_id(membership.group_id) %>
+            <% identifier =  group.name.capitalize unless group.nil? %>
+        <% elsif object.is_a?(Group) %>
+            <% user = User.find_by_id(membership.user_id) %>
+            <% identifier = user.full_name+'('+user.email+')' unless user.nil? %>
+        <% end %>
+
+        <%= identifier %>
+        <% if current_user.is_admin? %>
+            <%= button_to "Approve", approve_membership_path(membership), method: :put %>
+        <% end %>
+    
+        <%= form_for(membership, html: {:method => :delete}) do |f| %>
+            <%= render 'shared/error_messages', object: f.object %>
+            <%= f.hidden_field :group_id %>
+            <%= f.hidden_field :user_id %>
+            <%= f.submit "Cancel" %>
+        <% end %>
+    <% end %>
+<% end %>

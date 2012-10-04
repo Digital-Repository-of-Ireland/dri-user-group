@@ -1,14 +1,18 @@
 <% object.memberships.each do |membership| %>
-    <%= form_for(membership, html: {:method => :delete}) do |f| %>
-        <%= render 'shared/error_messages', object: f.object %>
-        <%= f.hidden_field :group_id %>
-        <%= f.hidden_field :user_id %>
-        <% if object.is_a?(User) %>
-            <% group = Group.find_by_id(membership.group_id) %>
-            <%= f.submit "Leave: " + group.name.capitalize unless group.nil? %>
-        <% elsif object.is_a?(Group) %>
-            <% user = User.find_by_id(membership.user_id) %>
-            <%= f.submit "Remove: " + user.email unless user.nil? %>
+    <% if membership.approved? %>
+        <%= form_for(membership, html: {:method => :delete}) do |f| %>
+            <%= render 'shared/error_messages', object: f.object %>
+            <%= f.hidden_field :group_id %>
+            <%= f.hidden_field :user_id %>
+            <% if object.is_a?(User) %>
+                <% group = Group.find_by_id(membership.group_id) %>
+                <%= f.submit "Leave: " + group.name.capitalize unless group.nil? %>
+            <% elsif object.is_a?(Group) %>
+                <% user = User.find_by_id(membership.user_id) %>
+                <%= f.submit "Remove: " + user.email unless user.nil? %>
+            <% end %>
         <% end %>
     <% end %>
 <% end %>
+
+
