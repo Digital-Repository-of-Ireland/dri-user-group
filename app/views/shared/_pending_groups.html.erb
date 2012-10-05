@@ -14,7 +14,7 @@
             <%= button_to "Approve", approve_membership_path(membership), method: :put %>
         <% end %>
     
-        <%= form_for(membership, url: memberships_path, html: {:method => :delete}) do |f| %>
+        <%= form_for(membership, url: membership_path, html: {:method => :delete}) do |f| %>
             <%= render 'shared/error_messages', object: f.object %>
             <%= f.hidden_field :group_id %>
             <%= f.hidden_field :user_id %>
