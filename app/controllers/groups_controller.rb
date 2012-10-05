@@ -58,11 +58,12 @@ class GroupsController < ApplicationController
     def lock
         @group = Group.find(params[:id])
         @group.toggle_lock
+        #error ceheck?
         @group.save
         if(@group.is_locked)
-            render 'show'
+            redirect_to group_path @group
         else 
-            render 'edit'
+            redirect_to edit_group_path @group
         end
     end
 end

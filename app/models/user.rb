@@ -31,28 +31,29 @@ class User < ActiveRecord::Base
     membership = self.memberships.find_by_group_id(group_id)
     return true if !membership.nil? && membership.approved?
   end
+  
+  def pending_member?(group_id)
+    membership = self.memberships.find_by_group_id(group_id)
+    return true if !membership.nil? && !membership.approved?
+  end
 
-  def join_group(group_id_or_name)
-      group_id = group_id_or_name
-      if(not_positive_integer?(group_id_or_name))
-        group = Group.find_by_name(group_id_or_name.downcase)
-        group_id = group.id unless group.nil?
-      end 
+
+  def join_group(group_id)
       membership = self.memberships.create(group_id: group_id)
   end
 
-  def leave_group(group_id_or_name)
-      group_id = group_id_or_name
-      if(not_positive_integer?(group_id_or_name))
-          group = self.groups.find_by_name(group_id_or_name.downcase)
-          group_id = group.id unless group.nil?
-      end
+  def leave_group(group_id)
       membership = self.memberships.find_by_group_id(group_id)
       membership.destroy unless membership.nil?
   end
 
-  private
-    def not_positive_integer?(string)
-      return true unless string =~ /^[0-9]+$/
-    end
+  #Shared with group.rb [move]
+  #be careful you dont do = 1 http://stackoverflow.com/questions/4252349/rail-3-where-condition-using-not-null
+  def full_memberships
+    self.memberships.where("approved_by IS NOT NULL")
+  end
+
+  def pending_memberships
+    self.memberships.where(approved_by: nil)
+  end
 end

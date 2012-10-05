@@ -1,6 +1,7 @@
 <p>Dont forget devise /users/edit </p>
 
 <%= form_for(@user) do |f| %>
+  <% #debugger %>
     <div><%= link_to "Back", @user %></div><br />
 
     <%= render 'shared/error_messages', object: f.object %>

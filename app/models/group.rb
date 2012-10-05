@@ -26,4 +26,12 @@ class Group < ActiveRecord::Base
       self.is_locked = true
     end
   end
+
+  def full_memberships
+    self.memberships.where("approved_by IS NOT NULL")
+  end
+
+  def pending_memberships
+    self.memberships.where(approved_by: nil)
+  end
 end

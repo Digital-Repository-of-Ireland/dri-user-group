@@ -1,118 +1,104 @@
 class MembershipsController < ApplicationController
     before_filter :authenticate_user!
     before_filter :admin_users, only: [:create, :approve]
-    #:can_modify (through can_modify_base) also sets @user
+    #:can_modify (through can_modify_base) also sets @user (found by id ONLY)
     before_filter :can_modify, only: [:destroy]
-
+    #remote true sends requests in js
     respond_to :html, :js
 
-    #Must be Admin for now (unless pending done in future)
     def create
-        begin
-            #Can find user by email or ID
-            @user = nil
-            if(not_positive_integer?(params[:membership][:user_id]))
-                @user = User.find_by_email(params[:membership][:user_id])
+        @user = get_user(params[:membership][:user_id])
+        group_id = get_group_id(params[:membership][:group_id])
+
+        if @user.nil?
+            flash[:error] = "Could not find user"
+        elsif group_id.nil?
+            flash[:error] = "Could not find group"
+        else
+            action = @user.join_group(group_id)
+            render 'users/edit' and return if action.errors.count >0
+            if(approve_membership(action))
+                flash[:success] = "Joined Group"
             else
-                @user = User.find_by_id(params[:membership][:user_id])
+                flash[:error] = "Error Approving Membership"
             end
-        #crashes if user does not exist!
-        rescue ActiveRecord::RecordNotFound
-              flash[:error] = "Could not find user"
-              #should change later
-              redirect_to root_path
-              return
         end
-        #:group_id can also be name
-        action = @user.join_group(params[:membership][:group_id]) unless @user.nil?
-        if action.nil? || action.errors.count > 0
-            render 'users/edit'
-        else
-            #error check this
-            action.approve_membership(current_user.id)
-            action.save
-            flash[:success] = "Joined Group"
-            redirect_to :back
-        end
-    end
-
-    def destroy
-        #Take in id instead??
-        #:group_id can also be name
-        action = @user.leave_group(params[:membership][:group_id])
-        if action.errors.count == 0
-            flash[:success] = "Left Group"
-            #respond_with @user
-             redirect_to :back
-
-        else
-            render 'users/edit'
-        end
-    end
-
-    def approve
-        #Need error check
-        membership = Membership.find_by_id(params[:id])
-        membership.approve_membership(current_user.id) unless membership.nil?
-        #A way around? or error check here!
-        membership.save
-        flash[:success] = "Approved User"
         redirect_to :back
     end
 
-    def pending
-        begin
-            #Can find user by email or ID
-            @user = nil
-            if(not_positive_integer?(params[:membership][:user_id]))
-                @user = User.find_by_email(params[:membership][:user_id])
-            else
-                @user = User.find_by_id(params[:membership][:user_id])
-            end
-        #TODO:: FIX ALL crashes if user does not exist!
-        rescue ActiveRecord::RecordNotFound
-              flash[:error] = "Could not find user"
-              #should change later
-              redirect_to :back
-              return
-        end
-        #:group_id can also be name
-        
-        action = @user.join_group(params[:membership][:group_id]) unless @user.nil?
-        if action.errors.count > 0
-            #I dont really want to render this (Need error message)
-            #Render back to where the partials are
-            redirect_to :back
+    def destroy
+        group_id = get_group_id(params[:membership][:group_id])
+        action = @user.leave_group(group_id) unless group_id.nil?
+        flash[:error] = "Could not find membership" if action.nil?
+        render 'users/edit' and return if action.errors.count >0
+        flash[:success] = "Left Group"
+        redirect_to :back
+    end
+
+    def approve
+        membership = Membership.find_by_id(params[:id])
+        if(approve_membership(membership))
+            flash[:success] = "Approved User"
         else
-            #temporary here
-            #action.approved_by = current_user.id
-            #action.save
-            #end temporary
-            flash[:success] = "Application Pending for Group"
-            redirect_to :back
+            flash[:error] = "Error Approving Membership"
         end
-        #respond_with @user#, edit_user_path(@user)
-        #redirect_to edit_user_path @user
+        redirect_to :back
+    end
+
+    #Almost the same as create
+    def pending
+        @user = get_user(params[:membership][:user_id])
+        group_id = get_group_id(params[:membership][:group_id])
+
+        if @user.nil?
+            flash[:error] = "Could not find user"
+        elsif group_id.nil?
+            flash[:error] = "Could not find group"
+        else
+            action = @user.join_group(group_id)
+            render 'groups/index' and return if action.errors.count >0
+            flash[:success] = "Application Pending for Group"
+        end
+        redirect_to :back
     end
 
 
 private
     def can_modify
+        #todo TEST
         begin
             user_to_modify = User.find(params[:membership][:user_id])
         rescue ActiveRecord::RecordNotFound
               flash[:error] = "Could not find user"
-              #should change later
-              redirect_to root_path
+              redirect_to :back
               return
         end
         can_modify_base(user_to_modify)
     end
 
-    #taken from user.rb
-    def not_positive_integer?(string)
-        return false if string =~ /^[0-9]+$/
-        return true
+    def approve_membership(application)
+        unless application.nil?
+            application.approve_membership(current_user.id)
+            application.save
+            return true
+        end
+        return false
     end
 
+    def get_user(user_id_or_name)
+        return not_positive_integer?(user_id_or_name) ? User.find_by_email(user_id_or_name) : User.find_by_id(user_id_or_name)
+    end
+
+    def get_group_id(group_id_or_name)
+        return not_positive_integer?(group_id_or_name) ? get_group_id_from_group(group_id_or_name) : group_id_or_name 
+    end
+
+    def get_group_id_from_group_name(group_name)
+        group = Group.find_by_name(group_name.downcase)
+        return group.id unless group.nil?
+    end
+
+    def not_positive_integer?(string)
+        return true unless string =~ /^[0-9]+$/
+    end
 end

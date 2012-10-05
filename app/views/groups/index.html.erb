@@ -13,17 +13,28 @@
         <% else %>
             <b> <%= group.name.capitalize %> </b>
             |
-            <%= form_for(group.memberships.build, url: { controller: :memberships, action: :pending}) do |f| %>
-                <%= render 'shared/error_messages', object: f.object %>
-
+            <% if current_user.member?(group.id) %>
+                You are a member of this group.
+            <% elsif current_user.pending_member?(group.id) %>
+                Your membership is pending
+            <% else %>
+                <%= form_for(group.memberships.build, url: { controller: :memberships, action: :pending}) do |f| %>
+                    <%= render 'shared/error_messages', object: f.object %>
                     <%= f.hidden_field :user_id, value: current_user.id %>
                     <%= f.hidden_field :group_id , value: group.id %>
-
-                <%= f.submit "Join Group (Pend)" %>
+                    <%= f.submit "Apply" %>
+                <% end %>
             <% end %>
-      
         <% end %>
         <p><%= group.description %></p>
-        <i>Members:</i> <%= group.memberships.count %>
+                <% if current_user.is_admin? %>
+            <% amount_pending =  group.pending_memberships.count %>
+            <% if amount_pending > 0 %>
+                <%= link_to "Pending:", edit_group_path(group) %>
+                <%=  amount_pending %>
+                <br />            
+            <% end %>
+        <% end %>
+        <i>Members:</i> <%= group.full_memberships.count %>
     </div>
 <% end %>
