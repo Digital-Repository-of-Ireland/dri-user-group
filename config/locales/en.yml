@@ -56,6 +56,7 @@ en:
             created: "Created At: "
             updated: "Updated At: "
             join_date: "Join Date"
+            remove: "Remove"
         users:
             new:
                 signup: "Sign Up"
@@ -91,7 +92,6 @@ en:
                 lock_confirm: Locking the group protects the name and description from being changed. The group cannot be deleted. Proceed?"
                 update: "Update"
                 delete: "Delete Group"
-                remove: "Remove"
             index:
                 add: "Add Group"
                 groups: "All Groups"
@@ -104,3 +104,15 @@ en:
                 edit: "Edit Group"
                 member: "Member"
                 approve: "Approved By"
+        partials:
+            error_messages:
+                text: "The form contains "
+                error: "error"
+            join_group:
+                user: "User ID or Email"
+                group: "Group ID or Name"
+                join: "Join Group"
+            leave_group:
+                leave: "Leave: "
+            pending:
+                approve: "Approve"

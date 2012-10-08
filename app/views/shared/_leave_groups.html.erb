@@ -5,11 +5,11 @@
         <%= f.hidden_field :user_id %>
         <% if object.is_a?(User) %>
             <% group = Group.find_by_id(membership.group_id) %>
-            <%= f.submit "Leave: " + group.name.capitalize unless group.nil? %>
+            <%= f.submit (t :'user_groups.views.partials.leave_group.leave') + group.name.capitalize unless group.nil? %>
         <% elsif object.is_a?(Group) %>
             <% user = User.find_by_id(membership.user_id) %>
             <%= user.full_name + " (" + user.email + ")" unless user.nil? %>
-            <%= f.submit "Remove" %>
+            <%= f.submit (t :'user_groups.views.shared.remove') %>
         <% end %>
     <% end %>
 <% end %>

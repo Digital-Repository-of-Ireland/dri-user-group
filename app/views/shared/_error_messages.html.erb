@@ -1,6 +1,7 @@
 <% if object.errors.any? %>
     <div class="error_explanation">
-        The form contains <%= pluralize(object.errors.count, "error") %>.
+        <%= (t :'user_groups.views.partials.error_messages.text') %>
+        <%= pluralize(object.errors.count, (t :'user_groups.views.partials.error_messages.error')) %>.
     </div>
     <ul class="error_messages">
         <% object.errors.full_messages.each do |msg| %>
