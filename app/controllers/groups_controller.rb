@@ -16,7 +16,7 @@ class GroupsController < ApplicationController
     def create
         @group = Group.new(params[:group])
         if @group.save
-            flash[:success] = "Group Created"
+            flash[:success] = I18n.t("user_groups.groups.created")
             redirect_to @group
         else
             render 'new'
@@ -31,7 +31,7 @@ class GroupsController < ApplicationController
         @group = Group.find(params[:id])
         return if is_locked(@group)
         if @group.update_attributes(params[:group])
-            flash[:success] = "Updated!"
+            flash[:success] = I18n.t("user_groups.shared.updated")
             redirect_to @group
         else
             render 'edit'
@@ -42,7 +42,7 @@ class GroupsController < ApplicationController
         deleting_group = Group.find(params[:id])
         return if is_locked(deleting_group)
         deleting_group.destroy
-        flash[:success] = "Group has been deleted"
+        flash[:success] = I18n.t("user_groups.groups.deleted")
         redirect_to groups_path
     end
 
@@ -60,7 +60,7 @@ class GroupsController < ApplicationController
     private
         def is_locked?(group)
             if group.is_locked?
-                flash[:error] = "Group is locked"
+                flash[:error] = I18n.t("user_groups.groups.errors.locked")
                 redirect_to group
                 return true
             end

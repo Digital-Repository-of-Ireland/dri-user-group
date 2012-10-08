@@ -11,16 +11,16 @@ class MembershipsController < ApplicationController
         group_id = get_group_id(params[:membership][:group_id])
 
         if @user.nil?
-            flash[:error] = "Could not find user"
+            flash[:error] = I18n.t("user_groups.shared.errors.user")
         elsif group_id.nil?
-            flash[:error] = "Could not find group"
+            flash[:error] = I18n.t("user_groups.memberships.errors.group")
         else
             membership = @user.join_group(group_id)
             render 'users/edit' and return if membership.errors.count >0
             if(approve_membership(membership))
-                flash[:success] = "Joined Group"
+                flash[:success] = I18n.t("user_groups.memberships.joined")
             else
-                flash[:error] = "Error Approving Membership"
+                flash[:error] = I18n.t("user_groups.memberships.errors.approving")
             end
         end
         redirect_to :back
@@ -30,10 +30,10 @@ class MembershipsController < ApplicationController
         group_id = get_group_id(params[:membership][:group_id])
         action = @user.leave_group(group_id) unless group_id.nil?
         if action.nil?
-            flash[:error] = "Could not find membership"
+            flash[:error] = I18n.t("user_groups.memberships.errors.membership")
         else
             render 'users/edit' and return if action.errors.count >0
-            flash[:success] = "Left Group"
+            flash[:success] = I18n.t("user_groups.memberships.leave")
         end
         redirect_to :back
     end
@@ -41,9 +41,9 @@ class MembershipsController < ApplicationController
     def approve
         membership = Membership.find_by_id(params[:id])
         if(approve_membership(membership))
-            flash[:success] = "Approved User"
+            flash[:success] = I18n.t("user_groups.memberships.approve")
         else
-            flash[:error] = "Error Approving Membership"
+            flash[:error] = I18n.t("user_groups.memberships.errors.approving")
         end
         redirect_to :back
     end
@@ -54,9 +54,9 @@ class MembershipsController < ApplicationController
         group_id = get_group_id(params[:membership][:group_id])
 
         if @user.nil?
-            flash[:error] = "Could not find user"
+            flash[:error] = I18n.t("user_groups.shared.errors.user")
         elsif group_id.nil?
-            flash[:error] = "Could not find group"
+            flash[:error] = I18n.t("user_groups.memberships.errors.group")
         else
             action = @user.join_group(group_id)
             render 'groups/index' and return if action.errors.count >0

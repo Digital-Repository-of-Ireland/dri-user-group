@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 protected
     def admin_users
         unless current_user.is_admin?
-            flash[:error] = "You must be an admin"
+            flash[:error] = I18n.t("user_groups.application.errors.admin")
             redirect_to(root_url)
         end   
     end
@@ -17,12 +17,12 @@ protected
     def can_modify_base(user_id)
         user_to_modify = User.find_by_id(user_id)
         if user_to_modify.nil?
-              flash[:error] = "Could not find user"
+              flash[:error] = I18n.t("user_groups.shared.errors.user")
               redirect_to root_url
               return
         end
         unless (current_user.is_admin? || modifying_current_user?(user_to_modify) )
-            flash[:error] = "You do not have permission"
+            flash[:error] = I18n.t("user_groups.application.errors.permission")
             redirect_to root_url
             return
         end

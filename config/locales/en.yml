@@ -5,5 +5,29 @@ en:
   hello: "Hello world"
 
   user_groups:
+    shared:
+        errors:
+            user: "Could not find user"
+        updated: "Updated"
+    application:
+        errors:
+            admin: "You must be an admin"
+            permission: "You do not have permission"
     memberships:
-        pending: "Application Pending for Group"
+        errors:
+            approving: "Error approving membership"
+            membership: "Could not find membership"
+            group: "Could not find group"
+        pending: "Application pending for group"
+        joined: "Joined group"
+        leave: "Left group"
+        approve: "Approved membership"
+    groups:
+        errors:
+            locked: "Group is locked"
+        created: "Group created"
+        deleted: "Group has been deleted"
+    users:
+        signup: "Welcome!"
+
+

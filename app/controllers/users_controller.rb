@@ -18,7 +18,7 @@ class UsersController < ApplicationController
         @user = User.new(params[:user])
         if @user.save
             sign_in @user
-            flash[:success] = "Welcome!"
+            flash[:success] = I18n.t("user_groups.users.signup")
             redirect_to root_url
         else
             render 'new'
@@ -30,7 +30,8 @@ class UsersController < ApplicationController
 
     def update
         if @user.update_attributes(params[:user])
-            flash[:success] = "Updated"
+
+            flash[:success] = I18n.t("user_groups.shared.updated")
             sign_in @user
             redirect_to @user
         else
@@ -46,10 +47,11 @@ class UsersController < ApplicationController
        
         if is_current_user
             redirect_to root_url
-            flash[:success] = "Your account has been deleted"
+            flash[:success] = I18n.t("user_groups.users.deleted_self")
         else
             redirect_to users_url
-            flash[:success] = "User Destroyed"
+            
+            flash[:success] = I18n.t("user_groups.users.deleted")
         end
     end
 
