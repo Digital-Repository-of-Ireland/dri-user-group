@@ -1,7 +1,7 @@
     <div id="menu-wrapper">
       <div id="menu-wrapper-left">
         <ul>
-          <li><%= link_to(t :'user_groups.views.header.home'), root_path %></li>
+          <li><%= link_to (t :'user_groups.views.header.home'), root_path %></li>
           <li><%= link_to (t :'user_groups.views.header.help'), help_path %></li>
           <% if signed_in? %>
             <li><%= link_to (t :'user_groups.views.shared.groups'), groups_path %></li>
