@@ -85,7 +85,7 @@ private
     end
 
     def get_group_id(group_id_or_name)
-        return not_positive_integer?(group_id_or_name) ? get_group_id_from_group(group_id_or_name) : group_id_or_name 
+        return not_positive_integer?(group_id_or_name) ? get_group_id_from_group_name(group_id_or_name) : group_id_or_name 
     end
 
     def get_group_id_from_group_name(group_name)

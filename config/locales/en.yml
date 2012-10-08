@@ -90,7 +90,7 @@ en:
                 locked: "Group details are locked"
                 unlock: "Unlock Group"
                 lock: "Lock Group"
-                lock_confirm: Locking the group protects the name and description from being changed. The group cannot be deleted. Proceed?"
+                lock_confirm: "Locking the group protects the name and description from being changed. The group cannot be deleted. Proceed?"
                 update: "Update"
                 delete: "Delete Group"
             index:
