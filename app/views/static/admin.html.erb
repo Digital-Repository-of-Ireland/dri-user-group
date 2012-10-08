@@ -1,10 +1,9 @@
-<% x = "do something" if !user_signed_in? %>
 <p>Welcome to the admin home<p>
 
-<%= link_to "Users", users_path %>
-<%= link_to "Groups", groups_path %>
+<%= link_to (t :'user_groups.views.shared.users'), users_path %>
+<%= link_to (t :'user_groups.views.shared.groups'), groups_path %>
 <br />
-<%= link_to "Add User", new_user_path %>
-<%= link_to "Add Group", new_group_path %>
+<%= link_to (t :'user_groups.views.shared.add_user'), new_user_path %>
+<%= link_to (t :'user_groups.views.shared.add_group'), new_group_path %>
 
 <%#= link_to "Data Logging", "#" %>

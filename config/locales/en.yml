@@ -57,6 +57,10 @@ en:
             updated: "Updated At: "
             join_date: "Join Date"
             remove: "Remove"
+            sign_in: "Sign in"
+            register: "Register"
+            add_user: "Add User"
+            add_group: "Add Group"
         users:
             new:
                 signup: "Sign Up"
@@ -69,7 +73,6 @@ en:
                 unhappy: "Unhappy?"
                 join_groups: "Want to join some groups?"
             index:
-                add: "Add User"
                 all_users: "All Users"
             show:
                 registered: "Registered User"
@@ -93,7 +96,6 @@ en:
                 update: "Update"
                 delete: "Delete Group"
             index:
-                add: "Add Group"
                 groups: "All Groups"
                 member: "You are a member of this group."
                 pending: "Your membership is pending"
@@ -104,6 +106,8 @@ en:
                 edit: "Edit Group"
                 member: "Member"
                 approve: "Approved By"
+        static_pages:
+            todo: "TODO"
         partials:
             error_messages:
                 text: "The form contains "
@@ -116,3 +120,9 @@ en:
                 leave: "Leave: "
             pending:
                 approve: "Approve"
+        header:
+            home: "Home"
+            help: "Help"
+            admin: "Admin"
+            account: "My Account"
+            signout: "Sign out"

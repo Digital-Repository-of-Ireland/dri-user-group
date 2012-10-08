@@ -1,5 +1,5 @@
 <% if current_user.is_admin? %>
-    <%= link_to (t :'user_groups.views.groups.index.add'), new_group_path %>
+    <%= link_to (t :'user_groups.views.shared.add_group'), new_group_path %>
 <% end %>
 
 <h2> <%= (t :'user_groups.views.groups.index.groups') %>(<%= Group.count %>)</h2> 

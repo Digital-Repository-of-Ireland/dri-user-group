@@ -4,8 +4,8 @@
     
     <p> <%= current_user.email %> is logged in</p>
 <% else %>
-    <%= link_to "Login", new_user_session_path %> 
-    <%= link_to "Register", new_user_path %>
+    <%= link_to (t :'user_groups.views.shared.sign_in'), new_user_session_path %> 
+    <%= link_to (t :'user_groups.views.shared.register'), new_user_path %>
     
 <% end %>
 
