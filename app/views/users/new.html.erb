@@ -1,22 +1,22 @@
-<h2>Sign up</h2>
+<h2><%= t :'user_groups.views.users.new.signup' %></h2>
 
 <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
-
-  <div><%= f.label :first_name %><br />
+ 
+  <div><%= f.label :first_name, (t :'user_groups.views.shared.first_name') %><br />
   <%= f.text_field :first_name %></div>
 
-    <div><%= f.label :second_name %><br />
+    <div><%= f.label :second_name, (t :'user_groups.views.shared.second_name') %><br />
   <%= f.text_field :second_name %></div>
 
-  <div><%= f.label :email %><br />
+  <div><%= f.label :email, (t :'user_groups.views.shared.email') %><br />
   <%= f.email_field :email %></div>
 
-  <div><%= f.label :password %><br />
+  <div><%= f.label :password, (t :'user_groups.views.users.new.password') %><br />
   <%= f.password_field :password %></div>
 
-  <div><%= f.label :password_confirmation %><br />
+  <div><%= f.label :password_confirmation, (t :'user_groups.views.users.new.password_confirm') %><br />
   <%= f.password_field :password_confirmation %></div>
 
-  <div><%= f.submit "Sign up" %></div>
+  <div><%= f.submit t :'user_groups.views.users.new.register' %></div>
 <% end %>

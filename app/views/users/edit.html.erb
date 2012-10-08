@@ -1,44 +1,36 @@
-<p>Dont forget devise /users/edit </p>
-
 <%= form_for(@user) do |f| %>
-    <div><%= link_to "Back", @user %></div><br />
+    <div><%= link_to (t :'user_groups.views.shared.back') , @user %></div><br />
 
     <%= render 'shared/error_messages', object: f.object %>
-    <div><%= f.label :email %><br />
+    <div><%= f.label :email, (t :'user_groups.views.shared.email') %><br />
   <%= f.email_field :email %></div>
 
   <div>
-      <div><%= f.label :first_name %><br />
+      <div><%= f.label :first_name, (t :'user_groups.views.shared.first_name') %><br />
       <%= f.text_field :first_name %></div>
 
-      <div><%= f.label :second_name %><br />
+      <div><%= f.label :second_name, (t :'user_groups.views.shared.second_name')  %><br />
       <%= f.text_field :second_name %></div>
   </div>
 
-
-  <div><%#= f.label :password %> <br />
-  <%#= f.password_field :password, :autocomplete => "off" %></div>
-
-  <div><%#= f.label :password_confirmation %><br />
-  <%#= f.password_field :password_confirmation %></div>
-  <div><%= f.submit "Update" %></div>
+  <div><%= f.submit (t :'user_groups.views.shared.update') %></div>
 <% end %>
 
-<h3>Delete account</h3>
-<p>Unhappy? <%= link_to "Delete your account", @user, method: :delete, confirm: "Are you sure?" %>.</p>
+<h3><%= (t :'user_groups.views.users.edit.delete_heading') %></h3>
+<p><%= (t :'user_groups.views.users.edit.unhappy') %> <%= link_to (t :'user_groups.views.users.edit.delete'), @user, method: :delete, confirm: (t :'user_groups.views.shared.confirm') %>.</p>
 
-<h3> Group Membership </h3>
+<h3><%= (t :'user_groups.views.shared.group_membership')%></h3>
 <% #Rendering the other way does odd things %>
-<h4 class="no_bottom_margin">Cancel</h4>
+<h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.cancel') %></h4>
 <%= render 'shared/leave_groups', object: @user %>
 <% if @user.pending_memberships.count >0 %>
-  <h4 class="no_bottom_margin">Pending</h4>
+  <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.pending') %></h4>
   <%= render 'shared/pending_groups', object: @user %>
 <% end %>
 <% if current_user.is_admin? %>
-  <h4 class="no_bottom_margin">Add</h4>
+  <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.add') %></h4>
   <%= render 'shared/join_groups', object: @user %>
 <% else %>
-  <p>Want to join some groups? </p>
-  <%= link_to "Groups", groups_path %>
+  <p><%= (t :'user_groups.views.users.edit.join_groups') %> </p>
+  <%= link_to (t :'user_groups.views.shared.groups'), groups_path %>
 <% end %>
