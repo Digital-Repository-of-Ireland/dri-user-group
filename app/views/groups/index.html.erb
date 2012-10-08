@@ -1,41 +1,44 @@
 <% if current_user.is_admin? %>
-    <%= link_to "Add Group", new_group_path %>
+    <%= link_to (t :'user_groups.views.groups.index.add'), new_group_path %>
 <% end %>
 
-<h2> All groups (<%= Group.count %>)</h2> 
+<h2> <%= (t :'user_groups.views.groups.index.groups') %>(<%= Group.count %>)</h2> 
 
 <% Group.all.each do |group| %>
     <div class="index-element">
         <% if current_user.is_admin? %>
             <%= link_to group.name.capitalize, group %> 
-            | Delete
+            | 
+            <%= (t :'user_groups.views.shared.delete') %>
             <%#= link_to "delete", group, method: :delete, confirm: "Are you sure?" %>
         <% else %>
             <b> <%= group.name.capitalize %> </b>
             <% if current_user.member?(group.id) %>
-                | You are a member of this group.
+                | 
+                <%= (t :'user_groups.views.groups.index.member') %>
             <% elsif current_user.pending_member?(group.id) %>
-                | Your membership is pending
+                | 
+                <%= (t :'user_groups.views.groups.index.pending') %>
             <% else %>
                 <% unless group.name == "admin" %>
                 | <%= form_for(group.memberships.build, url: { controller: :memberships, action: :pending}) do |f| %>
                     <%= render 'shared/error_messages', object: f.object %>
                     <%= f.hidden_field :user_id, value: current_user.id %>
                     <%= f.hidden_field :group_id , value: group.id %>
-                    <%= f.submit "Apply" %>
-                <% end %>
+                    <%= f.submit t :'user_groups.views.groups.index.apply' %>
+                    <% end %>
                 <% end %>
             <% end %>
         <% end %>
         <p><%= group.description %></p>
-                <% if current_user.is_admin? %>
+        <% if current_user.is_admin? %>
             <% amount_pending =  group.pending_memberships.count %>
             <% if amount_pending > 0 %>
-                <%= link_to "Pending:", edit_group_path(group) %>
+                <%= link_to (t :'user_groups.views.groups.index.pending2'), edit_group_path(group) %>
                 <%=  amount_pending %>
                 <br />            
             <% end %>
         <% end %>
-        <i>Members:</i> <%= group.full_memberships.count %>
+        <i><%= (t :'user_groups.views.groups.index.members') %></i> <%= group.full_memberships.count %>
     </div>
 <% end %>

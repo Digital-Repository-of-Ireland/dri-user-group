@@ -1,13 +1,13 @@
-<h2>Create New Group</h2>
+<h2><%= (t :'user_groups.views.groups.new.heading') %></h2>
 
 <%= form_for(@group) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
 
-    <div><%= f.label :name %><br />
+    <div><%= f.label :name, (t :'user_groups.views.shared.name') %><br />
     <%= f.text_field :name %></div>
 
-    <div><%= f.label :description %><br />
+    <div><%= f.label :description, (t :'user_groups.views.shared.description') %><br />
     <%= f.text_field :description %></div>
 
-    <div><%= f.submit "Create Group" %></div>
+  <div><%= f.submit t :'user_groups.views.groups.new.create' %></div>
 <% end %>

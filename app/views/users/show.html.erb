@@ -5,9 +5,9 @@
 <h2 class="no_bottom_margin"><%= @user.first_name %> <%= @user.second_name %></h2>
 <br />
 <div class="tab"><%= @user.email %></div>
-<%= (t :'user_groups.views.users.show.created') %><%= @user.created_at %><br />
+<%= (t :'user_groups.views.shared.created') %><%= @user.created_at %><br />
 <% if @user.created_at.to_s != @user.updated_at.to_s %>
-    <%= (t :'user_groups.views.users.show.updated') %> <%= @user.updated_at %><br />
+    <%= (t :'user_groups.views.shared.updated') %> <%= @user.updated_at %><br />
 <% end %>
 <div>
 <% if @user.is_admin? %>
@@ -37,7 +37,7 @@
     <table border="0" class="table">
         <tr>
             <th><%=(t :'user_groups.views.users.show.group')%></th>
-            <th><%=(t :'user_groups.views.users.show.join_date')%></th>
+            <th><%=(t :'user_groups.views.shared.join_date')%></th>
             <th><%=(t :'user_groups.views.users.show.leave')%></th>
         </tr>
     <% @user.groups.each do |group| %>
@@ -47,7 +47,7 @@
             <% if membership.approved? %>
                 <td><%= membership.updated_at %></td>
             <% else %>
-                <td><%= (t :'user_groups.views.users.show.pending') %></td>
+                <td><%= (t :'user_groups.views.shared.pending') %></td>
             <% end %>
 
             <td><%#= button_to "X", membership_path(user_id: @user.id, group_id: group.id), method: :delete, remote: true, confirm: 'Are you sure?' %></td>

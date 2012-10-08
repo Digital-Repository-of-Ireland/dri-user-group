@@ -51,6 +51,11 @@ en:
             users: "Users"
             edit: "Edit"
             admin: "Admin User"
+            name: "Name"
+            description: "Description"
+            created: "Created At: "
+            updated: "Updated At: "
+            join_date: "Join Date"
         users:
             new:
                 signup: "Sign Up"
@@ -62,11 +67,10 @@ en:
                 delete_heading: "Delete account"
                 unhappy: "Unhappy?"
                 join_groups: "Want to join some groups?"
-            new:
+            index:
                 add: "Add User"
+                all_users: "All Users"
             show:
-                created: "Created At: "
-                updated: "Updated At: "
                 registered: "Registered User"
                 sessions: "Sessions"
                 total_sign_in: "Total sign in's: "
@@ -75,5 +79,28 @@ en:
                 ip: "IP: "
                 membership: "Membership"
                 group: "Group"
-                join_date: "Join Date"
                 leave: "Leave"
+        groups:
+            new:
+                heading: "Create New Group"
+                create: "Create Group"
+            edit:
+                locked: "Group details are locked"
+                unlock: "Unlock Group"
+                lock: "Lock Group"
+                lock_confirm: Locking the group protects the name and description from being changed. The group cannot be deleted. Proceed?"
+                update: "Update"
+                delete: "Delete Group"
+                remove: "Remove"
+            index:
+                add: "Add Group"
+                groups: "All Groups"
+                member: "You are a member of this group."
+                pending: "Your membership is pending"
+                apply: "Apply"
+                pending2: "Pending:"
+                members: "Members:"
+            show:
+                edit: "Edit Group"
+                member: "Member"
+                approve: "Approved By"

@@ -1,6 +1,6 @@
-<%= link_to (t :'user_groups.views.users.new.add'), new_user_path %>
+<%= link_to (t :'user_groups.views.users.index.add'), new_user_path %>
 
-<h2> All users (<%= User.count %>)</h2> 
+<h2> <%= (t :'user_groups.views.users.index.all_users') %> (<%= User.count %>)</h2> 
 <% User.all.each do |user| %>
     <div class="index-element">
         <%= link_to user.first_name + " " + user.second_name, user %> | 
@@ -8,7 +8,7 @@
         <%#= link_to "delete", user, method: :delete, confirm: "Are you sure?" %>
         <p> <%= user.email %> </p>
         <% if user.is_admin? %>
-        <p style="color:green"><%= (t :'user_groups.views.users.new.admin') %></p>
+        <p style="color:green"><%= (t :'user_groups.views.shared.admin') %></p>
         <% end %>
     </div>
 <% end %>

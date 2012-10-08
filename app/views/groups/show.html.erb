@@ -1,24 +1,26 @@
-<div><%= link_to "Groups", groups_path %></div>
+<div><%= link_to (t :'user_groups.views.shared.groups'), groups_path %></div>
 <h2 class="no_bottom_margin"><%= @group.name.capitalize %></h2>
 <div class="tab"><%= @group.description %></div>
-Created At: <%= @group.created_at %>
+<%= (t :'user_groups.views.shared.created') %><%= @group.created_at %>
 
 <% if @group.created_at.to_s != @group.updated_at.to_s %>
-    <br />Updated At: <%= @group.updated_at %>
+    <br />
+    <%= (t :'user_groups.views.shared.updated') %>
+    <%= @group.updated_at %>
 <% end %>
 
 <div class="clear"></div><br />
- <%= link_to "Edit Group", edit_group_path %>
+ <%= link_to (t :'user_groups.views.groups.show.edit'), edit_group_path %>
 <br />
 
 
-<h3><%= pluralize(@group.users.count, "Member") %>:</h3>
+<h3><%= pluralize(@group.users.count, (t :'user_groups.views.groups.show.member')) %>:</h3>
 <% if @group.users.count > 0 %>
     <table border="0" class="table">
     <tr>
-        <th>Name</th>
-        <th>Join Date</th>
-        <th>Approved By</th>
+        <th><%= (t :'user_groups.views.shared.name') %></th>
+        <th><%= (t :'user_groups.views.shared.join_date') %></th>
+        <th><%= (t :'user_groups.views.groups.show.approve') %></th>
     </tr>
     <% @group.users.each do |user| %>
         <tr>
@@ -30,7 +32,7 @@ Created At: <%= @group.created_at %>
                 <% approving_user = User.find_by_id(membership.approved_by) %>
                 <td><%= (link_to approving_user.full_name, user_path(approving_user)) unless approving_user.nil? %></td>
             <% else %>
-                <td>Pending <%#=link_to "Approve?", approve_membership_path(membership), method: :put %></td>
+                <td> <%= (t :'user_groups.views.shared.pending') %><%#=link_to "Approve?", approve_membership_path(membership), method: :put %></td>
             <% end %>
         </tr>
     <% end %>
