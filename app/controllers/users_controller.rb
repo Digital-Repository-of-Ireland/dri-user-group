@@ -17,9 +17,8 @@ class UsersController < ApplicationController
     def create
         @user = User.new(params[:user])
         if @user.save
-            #do stuff the devise controller would
-            flash[:success] = "Welcome!"
             sign_in @user
+            flash[:success] = "Welcome!"
             redirect_to root_url
         else
             render 'new'
@@ -30,25 +29,19 @@ class UsersController < ApplicationController
     end
 
     def update
-        #13.43 lesson 9 error check
         if @user.update_attributes(params[:user])
-            flash[:success] = "Updated!"
-
-            #Might sign out
-            #sign_in @user
+            flash[:success] = "Updated"
+            sign_in @user
             redirect_to @user
         else
             render 'edit'
         end
     end
 
-    #Dont forget to look at what devise does
     def destroy
-        #Does not use @user for some reason described in tutorials
         deleting_user = User.find(params[:id])
         is_current_user = modifying_current_user?(deleting_user)
 
-        #Should do group deletion etc...
         deleting_user.destroy
        
         if is_current_user
@@ -62,14 +55,6 @@ class UsersController < ApplicationController
 
 private
     def can_modify
-        begin
-            user_to_modify = User.find(params[:id])
-        rescue ActiveRecord::RecordNotFound
-              flash[:error] = "Could not find user"
-              #should change later
-              redirect_to root_path
-              return
-        end
-        can_modify_base(user_to_modify)
+        can_modify_base(params[:id])
     end
 end

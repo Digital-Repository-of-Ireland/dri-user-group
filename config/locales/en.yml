@@ -3,3 +3,7 @@
 
 en:
   hello: "Hello world"
+
+  user_groups:
+    memberships:
+        pending: "Application Pending for Group"

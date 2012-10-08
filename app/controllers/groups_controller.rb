@@ -16,8 +16,7 @@ class GroupsController < ApplicationController
     def create
         @group = Group.new(params[:group])
         if @group.save
-            #do stuff the devise controller would
-            flash[:success] = "New Group!"
+            flash[:success] = "Group Created"
             redirect_to @group
         else
             render 'new'
@@ -30,10 +29,8 @@ class GroupsController < ApplicationController
 
     def update
         @group = Group.find(params[:id])
-        if @group.is_locked?
-            flash[:error] = "Group is locked"
-            redirect_to @group
-        elsif @group.update_attributes(params[:group])
+        return if is_locked(@group)
+        if @group.update_attributes(params[:group])
             flash[:success] = "Updated!"
             redirect_to @group
         else
@@ -42,23 +39,16 @@ class GroupsController < ApplicationController
     end
 
     def destroy
-        #Does not use @group for some reason described in tutorials
         deleting_group = Group.find(params[:id])
-        if deleting_group.is_locked?
-            flash[:error] = "Group is locked"
-            redirect_to deleting_group
-        else
-            #Need error check
-            deleting_group.destroy unless deleting_group.is_locked
-            redirect_to groups_path
-            flash[:success] = "Group has been deleted"
-        end
+        return if is_locked(deleting_group)
+        deleting_group.destroy
+        flash[:success] = "Group has been deleted"
+        redirect_to groups_path
     end
 
     def lock
         @group = Group.find(params[:id])
         @group.toggle_lock
-        #error ceheck?
         @group.save
         if(@group.is_locked)
             redirect_to group_path @group
@@ -66,4 +56,14 @@ class GroupsController < ApplicationController
             redirect_to edit_group_path @group
         end
     end
+
+    private
+        def is_locked?(group)
+            if group.is_locked?
+                flash[:error] = "Group is locked"
+                redirect_to group
+                return true
+            end
+            return false
+        end
 end

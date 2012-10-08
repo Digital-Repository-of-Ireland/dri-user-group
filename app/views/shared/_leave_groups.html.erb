@@ -8,7 +8,8 @@
             <%= f.submit "Leave: " + group.name.capitalize unless group.nil? %>
         <% elsif object.is_a?(Group) %>
             <% user = User.find_by_id(membership.user_id) %>
-            <%= f.submit "Remove: " + user.email unless user.nil? %>
+            <%= user.full_name + " (" + user.email + ")" unless user.nil? %>
+            <%= f.submit "Remove" %>
         <% end %>
     <% end %>
 <% end %>

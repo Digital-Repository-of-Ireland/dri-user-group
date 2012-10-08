@@ -15,9 +15,9 @@ class MembershipsController < ApplicationController
         elsif group_id.nil?
             flash[:error] = "Could not find group"
         else
-            action = @user.join_group(group_id)
-            render 'users/edit' and return if action.errors.count >0
-            if(approve_membership(action))
+            membership = @user.join_group(group_id)
+            render 'users/edit' and return if membership.errors.count >0
+            if(approve_membership(membership))
                 flash[:success] = "Joined Group"
             else
                 flash[:error] = "Error Approving Membership"
@@ -29,9 +29,12 @@ class MembershipsController < ApplicationController
     def destroy
         group_id = get_group_id(params[:membership][:group_id])
         action = @user.leave_group(group_id) unless group_id.nil?
-        flash[:error] = "Could not find membership" if action.nil?
-        render 'users/edit' and return if action.errors.count >0
-        flash[:success] = "Left Group"
+        if action.nil?
+            flash[:error] = "Could not find membership"
+        else
+            render 'users/edit' and return if action.errors.count >0
+            flash[:success] = "Left Group"
+        end
         redirect_to :back
     end
 
@@ -45,7 +48,7 @@ class MembershipsController < ApplicationController
         redirect_to :back
     end
 
-    #Almost the same as create
+    #Similar to create
     def pending
         @user = get_user(params[:membership][:user_id])
         group_id = get_group_id(params[:membership][:group_id])
@@ -57,7 +60,7 @@ class MembershipsController < ApplicationController
         else
             action = @user.join_group(group_id)
             render 'groups/index' and return if action.errors.count >0
-            flash[:success] = "Application Pending for Group"
+            flash[:success] = I18n.t("user_groups.memberships.pending")
         end
         redirect_to :back
     end
@@ -65,15 +68,7 @@ class MembershipsController < ApplicationController
 
 private
     def can_modify
-        #todo TEST
-        begin
-            user_to_modify = User.find(params[:membership][:user_id])
-        rescue ActiveRecord::RecordNotFound
-              flash[:error] = "Could not find user"
-              redirect_to :back
-              return
-        end
-        can_modify_base(user_to_modify)
+        can_modify_base(params[:membership][:user_id])
     end
 
     def approve_membership(application)

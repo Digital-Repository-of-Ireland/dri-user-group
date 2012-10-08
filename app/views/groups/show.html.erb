@@ -26,11 +26,11 @@ Created At: <%= @group.created_at %>
             <td><%= user.updated_at %></td>
 
             <% membership = user.memberships.find_by_group_id(@group.id) %>
-            <% if !membership.approved? %>
-                <td>Pending <%#=link_to "Approve?", approve_membership_path(membership), method: :put %></td>
+            <% if membership.approved? %>
+                <% approving_user = User.find_by_id(membership.approved_by) %>
+                <td><%= (link_to approving_user.full_name, user_path(approving_user)) unless approving_user.nil? %></td>
             <% else %>
-                <% approving_user = User.find(membership.approved_by) %>
-                <td><%= link_to approving_user.full_name, user_path(approving_user) %></td>
+                <td>Pending <%#=link_to "Approve?", approve_membership_path(membership), method: :put %></td>
             <% end %>
         </tr>
     <% end %>

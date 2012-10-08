@@ -12,17 +12,18 @@
             <%#= link_to "delete", group, method: :delete, confirm: "Are you sure?" %>
         <% else %>
             <b> <%= group.name.capitalize %> </b>
-            |
             <% if current_user.member?(group.id) %>
-                You are a member of this group.
+                | You are a member of this group.
             <% elsif current_user.pending_member?(group.id) %>
-                Your membership is pending
+                | Your membership is pending
             <% else %>
-                <%= form_for(group.memberships.build, url: { controller: :memberships, action: :pending}) do |f| %>
+                <% unless group.name == "admin" %>
+                | <%= form_for(group.memberships.build, url: { controller: :memberships, action: :pending}) do |f| %>
                     <%= render 'shared/error_messages', object: f.object %>
                     <%= f.hidden_field :user_id, value: current_user.id %>
                     <%= f.hidden_field :group_id , value: group.id %>
                     <%= f.submit "Apply" %>
+                <% end %>
                 <% end %>
             <% end %>
         <% end %>

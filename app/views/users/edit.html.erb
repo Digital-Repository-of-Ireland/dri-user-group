@@ -1,11 +1,9 @@
 <p>Dont forget devise /users/edit </p>
 
 <%= form_for(@user) do |f| %>
-  <% #debugger %>
     <div><%= link_to "Back", @user %></div><br />
 
     <%= render 'shared/error_messages', object: f.object %>
-  <%#= devise_error_messages! %>
     <div><%= f.label :email %><br />
   <%= f.email_field :email %></div>
 
@@ -23,10 +21,6 @@
 
   <div><%#= f.label :password_confirmation %><br />
   <%#= f.password_field :password_confirmation %></div>
-
-  <div><%#= f.label :current_password %> 
-  <%#= f.password_field :current_password %></div>
-
   <div><%= f.submit "Update" %></div>
 <% end %>
 
@@ -37,8 +31,10 @@
 <% #Rendering the other way does odd things %>
 <h4 class="no_bottom_margin">Cancel</h4>
 <%= render 'shared/leave_groups', object: @user %>
-<h4 class="no_bottom_margin">Pending</h4>
-<%= render 'shared/pending_groups', object: @user %>
+<% if @user.pending_memberships.count >0 %>
+  <h4 class="no_bottom_margin">Pending</h4>
+  <%= render 'shared/pending_groups', object: @user %>
+<% end %>
 <% if current_user.is_admin? %>
   <h4 class="no_bottom_margin">Add</h4>
   <%= render 'shared/join_groups', object: @user %>
