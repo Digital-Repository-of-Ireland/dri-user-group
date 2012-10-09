@@ -29,11 +29,24 @@ class UsersController < ApplicationController
     end
 
     def update
+        current_password = params[:user].delete(:current_password)
+        unless current_user.is_admin?
+            unless @user.valid_password?(current_password)
+                flash[:error] = "Invalid Password"
+                redirect_to :back
+                return
+            end
+        end
+        #Remove password if not being updated
+        if params[:user][:password].empty? && params[:user][:password_confirmation].empty?
+            params[:user].delete(:password)
+            params[:user].delete(:password_confirmation)
+        end
+        #Update user
         if @user.update_attributes(params[:user])
-
             flash[:success] = I18n.t("user_groups.shared.updated")
-            sign_in @user
-            redirect_to @user
+            (sign_in @user, bypass: true) if modifying_current_user?(@user)
+            redirect_to @user 
         else
             render 'edit'
         end

@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 
   #attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me
   attr_accessible :first_name, :second_name, :email, :password, :password_confirmation
-
+  
   #Email addresses in database are case insensitive so ensure all the same  
   before_save { self.email.downcase! }
 

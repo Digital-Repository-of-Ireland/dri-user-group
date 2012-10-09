@@ -136,7 +136,7 @@ div {
     color: green;
 }
 
-.alert-error {
+.alert-error, .alert-alert {
   color: red !important; 
 }
 

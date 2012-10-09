@@ -59,17 +59,18 @@ en:
             register: "Register"
             add_user: "Add User"
             add_group: "Add Group"
+            password: "Password"
+            password_confirm: "Confirm Password"
         users:
             new:
                 signup: "Sign Up"
                 register: "Register"
-                password: "Password"
-                password_confirm: "Confirm Password"
             edit:
                 delete: "Delete your account"
                 delete_heading: "Delete account"
                 unhappy: "Unhappy?"
                 join_groups: "Want to join some groups?"
+                current_password: "Current Password"
             index:
                 all_users: "All Users"
             show:
