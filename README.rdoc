@@ -38,6 +38,11 @@ destroy_user_session DELETE /users/sign_out(.:format)      (L)  devise/sessions#
                group GET    /groups/:id(.:format)          (A)  groups#show
                      PUT    /groups/:id(.:format)          (A)  groups#update
                      DELETE /groups/:id(.:format)          (A)  groups#destroy
+--Memberships--
+ approve_membership PUT    /memberships/:id/approve(.:format)(A)  memberships#approve
+ pending_memberships POST   /memberships/pending(.:format)   (L)  memberships#pending
+         memberships POST   /memberships(.:format)           (A)  memberships#create
+          membership DELETE /memberships/:id(.:format)       (V)  memberships#destroy
 
 == Welcome to Rails
 

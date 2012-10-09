@@ -18,5 +18,5 @@ UserGroup::Application.routes.draw do
     collection do
         post :pending
     end
-end
+  end
 end
