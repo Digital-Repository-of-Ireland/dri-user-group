@@ -1,2 +1,4 @@
-module ApplicationHelper
+module UserGroup
+    module ApplicationHelper
+    end
 end
