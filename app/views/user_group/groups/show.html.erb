@@ -29,7 +29,7 @@
 
             <% membership = user.memberships.find_by_group_id(@group.id) %>
             <% if membership.approved? %>
-                <% approving_user = User.find_by_id(membership.approved_by) %>
+                <% approving_user = UserGroup::User.find_by_id(membership.approved_by) %>
                 <td><%= (link_to approving_user.full_name, user_path(approving_user)) unless approving_user.nil? %></td>
             <% else %>
                 <td> <%= (t :'user_groups.views.shared.pending') %><%#=link_to "Approve?", approve_membership_path(membership), method: :put %></td>

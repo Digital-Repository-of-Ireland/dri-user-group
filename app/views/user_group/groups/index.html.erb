@@ -2,9 +2,9 @@
     <%= link_to (t :'user_groups.views.shared.add_group'), new_group_path %>
 <% end %>
 
-<h2> <%= (t :'user_groups.views.groups.index.groups') %>(<%= Group.count %>)</h2> 
+<h2> <%= (t :'user_groups.views.groups.index.groups') %>(<%= UserGroup::Group.count %>)</h2> 
 
-<% Group.all.each do |group| %>
+<% UserGroup::Group.all.each do |group| %>
     <div class="index-element">
         <% if current_user.is_admin? %>
             <%= link_to group.name.capitalize, group %> 

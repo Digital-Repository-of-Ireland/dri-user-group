@@ -1,10 +1,10 @@
 <% object.pending_memberships.each do |membership| %>
         <% identifier = nil %>
-        <% if object.is_a?(User) %>
-            <% group = Group.find_by_id(membership.group_id) %>
+        <% if object.is_a?(UserGroup::User) %>
+            <% group = UserGroup::Group.find_by_id(membership.group_id) %>
             <% identifier =  group.name.capitalize unless group.nil? %>
-        <% elsif object.is_a?(Group) %>
-            <% user = User.find_by_id(membership.user_id) %>
+        <% elsif object.is_a?(UserGroup::Group) %>
+            <% user = UserGroup::User.find_by_id(membership.user_id) %>
             <% identifier = user.full_name+'('+user.email+')' unless user.nil? %>
         <% end %>
 
