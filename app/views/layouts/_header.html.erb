@@ -1,17 +1,17 @@
     <div id="menu-wrapper">
       <div id="menu-wrapper-left">
         <ul>
-          <li><%= link_to (t :'user_groups.views.header.home'), root_path %></li>
-          <li><%= link_to (t :'user_groups.views.header.help'), help_path %></li>
+          <li><%= link_to (t :'user_groups.views.header.home'), user_group.root_path %></li>
+          <li><%= link_to (t :'user_groups.views.header.help'), user_group.help_path %></li>
           <% if signed_in? %>
-            <li><%= link_to (t :'user_groups.views.shared.groups'), groups_path %></li>
+            <li><%= link_to (t :'user_groups.views.shared.groups'), user_group.groups_path %></li>
             <% if current_user.is_admin? %>
-              <li><%= link_to (t :'user_groups.views.shared.users'), users_path %></li>
-              <li><%= link_to (t :'user_groups.views.header.admin'), admin_path %></li>
+              <li><%= link_to (t :'user_groups.views.shared.users'), user_group.users_path %></li>
+              <li><%= link_to (t :'user_groups.views.header.admin'), user_group.admin_path %></li>
             <% end %>
           <% else %>
-            <li><%= link_to (t :'user_groups.views.shared.sign_in'), new_user_session_path %></li>
-            <li><%= link_to (t :'user_groups.views.shared.register'), new_user_path %></li>
+            <li><%= link_to (t :'user_groups.views.shared.sign_in'), user_group.new_user_session_path %></li>
+            <li><%= link_to (t :'user_groups.views.shared.register'), user_group.new_user_path %></li>
 
           <% end %>
         </ul>
