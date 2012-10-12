@@ -1,4 +1,3 @@
-#TODO:: Check if remove?
 require 'devise'
 
 module UserGroup

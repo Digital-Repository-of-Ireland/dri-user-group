@@ -10,14 +10,13 @@ Gem::Specification.new do |s|
   s.authors     = ["Raymond Noonan"]
   s.email       = ["raymond.noonan@nuim.ie"]
   s.homepage    = "http://www.dri.ie"
-  s.summary     = "Summary of UserGroup."
-  s.description = "Description of UserGroup."
+  s.summary     = "A Group based management system for access controls"
+  s.description = "UserGroup provides through devise user accounts and group management to a rails application."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.8"
-  #Make sure devise path is in gemfile
   s.add_dependency "devise", "~> 2.1.2"
   # s.add_dependency "jquery-rails"
 
