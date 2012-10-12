@@ -16,6 +16,7 @@ module UserGroup
         end
 
         def can_modify_base(user_id)
+            logger.debug "[TEMP] can_modify_base called on user_id: #{user_id}"
             user_to_modify = User.find_by_id(user_id)
             if user_to_modify.nil?
                   flash[:error] = I18n.t("user_groups.shared.errors.user")
