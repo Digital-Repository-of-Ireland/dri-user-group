@@ -1,17 +1,18 @@
 = UserGroup =
-Install Gem
+Install Gem:
 1) gem install user_group-<version>.gem
 
-Use In Rails Application
+Use In Rails Application:
 To install this engine you must first go to the rails application in which this will be included. Perform the following actions:
-1) Edit your gemfile to include user_group
+1) Edit your gemfile to include user_group (gem 'user_group')
     Note: user_group includes devise by default.
 2) bundle update
 3) rake user_group:install:migrations
 4) rake db:migrate
 5) rake bootstrap
-6) Edit the routes file (conf/routes.rb) to include the line
-    mount UserGroup::Engine => "user_groups" where "user_groups" is the path you want to mount this engine at.
+6) Edit the routes file (config/routes.rb) to include the line
+    mount UserGroup::Engine => "user_groups"
+    where "user_groups" is the path you want to mount the engine at.
 7) Start the server and go to localhost:3000/user_groups and login as email: admin@example.com, password: password
 
 To enable the forgot password link you must set up mailer.
@@ -20,7 +21,18 @@ To enable the forgot password link you must set up mailer.
 
   This will show the link the user must go to in the console.
 
-Routes
+Changes:
+
+v0.2
+  UserGroup now an engine (gem)
+  Sample data created
+  Static content has been Internationalisied
+
+v0.1
+  Initial Prototype
+  Basic Functionality
+
+Routes:
 
 (A) - Admin Only
 (P) - Public
