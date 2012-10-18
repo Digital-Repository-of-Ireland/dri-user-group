@@ -8,6 +8,7 @@ module UserGroup
         before_filter :can_modify, only: [:show, :edit, :update, :destroy]
 
         def index
+            @users = User.order("second_name").page(params[:page])
         end
         
         def show

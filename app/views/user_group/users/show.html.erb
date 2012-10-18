@@ -40,7 +40,11 @@
             <th><%=(t :'user_groups.views.shared.join_date')%></th>
             <th><%=(t :'user_groups.views.users.show.leave')%></th>
         </tr>
-    <% @user.groups.each do |group| %>
+    <% groups = @user.groups.page(params[:page]) %>
+    <%= paginate groups  %>
+    <br />
+
+    <% for group in groups %>
         <% membership = group.memberships.find_by_user_id(@user.id) %>
         <tr>
             <td><%= link_to group.name.capitalize, groups_path %></td>

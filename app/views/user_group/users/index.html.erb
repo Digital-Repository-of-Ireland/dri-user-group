@@ -1,6 +1,9 @@
 <%= link_to (t :'user_groups.views.shared.add_user'), new_user_path %>
 <h2> <%= (t :'user_groups.views.users.index.all_users') %> (<%= UserGroup::User.count %>)</h2> 
-<% UserGroup::User.all.each do |user| %>
+
+<%= paginate @users %>
+<br />
+<% for user in @users %>
     <div class="index-element">
         <%= link_to user.first_name + " " + user.second_name, user %> | 
         <%= (t :'user_groups.views.shared.delete') %>

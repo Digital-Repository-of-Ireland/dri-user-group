@@ -1,4 +1,6 @@
-<% object.pending_memberships.each do |membership| %>
+<% pending_memberships = object.pending_memberships.page(params[:page]) %>
+<%= paginate pending_memberships %>
+<% for membership in pending_memberships %>
         <% identifier = nil %>
         <% if object.is_a?(UserGroup::User) %>
             <% group = UserGroup::Group.find_by_id(membership.group_id) %>

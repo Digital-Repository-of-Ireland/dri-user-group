@@ -3,8 +3,9 @@
 <% end %>
 
 <h2> <%= (t :'user_groups.views.groups.index.groups') %>(<%= UserGroup::Group.count %>)</h2> 
-
-<% UserGroup::Group.all.each do |group| %>
+<%= paginate @groups %>
+<br />
+<% for group in @groups %>
     <div class="index-element">
         <% if current_user.is_admin? %>
             <%= link_to group.name.capitalize, group %> 

@@ -22,7 +22,11 @@
         <th><%= (t :'user_groups.views.shared.join_date') %></th>
         <th><%= (t :'user_groups.views.groups.show.approve') %></th>
     </tr>
-    <% @group.users.each do |user| %>
+    <% users = @group.users.page(params[:page]) %>
+    <%= paginate users  %>
+    <br />
+
+    <% for user in users %>
         <tr>
             <td><%= link_to user.full_name, user_path(user) %></td>
             <td><%= user.updated_at %></td>
