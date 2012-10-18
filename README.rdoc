@@ -22,6 +22,8 @@ To enable the forgot password link you must set up mailer.
   This will show the link the user must go to in the console.
 
 Changes:
+  Added pagination to lists (through kaminari)
+  Fixed bug with not being able to edit a group
 
 v0.2
   UserGroup now an engine (gem)

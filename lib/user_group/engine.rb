@@ -1,4 +1,5 @@
 require 'devise'
+require 'kaminari'
 
 module UserGroup
   class Engine < ::Rails::Engine
