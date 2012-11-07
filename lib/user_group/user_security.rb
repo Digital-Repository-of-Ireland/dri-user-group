@@ -1,5 +1,5 @@
 module UserGroup
-  class UserSecurity
+  module UserSecurity
     extend ActiveSupport::Concern
     #Adding ActiveSupport::Concern looks for modules named ClassMethods and InstanceMethods and bootstraps them
     #Also provides the included which will run when class is included
@@ -26,6 +26,10 @@ module UserGroup
     end
 
     module InstanceMethods
+      def to_s
+        return "UserGroup:: "+ self.full_name
+      end
+
       def full_name
         return self.first_name + " " + self.second_name
       end
@@ -65,6 +69,6 @@ module UserGroup
         self.memberships.where(approved_by: nil)
       end
     end
-    
+
   end
 end
