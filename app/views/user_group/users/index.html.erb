@@ -1,3 +1,5 @@
+<%= render :partial => "shared/header" %>
+
 <%= link_to (t :'user_groups.views.shared.add_user'), new_user_path %>
 <h2> <%= (t :'user_groups.views.users.index.all_users') %> (<%= UserGroup::User.count %>)</h2> 
 
@@ -5,7 +7,7 @@
 <br />
 <% for user in @users %>
     <div class="index-element">
-        <%= link_to user.first_name + " " + user.second_name, user %> | 
+        <%= link_to user.full_name, user %> | 
         <%= (t :'user_groups.views.shared.delete') %>
         <%#= link_to "delete", user, method: :delete, confirm: "Are you sure?" %>
         <p> <%= user.email %> </p>

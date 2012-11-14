@@ -1,4 +1,44 @@
-<h1>Static#help</h1>
-<p>Find me in app/views/static/help.html.erb</p>
+<%= render :partial => "shared/header" %>
 
-redirect_to looses error messages
+<h1>Static#help</h1>
+<p></p>
+<% if !current_user.nil? && current_user.is_admin? %>
+
+Admin
+Admin users have access to more options than just registered users.
+Admin users can 
+approve membership
+add users to groups
+(differs from non-admin add which is called pending)
+remove users from groups
+
+Locked groups
+By default the group admin is locked. This is to prevent change 
+<% end %>
+User/Group system
+manages users, groups and their associations.
+
+Groups must have a unique name.
+
+
+
+
+By default every account is a member of the group public.
+
+
+<h3>Notes</h3>
+<ul>
+    <li>redirect_to looses error messages</li>
+    <li>must be logged out to use forget password</li>
+</ul>
+
+<h3>TODO</h3>
+<ul>
+    <li>Tests</li>
+    <li>Paginate</li>
+    <li>Finish Help</li>
+    <li>Bundle</li>
+    <li>Admin users create accounts?</li>
+    <li>Forgot password email server</li>
+    <li>fill in textboxes as being typed</li>
+</ul>
