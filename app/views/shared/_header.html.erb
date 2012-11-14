@@ -1,3 +1,5 @@
+  <%= stylesheet_link_tag    "user_group/application", :media => "all" %>
+
     <div id="menu-wrapper">
       <div id="menu-wrapper-left">
         <ul>
@@ -22,7 +24,7 @@
             <ul>
               <li>
                 <span id="menu-wrapper-right-name">
-                  <%= current_user.first_name %> <%= current_user.second_name %>
+                  <%= current_user.full_name %>
                 </span>
                 (<span id="menu-wrapper-right-email"><%= current_user.email %></span>)
                 <ul>
