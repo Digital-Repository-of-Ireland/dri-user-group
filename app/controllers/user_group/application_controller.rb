@@ -1,6 +1,6 @@
 module UserGroup
-    class ApplicationController < ActionController::Base
-      protect_from_forgery
+    class ApplicationController < ::ApplicationController
+    #protect_from_forgery
 
     protected
         def admin_users
