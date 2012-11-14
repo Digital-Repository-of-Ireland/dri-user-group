@@ -33,7 +33,7 @@ module UserGroup
 
         def update
             @group = Group.find(params[:id])
-            return if is_locked(@group)
+            return if is_locked?(@group)
             if @group.update_attributes(params[:group])
                 flash[:success] = I18n.t("user_groups.shared.updated")
                 redirect_to @group
@@ -44,7 +44,7 @@ module UserGroup
 
         def destroy
             deleting_group = Group.find(params[:id])
-            return if is_locked(deleting_group)
+            return if is_locked?(deleting_group)
             deleting_group.destroy
             flash[:success] = I18n.t("user_groups.groups.deleted")
             redirect_to groups_path
@@ -54,7 +54,7 @@ module UserGroup
             @group = Group.find(params[:id])
             @group.toggle_lock
             @group.save
-            if(@group.is_locked)
+            if @group.is_locked?
                 redirect_to group_path @group
             else 
                 redirect_to edit_group_path @group
