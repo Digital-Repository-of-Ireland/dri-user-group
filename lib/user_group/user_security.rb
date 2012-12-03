@@ -31,7 +31,7 @@ module UserGroup
       end
 
       def full_name
-        return self.first_name + " " + self.second_name
+        return self.first_name.to_s + " " + self.second_name.to_s
       end
     
       def is_admin?
