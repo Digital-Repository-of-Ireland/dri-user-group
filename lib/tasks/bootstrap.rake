@@ -7,35 +7,35 @@ namespace :bootstrap do
 
     desc "Add default users"
     task :default_users => :environment do
-        UserGroup::User.create( email: "raymond.noonan@nuim.ie", first_name: "Raymond", second_name: "Noonan", password: "password")
-        UserGroup::User.create( email: "damien.gallagher@nuim.ie", first_name: "Damien", second_name: "Gallagher", password: "password")
-        UserGroup::User.create( email: "admin@example.com", first_name: "Admin", second_name: "Account", password: "password")
-    end
-
-    #Add memberships
-    desc "Add users as admins"
-    task :default_memberships => :environment do
-        group_id = UserGroup::Group.find_by_name("admin").id
-        user = UserGroup::User.find_by_email("raymond.noonan@nuim.ie")
-        membership = user.join_group(group_id)
-        membership.approved_by = user.id
-        membership.save
-
-        user = UserGroup::User.find_by_email("damien.gallagher@nuim.ie")
-        membership = user.join_group(group_id)
-        membership.approved_by = user.id
-        membership.save
-
-        user = UserGroup::User.find_by_email("admin@example.com")
-        membership = user.join_group(group_id)
-        membership.approved_by = user.id
-        membership.save
-
+        add_admin_user("raymond.noonan@nuim.ie","Raymond","Noonan")
+        add_admin_user("damien.gallagher@nuim.ie","Damien","Gallagher")
+        add_admin_user("admin@example.com","Admin","Account")
     end
 end
 
 task :bootstrap do
   Rake::Task['bootstrap:default_groups'].invoke
   Rake::Task['bootstrap:default_users'].invoke
-  Rake::Task['bootstrap:default_memberships'].invoke
+end
+
+
+private
+
+def add_admin_user(email,first_name,second_name)
+    user = add_regular_user(email,first_name,second_name)
+    admin_group_id = UserGroup::Group.find_by_name("admin").id
+    add_and_approve_membership(user,admin_group_id)
+end
+
+def add_regular_user(email,first_name,second_name)
+    user = UserGroup::User.create( email: email, first_name: first_name, second_name: second_name, password: "password")
+    registered_group_id = UserGroup::Group.find_by_name("registered").id
+    add_and_approve_membership(user,registered_group_id)
+    return user
+end
+
+def add_and_approve_membership(user,group_id)
+    membership = user.join_group(group_id)
+    membership.approved_by = user.id
+    membership.save
 end
