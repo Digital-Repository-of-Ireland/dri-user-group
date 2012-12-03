@@ -21,6 +21,13 @@ module UserGroup
         def create
             @user = User.new(params[:user])
             if @user.save
+                #Join group registered
+                group_id = UserGroup::Group.find_by_name("registered").id
+                membership = @user.join_group(group_id)
+                membership.approve_membership(@user.id)
+                #TODO:: what if it doesnt save
+                membership.save
+
                 sign_in @user
                 flash[:success] = I18n.t("user_groups.users.signup")
                 redirect_to root_url
