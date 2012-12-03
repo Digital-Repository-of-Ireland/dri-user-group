@@ -2,7 +2,7 @@ namespace :bootstrap do
     desc "Add the default groups"
     task :default_groups => :environment do
         UserGroup::Group.create(name: "admin", description: "Members of this group have admin permissions")
-        UserGroup::Group.create(name: "public", description: "Everyone is a member of this group.")
+        UserGroup::Group.create(name: "registered", description: "Every user account is a member of this group.")
     end
 
     desc "Add default users"
