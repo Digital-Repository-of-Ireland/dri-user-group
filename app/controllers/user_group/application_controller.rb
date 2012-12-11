@@ -1,7 +1,7 @@
 module UserGroup
     class ApplicationController < ::ApplicationController
     #protect_from_forgery
-
+    
     protected
         def admin_users
             unless current_user.is_admin?
