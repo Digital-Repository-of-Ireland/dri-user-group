@@ -1,0 +1,7 @@
+<%= (t :'user_groups.views.shared.created') %><%= object.created_at %>
+
+<% if object.created_at.to_s != object.updated_at.to_s %>
+    <br />
+    <%= (t :'user_groups.views.shared.updated') %>
+    <%= object.updated_at %>
+<% end %>

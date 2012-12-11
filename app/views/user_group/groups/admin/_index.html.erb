@@ -1,0 +1,18 @@
+<%= link_to (t :'user_groups.views.shared.add_group'), new_group_path %>
+
+<h2> <%= (t :'user_groups.views.groups.index.groups') %>(<%= UserGroup::Group.count %>)</h2> 
+<%= paginate @groups %>
+<br />
+<% for group in @groups %>
+    <div class="index-element">
+        <%= link_to group.name.capitalize, group %> 
+        | 
+        <%= (t :'user_groups.views.shared.delete') %>
+        <%#= link_to "delete", group, method: :delete, confirm: "Are you sure?" %>
+        <p><%= group.description %></p>
+        
+        <%= render :partial => "pending_link", :locals => { :group => group }  %>
+
+        <i><%= (t :'user_groups.views.groups.index.members') %></i> <%= group.full_memberships.count %>
+    </div>
+<% end %>

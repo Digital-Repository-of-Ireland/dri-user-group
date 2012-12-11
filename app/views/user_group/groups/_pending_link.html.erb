@@ -1,0 +1,6 @@
+<% amount_pending = pending_users_count(group) %>
+<% if amount_pending >0 %>
+    <%= link_to (t :'user_groups.views.groups.index.pending2'), edit_group_path(group) %>
+    <%= amount_pending %>
+    <br />            
+<% end %>

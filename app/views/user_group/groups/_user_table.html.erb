@@ -1,0 +1,15 @@
+<h3><%= pluralize(group.users.count, (t :'user_groups.views.groups.show.member')) %>:</h3>
+<% if group.users.count > 0 %>
+    <table border="0" class="table">
+        <tr>
+            <th><%= (t :'user_groups.views.shared.name') %></th>
+            <th><%= (t :'user_groups.views.shared.join_date') %></th>
+            <th><%= (t :'user_groups.views.groups.show.approve') %></th>
+        </tr>
+        <% users = group.users.page(params[:page]) %>
+        <%= paginate users  %>
+        <br />
+
+        <%= render :partial => "user_table_rows", collection: users, as: :user %>
+    </table>
+<% end %>
