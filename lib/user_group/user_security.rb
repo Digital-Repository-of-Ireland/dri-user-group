@@ -35,6 +35,7 @@ module UserGroup
       end
     
       def is_admin?
+        #Remove hardcoded admin
         group = Group.find_by_name("admin")
         return true if !group.nil? && self.member?(group.id)
       end
