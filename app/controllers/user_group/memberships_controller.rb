@@ -32,7 +32,7 @@ module UserGroup
         def destroy
             group_id_or_name = params[:membership][:group_id]
             group = not_positive_integer?(group_id_or_name) ? Group.find_by_name(group_id_or_name.downcase) : Group.find_by_id(group_id_or_name) 
-
+            #Remove hardcoded registered
             action = @user.leave_group(group.id) unless group.nil? or group.name=="registered"
             if action.nil?
                 flash[:error] = I18n.t("user_groups.memberships.errors.membership")
