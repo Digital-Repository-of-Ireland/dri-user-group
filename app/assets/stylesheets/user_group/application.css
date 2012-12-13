@@ -92,11 +92,14 @@
 }
 
 .inline form{
-  display: inline;
+  display:inline;
 }
 
+.inline div{
+  display:inline;
+}
 .inline{
-  display: inline;
+  display:inline;
 }
 
 .table{

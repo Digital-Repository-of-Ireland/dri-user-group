@@ -11,14 +11,17 @@
         <% end %>
 
         <%= identifier %>
-        <% if current_user.is_admin? && !membership.id.nil? %>
-            <%= button_to (t :'user_groups.views.partials.pending.approve'), approve_membership_path(membership), method: :put %>
-        <% end %>
-    
-        <%= form_for(membership, url: membership_path, html: {:method => :delete}) do |f| %>
-            <%= render 'shared/error_messages', object: f.object %>
-            <%= f.hidden_field :group_id %>
-            <%= f.hidden_field :user_id %>
-            <%= f.submit (t :'user_groups.views.shared.cancel') %>
-        <% end %>
+        <br />
+        <div class="inline">
+            <% if current_user.is_admin? && !membership.id.nil? %>
+                <%= button_to (t :'user_groups.views.partials.pending.approve'), approve_membership_path(membership), method: :put %>
+            <% end %>
+        
+            <%= form_for(membership, url: membership_path, html: {:method => :delete}) do |f| %>
+                <%= render 'shared/error_messages', object: f.object %>
+                <%= f.hidden_field :group_id %>
+                <%= f.hidden_field :user_id %>
+                <%= f.submit (t :'user_groups.views.shared.cancel') %>
+            <% end %>
+        </div>
 <% end %>
