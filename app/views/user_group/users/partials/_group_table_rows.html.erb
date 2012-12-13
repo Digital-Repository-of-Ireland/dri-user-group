@@ -7,5 +7,5 @@
         <td><%= (t :'user_groups.views.shared.pending') %></td>
     <% end %>
 
-    <td><%= button_to "X", membership_path(user_id: user.id, group_id: group.id), method: :delete, remote: true, confirm: 'Are you sure?' %></td>
+    <td><%= render partial: 'shared/leave_group_button', locals: {user: user, group: group} %></td>
 </tr>
