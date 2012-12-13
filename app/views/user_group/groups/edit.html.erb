@@ -5,6 +5,7 @@
 
     <%= render partial: 'shared/error_messages', locals: {object: f.object} %>
     <% if @group.is_locked %>
+        <h2 class="no_bottom_margin"><%= @group.name.capitalize %></h2>
         <%= render partial: "locked_link", locals: {group: @group}  %>
     <% else %>
         <div><%= f.label :name, (t :'user_groups.views.shared.name')%><br />
