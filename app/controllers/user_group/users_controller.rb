@@ -64,6 +64,7 @@ module UserGroup
         end
 
         def destroy
+            #is id myself or other users? [params[:user] ??]
             deleting_user = User.find(params[:id])
             is_current_user = modifying_current_user?(deleting_user)
 
