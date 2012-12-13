@@ -43,7 +43,7 @@ module UserGroup
             current_password = params[:user].delete(:current_password)
             unless current_user.is_admin?
                 unless @user.valid_password?(current_password)
-                    flash[:error] = "Invalid Password"
+                    flash[:error] = I18n.t("user_groups.users.update.wrong_password")
                     redirect_to :back
                     return
                 end
@@ -64,7 +64,6 @@ module UserGroup
         end
 
         def destroy
-            #is id myself or other users? [params[:user] ??]
             deleting_user = User.find(params[:id])
             is_current_user = modifying_current_user?(deleting_user)
 

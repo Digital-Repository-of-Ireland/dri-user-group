@@ -83,6 +83,8 @@ en:
                 membership: "Membership"
                 group: "Group"
                 leave: "Leave"
+            update:
+                wrong_password: "Invalid Password"
         groups:
             new:
                 heading: "Create New Group"
