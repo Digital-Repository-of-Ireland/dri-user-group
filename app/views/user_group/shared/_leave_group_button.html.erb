@@ -1,9 +1,10 @@
+<%#Remove hardcoded registered and use t for are you sure %>
 <% unless group.name == "registered" %>
-<%= button_to "Z", membership_path(membership:{user_id: user.id, group_id: group.id}), method: :delete, confirm: 'Are you sure?' %>
+    <%= button_to "Z", membership_path(membership:{user_id: user.id, group_id: group.id}), method: :delete, confirm: 'Are you sure?' %>
 <% end %>
 
                 <%#= form_for(group.memberships.build, url: { controller: :memberships, action: :pending}) do |f| %>
-                    <%#= render partial: 'shared/error_messages', locals: {object: f.object} %>
+                    <%#= render partial: 'user_group/shared/error_messages', locals: {object: f.object} %>
                     <%#= f.hidden_field :user_id, value: current_user.id %>
                     <%#= f.hidden_field :group_id , value: group.id %>
                     <%#= f.submit t :'user_groups.views.groups.index.apply' %>

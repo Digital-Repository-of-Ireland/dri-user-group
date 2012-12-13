@@ -1,5 +1,5 @@
 <%= form_for(object.memberships.build, url: memberships_path) do |f| %>
-    <%= render 'shared/error_messages', object: f.object %>
+    <%= render 'user_group/shared/error_messages', object: f.object %>
     <% if object.is_a?(UserGroup::Group) %>
         <%= f.hidden_field :group_id %>
         <div><%= f.label :user_id, (t :'user_groups.views.partials.join_group.user') %><br />
