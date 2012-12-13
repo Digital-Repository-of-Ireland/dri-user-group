@@ -1,9 +1,9 @@
-<%= render :partial => "shared/header" %>
+<%= render :partial => "user_group/shared/header" %>
 
 <%= form_for(@user) do |f| %>
     <div><%= link_to (t :'user_groups.views.shared.back') , @user %></div><br />
 
-    <%= render 'shared/error_messages', object: f.object %>
+    <%= render 'user_group/shared/error_messages', object: f.object %>
     <div><%= f.label :email, (t :'user_groups.views.shared.email') %><br />
   <%= f.email_field :email %></div>
 
@@ -35,14 +35,14 @@
 <h3><%= (t :'user_groups.views.shared.group_membership')%></h3>
 <% #Rendering the other way does odd things %>
 <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.cancel') %></h4>
-<%= render 'shared/leave_groups', object: @user %>
+<%= render 'user_group/shared/leave_groups', object: @user %>
 <% if @user.pending_memberships.count >0 %>
   <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.pending') %></h4>
-  <%= render 'shared/pending_groups', object: @user %>
+  <%= render 'user_group/shared/pending_groups', object: @user %>
 <% end %>
 <% if current_user.is_admin? %>
   <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.add') %></h4>
-  <%= render 'shared/join_groups', object: @user %>
+  <%= render 'user_group/shared/join_groups', object: @user %>
 <% else %>
   <p><%= (t :'user_groups.views.users.edit.join_groups') %> </p>
   <%= link_to (t :'user_groups.views.shared.groups'), groups_path %>

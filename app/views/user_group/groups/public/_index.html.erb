@@ -8,16 +8,17 @@
         <% if current_user.member?(group.id) %>
             | 
             <%= (t :'user_groups.views.groups.index.member') %>
-            <% #Leave button?% %>
+            <%#= render partial: 'user_group/shared/leave_group_button', locals: {user: current_user, group: group} %>
         <% elsif current_user.pending_member?(group.id) %>
             | 
             <%= (t :'user_groups.views.groups.index.pending') %>
+            <%#= render partial: 'user_group/shared/leave_group_button', locals: {user: current_user, group: group} %>
         <% else %>
             <% unless group.name == "admin" %>
             | 
             <div class="inline">
                 <%= form_for(group.memberships.build, url: { controller: :memberships, action: :pending}) do |f| %>
-                    <%= render partial: 'shared/error_messages', locals: {object: f.object} %>
+                    <%= render partial: 'user_group/shared/error_messages', locals: {object: f.object} %>
                     <%= f.hidden_field :user_id, value: current_user.id %>
                     <%= f.hidden_field :group_id , value: group.id %>
                     <%= f.submit t :'user_groups.views.groups.index.apply' %>

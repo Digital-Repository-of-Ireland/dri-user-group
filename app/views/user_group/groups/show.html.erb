@@ -1,10 +1,10 @@
-<%= render partial: "shared/header" %>
+<%= render partial: "user_group/shared/header" %>
 
 <div><%= link_to (t :'user_groups.views.shared.groups'), groups_path %></div>
 <h2 class="no_bottom_margin"><%= @group.name.capitalize %></h2>
 <div class="tab"><%= @group.description %></div>
 
-<%= render partial: "shared/updated_at", locals:{ object: @group} %>
+<%= render partial: "user_group/shared/updated_at", locals:{ object: @group} %>
 
 <div class="clear"></div>
 <br />

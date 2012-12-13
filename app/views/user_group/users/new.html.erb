@@ -1,9 +1,9 @@
-<%= render :partial => "shared/header" %>
+<%= render :partial => "user_group/shared/header" %>
 
 <h2><%= t :'user_groups.views.users.new.signup' %></h2>
 
 <%= form_for(@user) do |f| %>
-    <%= render 'shared/error_messages', object: f.object %>
+    <%= render 'user_group/shared/error_messages', object: f.object %>
  
   <div><%= f.label :first_name, (t :'user_groups.views.shared.first_name') %><br />
   <%= f.text_field :first_name %></div>

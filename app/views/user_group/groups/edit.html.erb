@@ -1,9 +1,9 @@
-<%= render partial: "shared/header" %>
+<%= render partial: "user_group/shared/header" %>
 
 <%= form_for(@group) do |f| %>
     <div><%= link_to (t :'user_groups.views.shared.back'), @group %></div><br />
 
-    <%= render partial: 'shared/error_messages', locals: {object: f.object} %>
+    <%= render partial: 'user_group/shared/error_messages', locals: {object: f.object} %>
     <% if @group.is_locked %>
         <h2 class="no_bottom_margin"><%= @group.name.capitalize %></h2>
         <%= render partial: "locked_link", locals: {group: @group}  %>
@@ -29,10 +29,10 @@
 <h3><%= (t :'user_groups.views.shared.group_membership') %></h3>
 <% #Rendering the other way does odd things %>
 <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.remove') %></h4>
-<%= render partial: 'shared/leave_groups', locals: {object: @group} %>
+<%= render partial: 'user_group/shared/leave_groups', locals: {object: @group} %>
 <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.pending') %></h4>
-<%= render partial: 'shared/pending_groups', locals: {object: @group} %>
+<%= render partial: 'user_group/shared/pending_groups', locals: {object: @group} %>
 <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.add') %></h4>
-<%= render partial: 'shared/join_groups', locals: {object: @group} %>
+<%= render partial: 'user_group/shared/join_groups', locals: {object: @group} %>
 
 
