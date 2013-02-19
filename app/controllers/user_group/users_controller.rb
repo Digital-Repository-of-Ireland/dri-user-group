@@ -30,7 +30,7 @@ module UserGroup
 
                 sign_in @user
                 flash[:success] = I18n.t("user_groups.users.signup")
-                redirect_to root_url
+                redirect_to :back
             else
                 render 'new'
             end
@@ -70,7 +70,7 @@ module UserGroup
             deleting_user.destroy
            
             if is_current_user
-                redirect_to root_url
+                redirect_to main_app.root_url
                 flash[:success] = I18n.t("user_groups.users.deleted_self")
             else
                 redirect_to users_url

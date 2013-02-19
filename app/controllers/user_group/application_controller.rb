@@ -6,7 +6,7 @@ module UserGroup
         def admin_users
             unless current_user.is_admin?
                 flash[:error] = I18n.t("user_groups.application.errors.admin")
-                redirect_to(root_url)
+                redirect_to(main_app.root_url)
             end   
         end
 
@@ -20,12 +20,12 @@ module UserGroup
             user_to_modify = User.find_by_id(user_id)
             if user_to_modify.nil?
                   flash[:error] = I18n.t("user_groups.shared.errors.user")
-                  redirect_to root_url
+                  redirect_to main_app.root_url
                   return
             end
             unless (current_user.is_admin? || modifying_current_user?(user_to_modify) )
                 flash[:error] = I18n.t("user_groups.application.errors.permission")
-                redirect_to root_url
+                redirect_to main_app.root_url
                 return
             end
             @user = user_to_modify
