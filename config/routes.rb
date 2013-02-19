@@ -1,5 +1,5 @@
 UserGroup::Engine.routes.draw do
-  root :to => 'static#home'
+  match '/', to: 'static#home'
   match '/help',  to: 'static#help'
   match '/home',  to: 'static#home'
   match '/admin', to: 'static#admin'
