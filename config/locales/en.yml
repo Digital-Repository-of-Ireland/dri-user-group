@@ -61,6 +61,7 @@ en:
             add_group: "Add Group"
             password: "Password"
             password_confirm: "Confirm Password"
+            locale: "Preferred Language"
         users:
             new:
                 signup: "Sign Up"

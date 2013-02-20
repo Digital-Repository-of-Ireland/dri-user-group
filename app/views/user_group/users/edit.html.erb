@@ -20,6 +20,9 @@
       <div><%= f.label :password_confirmation, (t :'user_groups.views.shared.password_confirm')  %><br />
       <%= f.password_field :password_confirmation %></div>
 
+      <div><%= f.label :locale, (t :'user_groups.views.shared.locale') %><br />
+      <%= f.select(:locale, [[t('dri.application.lang.en'), 'en'], [t('dri.application.lang.ga'), 'ga']]) %></div>
+
       <% unless current_user.is_admin? %>
       <div><%= f.label :current_password, (t :'user_groups.views.users.edit.current_password')  %><br />
       <%= f.password_field :current_password %></div>
