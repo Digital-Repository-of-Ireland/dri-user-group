@@ -3,13 +3,12 @@ module UserGroup
     extend ActiveSupport::Concern
 
     included do
+      before_save :set_locale
       attr_accessible :locale
     end
 
-    module InstanceMethods
-      def placeholder
-        return "placeholder"
-      end
+    def set_locale
+      self.locale = I18n.locale if self.locale.blank?
     end
 
   end
