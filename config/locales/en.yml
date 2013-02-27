@@ -86,6 +86,8 @@ en:
                 leave: "Leave"
             update:
                 wrong_password: "Invalid Password"
+            sign_in:
+                remember_me: "Remember me"
         groups:
             new:
                 heading: "Create New Group"
