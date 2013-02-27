@@ -1,0 +1,10 @@
+#http://stackoverflow.com/questions/7693040/how-to-translate-model-in-namespace
+#UPDATE for rails >= 3.2.12
+en:
+  activerecord:
+    errors:
+      models:
+       user_group/user:
+         attributes:
+           email:
+             blank: "-translate-"

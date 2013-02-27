@@ -1,0 +1,18 @@
+#http://stackoverflow.com/questions/7693040/how-to-translate-model-in-namespace
+#UPDATE for rails >= 3.2.12
+en:
+  activerecord:
+    errors:
+      models:
+       user_group/user:
+         attributes:
+           email:
+             blank: "can't be blank"
+           password:
+             blank: "can't be blank"
+             confirmation: "doesn't match confirmation"
+             too_short: "is too short (minimum is %{count} characters)"
+           first_name:
+             blank: "can't be blank"
+           second_name:
+             blank: "can't be blank"
