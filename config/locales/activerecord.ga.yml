@@ -7,4 +7,13 @@ en:
        user_group/user:
          attributes:
            email:
-             blank: "-translate-"
+             blank: "can't be blank"
+             taken: "has already been taken"
+           password:
+             blank: "can't be blank"
+             confirmation: "doesn't match confirmation"
+             too_short: "is too short (minimum is %{count} characters)"
+           first_name:
+             blank: "can't be blank"
+           second_name:
+             blank: "can't be blank"
