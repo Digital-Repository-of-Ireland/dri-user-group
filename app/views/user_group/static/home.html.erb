@@ -1,7 +1,7 @@
 <%= render :partial => "user_group/shared/header" %>
 
 <h1>Static#home</h1>
-<% if user_signed_in? %>
+<% if signed_in? %>
     
     <p> <%= current_user.email %> is logged in</p>
 <% else %>
