@@ -41,9 +41,10 @@ module UserGroup
 
         def update
             current_password = params[:user].delete(:current_password)
+            #TODO update so admins on their own account will have to enter password
             unless current_user.is_admin?
                 unless @user.valid_password?(current_password)
-                    flash[:error] = I18n.t("user_groups.users.update.wrong_password")
+                    flash[:error] = I18n.t("user_groups.users.wrong_password")
                     redirect_to :back
                     return
                 end
