@@ -1,4 +1,5 @@
 <%= render :partial => "user_group/shared/header" %>
+<h2><%= t( :'user_groups.views.users.edit.edit') %></h2>
 
 <%= form_for(@user) do |f| %>
     <div><%= link_to (t :'user_groups.views.shared.back') , @user %></div><br />
@@ -23,17 +24,17 @@
       <div><%= f.label :locale, (t :'user_groups.views.shared.locale') %><br />
       <%= f.select(:locale, [[t('dri.application.lang.en'), 'en'], [t('dri.application.lang.ga'), 'ga']]) %></div>
 
-      <% unless current_user.is_admin? %>
+      <% if current_user.id == @user.id or !current_user.is_admin? %>
       <div><%= f.label :current_password, (t :'user_groups.views.users.edit.current_password')  %><br />
       <%= f.password_field :current_password %></div>
       <% end %>
   </div>
 
-  <div><%= f.submit (t :'user_groups.views.shared.update') %></div>
+  <div><%= f.submit (t :'user_groups.views.shared.update'), :id => "commit" %></div>
 <% end %>
 
 <h3><%= (t :'user_groups.views.users.edit.delete_heading') %></h3>
-<p><%= (t :'user_groups.views.users.edit.unhappy') %> <%= link_to (t :'user_groups.views.users.edit.delete'), @user, method: :delete, confirm: (t :'user_groups.views.shared.confirm') %>.</p>
+<p><%= (t :'user_groups.views.users.edit.unhappy') %> <%= link_to (t :'user_groups.views.users.edit.delete'), @user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account" %>.</p>
 
 <h3><%= (t :'user_groups.views.shared.group_membership')%></h3>
 <% #Rendering the other way does odd things %>
