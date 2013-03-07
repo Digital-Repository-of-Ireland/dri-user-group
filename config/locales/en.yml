@@ -26,10 +26,10 @@ en:
         created: "Group created"
         deleted: "Group has been deleted"
     users:
-        signup: "Welcome!"
+        signup: "Welcome! You have signed up successfully."
         deleted: "User has been deleted"
         deleted_self: "Your account has been deleted"
-
+        wrong_password: "Invalid Password"
 
 
     views:
@@ -67,6 +67,7 @@ en:
                 signup: "Sign Up"
                 register: "Register"
             edit:
+                edit: "Edit Account"
                 delete: "Delete your account"
                 delete_heading: "Delete account"
                 unhappy: "Unhappy?"
@@ -84,8 +85,6 @@ en:
                 membership: "Membership"
                 group: "Group"
                 leave: "Leave"
-            update:
-                wrong_password: "Invalid Password"
             sign_in:
                 remember_me: "Remember me"
         groups:

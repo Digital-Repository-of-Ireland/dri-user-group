@@ -1,0 +1,131 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+ga:
+  user_groups:
+    shared:
+        errors:
+            user: "T_Could not find user"
+        updated: "T_Updated"
+    application:
+        errors:
+            admin: "T_You must be an admin"
+            permission: "T_You do not have permission"
+    memberships:
+        errors:
+            approving: "T_Error approving membership"
+            membership: "T_Could not find membership"
+            group: "T_Could not find group"
+        pending: "T_Application pending for group"
+        joined: "T_Joined group"
+        leave: "T_Left group"
+        approve: "T_Approved membership"
+    groups:
+        errors:
+            locked: "T_Group is locked"
+        created: "T_Group created"
+        deleted: "T_Group has been deleted"
+    users:
+        signup: "T_Welcome! You have signed up successfully."
+        deleted: "T_User has been deleted"
+        deleted_self: "T_Your account has been deleted"
+        wrong_password: "T_Invalid Password"
+
+
+    views:
+        shared:
+            confirm: "T_Are you sure?"
+            back: "T_Back"
+            update: "T_Update"
+            first_name: "T_First Name"
+            second_name: "T_Second Name"
+            email: "T_Email"
+            group_membership: "T_Group Membership"
+            pending: "T_Pending"
+            add: "T_Add"
+            cancel: "T_Cancel"
+            groups: "T_Groups"
+            delete: "T_Delete"
+            users: "T_Users"
+            edit: "T_Edit"
+            admin: "T_Admin User"
+            name: "T_Name"
+            description: "T_Description"
+            created: "T_Created At: "
+            updated: "T_Updated At: "
+            join_date: "T_Join Date"
+            remove: "T_Remove"
+            sign_in: "T_Sign in"
+            register: "T_Register"
+            add_user: "T_Add User"
+            add_group: "T_Add Group"
+            password: "T_Password"
+            password_confirm: "T_Confirm Password"
+            locale: "T_Preferred Language"
+        users:
+            new:
+                signup: "T_Sign Up"
+                register: "T_Register"
+            edit:
+                edit: "T_Edit Account"
+                delete: "T_Delete your account"
+                delete_heading: "T_Delete account"
+                unhappy: "T_Unhappy?"
+                join_groups: "T_Want to join some groups?"
+                current_password: "T_Current Password"
+            index:
+                all_users: "T_All Users"
+            show:
+                registered: "T_Registered User"
+                sessions: "T_Sessions"
+                total_sign_in: "T_Total sign in's: "
+                last_sign_in: "T_Last sign in"
+                time: "T_Time: "
+                ip: "T_IP: "
+                membership: "T_Membership"
+                group: "T_Group"
+                leave: "T_Leave"                
+            sign_in:
+                remember_me: "T_Remember me"
+        groups:
+            new:
+                heading: "T_Create New Group"
+                create: "T_Create Group"
+            edit:
+                locked: "T_Group details are locked"
+                unlock: "T_Unlock Group"
+                lock: "T_Lock Group"
+                lock_confirm: "T_Locking the group protects the name and description from being changed. The group cannot be deleted. Proceed?"
+                update: "T_Update"
+                delete: "T_Delete Group"
+            index:
+                groups: "T_All Groups"
+                member: "T_You are a member of this group."
+                pending: "T_Your membership is pending"
+                apply: "T_Apply"
+                pending2: "T_Pending:"
+                members: "T_Members:"
+            show:
+                edit: "T_Edit Group"
+                member: "T_Member"
+                approve: "T_Approved By"
+        static_pages:
+            todo: "T_TODO"
+        partials:
+            error_messages:
+                text: "T_The form contains "
+                error: "T_error"
+            join_group:
+                user: "T_User ID or Email"
+                group: "T_Group ID or Name"
+                join: "T_Join Group"
+            leave_group:
+                leave: "T_Leave: "
+            pending:
+                approve: "T_Approve"
+        header:
+            home: "T_Home"
+            help: "T_Help"
+            admin: "T_Admin"
+            account: "T_My Account"
+            signout: "T_Sign out"
