@@ -9,11 +9,20 @@ module UserGroup
       has_many :memberships, dependent: :destroy
       has_many :groups, through: :memberships, uniq: true
 
-      # Include default devise modules. Others available are:
-      # :token_authenticatable, :confirmable,
-      # :lockable, :timeoutable and :omniauthable
-      devise :database_authenticatable, :registerable,
-            :recoverable, :rememberable, :trackable, :validatable
+
+    #Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+    #Token Authenticatable: signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
+    #Omniauthable: adds Omniauth (https://github.com/intridea/omniauth) support;
+    #Confirmable: sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
+    #Recoverable: resets the user password and sends reset instructions.
+    #Registerable: handles signing up users through a registration process, also allowing them to edit and destroy their account.
+    #Rememberable: manages generating and clearing a token for remembering the user from a saved cookie.
+    #Trackable: tracks sign in count, timestamps and IP address.
+    #Timeoutable: expires sessions that have no activity in a specified period of time.
+    #Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
+    #Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
+     devise :database_authenticatable,
+            :recoverable, :rememberable, :trackable
 
       attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me
     
@@ -23,6 +32,8 @@ module UserGroup
       validates :email, presence: true, uniqueness: { case_sensitive: false }
       validates :first_name, presence: true, length: { maximum: 50 }
       validates :second_name, presence: true, length: { maximum: 50 }
+      validates :password_confirmation, presence: true, :on => :create
+      validates :password, presence: true, confirmation: true, length: {minimum: 6}, :on => :create
     end
 
     def to_s
