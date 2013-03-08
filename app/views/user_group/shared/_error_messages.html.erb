@@ -1,11 +1,10 @@
-<% if object.errors.any? %>
-    <div class="error_explanation">
-        <%= (t :'user_groups.views.partials.error_messages.text') %>
-        <%= pluralize(object.errors.count, (t :'user_groups.views.partials.error_messages.error')) %>.
-    </div>
-    <ul class="error_messages">
-        <% object.errors.full_messages.each do |msg| %>
-            <li>* <%= msg %></li>
-        <% end %>
-    </ul>
-    <% end %>
+<%
+    messages = object.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
+    sentence = I18n.t("errors.messages.not_saved",
+                      :count => object.errors.count,
+                      :resource => object.class.model_name.human.downcase)
+
+   errortext = sentence + "<ul>#{messages}</ul>"
+
+   flash.now[:error] = errortext.html_safe unless messages.empty?
+%>
