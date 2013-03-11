@@ -9,7 +9,7 @@ module UserGroup
     has_many :memberships, dependent: :destroy
     has_many :users, through: :memberships, uniq: true
 
-    attr_accessible :name, :description
+    attr_accessible :name, :description, :is_locked
     
     #DB uniqueness is case insensitive
     before_save { self.name.downcase! }
