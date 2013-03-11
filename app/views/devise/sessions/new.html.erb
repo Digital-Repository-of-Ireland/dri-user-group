@@ -2,6 +2,8 @@
 <h2><%= t('.sign_in', :default => "Sign in") %></h2>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+  <%= render 'user_group/shared/error_messages', object: f.object %>
+
   <div><%= f.label :email, (t :'user_groups.views.shared.email') %><br />
   <%= f.email_field :email %></div>
 

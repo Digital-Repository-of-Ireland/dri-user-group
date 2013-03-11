@@ -2,7 +2,7 @@
 <h2><%= t('.forgot_your_password', :default => 'Forgot your password?') %></h2>
 
 <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
+  <%= render 'user_group/shared/error_messages', object: f.object %>
 
   <div><%= f.label :email, (t :'user_groups.views.shared.email') %><br />
   <%= f.email_field :email %></div>
