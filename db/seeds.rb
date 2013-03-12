@@ -33,6 +33,6 @@ def groups()
     UserGroup::Group.find_or_create_by_name("admin", description: "Members of this group have admin permissions", is_locked: true)
     UserGroup::Group.find_or_create_by_name("registered", description: "Every user account is a member of this group.", is_locked: true)
 end
-
 groups()
 admin_users()
+puts "Ran seed user_group"
