@@ -10,11 +10,13 @@ To install this engine you must first go to the rails application in which this 
 2) bundle update
 3) rake user_group:install:migrations
 4) rake db:migrate
-5) rake bootstrap
-6) Edit the routes file (config/routes.rb) to include the line
+5) edit your applications db/seeds.rb file to include UserGroup::Engine.load_seed
+6) rake db:seed
+7) Edit the routes file (config/routes.rb) to include the line
     mount UserGroup::Engine => "user_groups"
     where "user_groups" is the path you want to mount the engine at.
-7) Start the server and go to localhost:3000/user_groups and login as email: admin@example.com, password: password
+8) Start the server and go to localhost:3000/user_groups and login as email: admin@example.com, password: password
+9) Ensure your application provides a main_app route
 
 To enable the forgot password link you must set up mailer.
   add config.action_mailer.default_url_options = { :host => 'localhost:3000' }
@@ -23,8 +25,43 @@ To enable the forgot password link you must set up mailer.
   This will show the link the user must go to in the console.
 
 Changes:
-  Added pagination to lists (through kaminari)
-  Fixed bug with not being able to edit a group
+v0.3
+  Major:
+    Created config file as initializer
+    Fixed user not being able to logout in test env
+    Added devise guests
+    Updated error messages to use a flash notice
+    Added cookie confirm from rnag app
+    Autoload user modules rather than require
+    Updated devise views (from rnag app) and localisation strings
+    Removed rake bootstrap file & replaced with seeds file
+    Removed root_path now requires that the main_app provides a root_path
+    Accounts now join the group registered automaticially
+    Created UserOptions module for providing info such as language, profile settings etc
+    Added header as a partial to views
+    Fix for missing routes error
+    Moved user model code into a UserSecurity module located at lib/user_group/user_security.rb
+    Changed user model to include the UserSecurity
+  
+    These changes are done to faciilite using this user model with blacklight.
+    To use with blacklight first the app/models/user_group/user.rb model should be copied to the same directory in your rails application. Next the line
+      include Blacklight::User
+    must be included.
+
+    Alternative was to have this gem depend on blacklight (which would help for styling)
+    and have the class include the blacklight user automatically.
+
+  Minor:
+    Added pagination to lists (through kaminari), useful for users and groups.
+    Fixed bug with not being able to edit a group
+    Fixed bug with is_locked group method
+    Can update users that have no name
+    Updated views to have partial structure and seperate admin and ordinary views
+    Styling updates
+    Groups now show name even when locked
+
+
+
 
 v0.2
   UserGroup now an engine (gem)
