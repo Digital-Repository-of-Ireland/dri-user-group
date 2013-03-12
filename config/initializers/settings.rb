@@ -1,0 +1,4 @@
+SETTING_DEFAULT_GROUP = 'registered'
+SETTING_ADMIN_GROUP = 'admin'
+SETTING_USER_ORDER = 'second_name'
+SETTING_GROUP_ORDER = 'name'
