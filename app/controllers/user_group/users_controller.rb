@@ -22,7 +22,11 @@ module UserGroup
             @user = User.new(params[:user])
             if @user.save
                 #Join group registered
-                group_id = UserGroup::Group.find_by_name("registered").id
+                group = UserGroup::Group.find_by_name("registered")
+                if group.nil?
+                  group = UserGroup::Group.find_or_create_by_name("registered", description: "Every user account is a member of this group.", is_locked: true)
+                end
+                group_id = group.id
                 membership = @user.join_group(group_id)
                 membership.approve_membership(@user.id)
                 #TODO:: what if it doesnt save
