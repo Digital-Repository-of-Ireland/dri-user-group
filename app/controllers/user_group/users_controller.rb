@@ -22,7 +22,11 @@ module UserGroup
             @user = User.new(params[:user])
             if @user.save
                 #Join group registered
-                group_id = UserGroup::Group.find_by_name(SETTING_DEFAULT_GROUP).id
+                group = UserGroup::Group.find_by_name(SETTING_DEFAULT_GROUP)
+                if group.nil?
+                  group = UserGroup::Group.find_or_create_by_name(SETTING_DEFAULT_GROUP, description: "Every user account is a member of this group.", is_locked: true)
+                end
+                group_id = group.id
                 if group_id.nil?
                     logger.error("ERROR @ SignUp:: group "+SETTING_DEFAULT_GROUP+" does NOT exist")
                 else
