@@ -23,7 +23,7 @@ module UserGroup
     #Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
      devise :database_authenticatable,
             :recoverable, :rememberable, :trackable
-
+      
       attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me
     
       #Email addresses in database are case insensitive so ensure all the same  
@@ -45,8 +45,7 @@ module UserGroup
     end
   
     def is_admin?
-      #Remove hardcoded admin
-      group = Group.find_by_name("admin")
+      group = Group.find_by_name(SETTING_ADMIN_GROUP)
       return true if !group.nil? && self.member?(group.id)
     end
 

@@ -8,7 +8,7 @@ module UserGroup
         before_filter :can_modify, only: [:show, :edit, :update, :destroy]
 
         def index
-            @users = User.order("second_name").page(params[:page])
+            @users = User.order(SETTING_USER_ORDER).page(params[:page])
         end
         
         def show
@@ -22,11 +22,14 @@ module UserGroup
             @user = User.new(params[:user])
             if @user.save
                 #Join group registered
-                group_id = UserGroup::Group.find_by_name("registered").id
-                membership = @user.join_group(group_id)
-                membership.approve_membership(@user.id)
-                #TODO:: what if it doesnt save
-                membership.save
+                group_id = UserGroup::Group.find_by_name(SETTING_DEFAULT_GROUP).id
+                if group_id.nil?
+                    logger.error("ERROR @ SignUp:: group "+SETTING_DEFAULT_GROUP+" does NOT exist")
+                else
+                    membership = @user.join_group(group_id)
+                    membership.approve_membership(@user.id)
+                    membership.save
+                end
 
                 sign_in @user
                 flash[:success] = I18n.t("user_groups.users.signup")

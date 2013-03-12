@@ -6,7 +6,7 @@ module UserGroup
         before_filter :admin_users, except: [:index]
         
         def index
-            @groups = Group.order("name").page(params[:page])
+            @groups = Group.order(SETTING_GROUP_ORDER).page(params[:page])
         end
 
         def show
