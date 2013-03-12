@@ -1,8 +1,8 @@
 module UserGroup
   class NotPositiveIntegerValidator < ActiveModel::Validator
       def validate(record)
-          record.errors[:name] << "cannot be a positive whole number" if record.name =~ /^[0-9]+$/
-      end
+          record.errors[:name] << I18n.t("user_groups.groups.errors.validation") if record.name =~ /^[0-9]+$/
+      end 
   end
 
   class Group < ActiveRecord::Base

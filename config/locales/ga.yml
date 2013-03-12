@@ -23,6 +23,7 @@ ga:
     groups:
         errors:
             locked: "T_Group is locked"
+            validation: "T_cannot be a positive whole number"
         created: "T_Group created"
         deleted: "T_Group has been deleted"
     users:

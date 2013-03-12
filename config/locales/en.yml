@@ -23,6 +23,7 @@ en:
     groups:
         errors:
             locked: "Group is locked"
+            validation: "cannot be a positive whole number"
         created: "Group created"
         deleted: "Group has been deleted"
     users:
