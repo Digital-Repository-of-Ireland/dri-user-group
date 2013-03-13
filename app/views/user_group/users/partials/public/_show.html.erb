@@ -1,9 +1,0 @@
-<h2 class="no_bottom_margin"><%= @user.first_name %> <%= @user.second_name %></h2>
-<br />
-<div class="tab"><%= @user.email %></div>
-
-<%= render partial: "user_group/shared/updated_at", locals:{ object: @user} %>
-
-<div><%= (t :'user_groups.views.users.show.registered') %></div>
-
-<%= render partial: "user_group/users/partials/show_same_content", locals: {user: @user} %>
