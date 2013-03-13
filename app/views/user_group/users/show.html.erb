@@ -1,4 +1,33 @@
 <%= render partial: "user_group/shared/header" %>
 
-<%= render partial: "user_group/shared/load_user_or_admin_view",
-    locals: {prefix: "user_group/users/partials", :name => "show"} %>
+<% allowed_edit = user_signed_in? && ( current_user.id == @user.id || current_user.is_admin? ) %>
+<div><%= link_to_if(user_signed_in?, (t :'user_groups.views.shared.users'), user_group.users_path){} %></div>
+
+<h2 class="no_bottom_margin"><%= @user.first_name %> <%= @user.second_name %></h2>
+<br />
+<div class="tab"><%= @user.email %></div>
+
+<%= render partial: "user_group/shared/updated_at", locals:{ object: @user} %>
+
+<div><%= (t :'user_groups.views.shared.admin') if @user.is_admin? %></div>
+<div><%= (t :'user_groups.views.users.show.registered') unless @user.is_admin? %></div>
+
+<%= (t :'user_groups.views.shared.locale')+':' %>
+<%= @user.locale == 'en' ? t('dri.application.lang.en') : t('dri.application.lang.ga') %>
+<br />
+
+<%#= user.user_signed_in? %>
+<%# https://groups.google.com/forum/?fromgroups=#!topic/plataformatec-devise/tOKU_jcWNp0 %>
+
+<%= link_to_if(allowed_edit, (t :'user_groups.views.shared.edit'), user_group.edit_user_path(@user)){} %><br />
+
+<h3 class="no_bottom_margin"><%= (t :'user_groups.views.users.show.sessions') %></h3>
+<%= (t :'user_groups.views.users.show.total_sign_in') %> <%=@user.sign_in_count %><br />
+
+<h4><%= (t :'user_groups.views.users.show.last_sign_in') %></h4>
+<%= (t :'user_groups.views.users.show.time') %>
+<%= @user.current_sign_in_at %><br />
+<%= (t :'user_groups.views.users.show.ip') %>
+<%= @user.current_sign_in_ip %>
+
+<%= render partial: "user_group/users/partials/group_table", locals: {user: @user, allowed_edit: allowed_edit} %>

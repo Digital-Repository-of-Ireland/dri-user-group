@@ -4,12 +4,12 @@
         <tr>
             <th><%=(t :'user_groups.views.users.show.group')%></th>
             <th><%=(t :'user_groups.views.shared.join_date')%></th>
-            <th><%=(t :'user_groups.views.users.show.leave')%></th>
+            <th><%=(t :'user_groups.views.users.show.leave') if allowed_edit %></th>
         </tr>
         <% groups = user.groups.page(params[:page]) %>
         <%= paginate groups  %>
         <br />
 
-        <%= render :partial => "user_group/users/partials/group_table_rows", collection: groups, as: :group, locals: { user: user} %>
+        <%= render :partial => "user_group/users/partials/group_table_rows", collection: groups, as: :group, locals: { user: user, allowed_edit: allowed_edit} %>
     </table>
 <% end %>
