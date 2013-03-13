@@ -1,4 +1,4 @@
-<h2> <%= (t :'user_groups.views.users.index.all_users') %></h2> 
+<h2> <%= (t :'user_groups.views.users.index.all_users') %> (<%= @users.total_count %>)</h2> 
 
 <%= paginate @users %>
 <br />
