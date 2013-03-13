@@ -10,7 +10,10 @@ UserGroup::Engine.routes.draw do
     module: :devise,
   }
 
-  resources :users
+  resources :users do
+    get 'page/:page', :action => :index, :on => :collection
+  end
+  
   resources :groups do
     member do
         put :lock
