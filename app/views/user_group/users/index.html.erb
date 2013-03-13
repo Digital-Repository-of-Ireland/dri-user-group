@@ -1,19 +1,4 @@
 <%= render :partial => "user_group/shared/header" %>
 
-<%= link_to (t :'user_groups.views.shared.add_user'), new_user_path %>
-<h2> <%= (t :'user_groups.views.users.index.all_users') %> (<%= UserGroup::User.count %>)</h2> 
-
-<%= paginate @users %>
-<br />
-<% for user in @users %>
-    <div class="index-element">
-        <% user.full_name.strip.length == 0 ? link = "User" : link = "" %>
-        <%= link_to link.to_s+user.full_name, user %> | 
-        <%= (t :'user_groups.views.shared.delete') %>
-        <%#= link_to "delete", user, method: :delete, confirm: "Are you sure?" %>
-        <p> <%= user.email %> </p>
-        <% if user.is_admin? %>
-        <p style="color:green"><%= (t :'user_groups.views.shared.admin') %></p>
-        <% end %>
-    </div>
-<% end %>
+<%= render partial: "user_group/shared/load_user_or_admin_view",
+         locals: { prefix: "user_group/users", name: "index" } %>

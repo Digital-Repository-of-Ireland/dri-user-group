@@ -2,13 +2,19 @@ require_dependency "user_group/application_controller"
 
 module UserGroup
     class UsersController < ApplicationController
-        before_filter :authenticate_user!, except: [:new, :create]
-        before_filter :admin_users, only: [:index]
+        before_filter :authenticate_user!, except: [:new, :create, :show]
         #:can_modify (through can_modify_base) also sets @user
-        before_filter :can_modify, only: [:show, :edit, :update, :destroy]
+        before_filter :can_modify, only: [:edit, :update, :destroy]
+        before_filter :can_view_profile, only: [:show]
 
         def index
-            @users = User.order(SETTING_USER_ORDER).page(params[:page])
+            if signed_in and current_user.is_admin?
+                @users = User.order(SETTING_USER_ORDER).page(params[:page])
+            else
+                #Must be logged in so show all users that are public/registered
+                @users = User.scoped(:order => SETTING_USER_ORDER, :conditions => {:view_level => SETTING_PROFILE_INDEX_VIEW_LEVELS}).page(params[:page])
+            end
+            @users
         end
         
         def show
@@ -90,6 +96,32 @@ module UserGroup
         private
             def can_modify
                 can_modify_base(params[:id])
+            end
+
+            def can_view_profile
+                #Check user profile exists
+                #If the profile is set to public then grant view
+                #If the profile is set to registered then check logged in
+                #If the profile is set to private then check can_modify
+                user_to_view = User.find_by_id(params[:id])
+                if user_to_view.nil?
+                      flash[:error] = I18n.t("user_groups.shared.errors.user")
+                      redirect_to main_app.root_url
+                      return
+                end
+
+                unless user_to_view.get_view_level==PROFILE_VIEW_LEVELS[1]
+                    return unless signed_in
+                    unless user_to_view.get_view_level==PROFILE_VIEW_LEVELS[2]
+                        unless (current_user.is_admin? || modifying_current_user?(user_to_view) )
+                            flash[:error] = I18n.t("user_groups.application.errors.permission")
+                            redirect_to main_app.root_url
+                            return
+                        end
+                    end
+                end
+
+                @user = user_to_view
             end
     end
 end
