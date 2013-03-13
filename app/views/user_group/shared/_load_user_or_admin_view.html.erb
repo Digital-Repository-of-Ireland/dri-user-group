@@ -1,4 +1,3 @@
-<% #what if current_user nil? %>
-<%  view = ( current_user.is_admin? ) ? "/admin/" : "/public/" %>
+<%  view = ( user_signed_in? and current_user.is_admin? ) ? "/admin/" : "/public/" %>
 <%  partial = prefix+view+name %>
 <%= render :partial => partial %>
