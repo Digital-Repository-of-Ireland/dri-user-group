@@ -4,6 +4,7 @@ module UserGroup
     
     protected
         def admin_users
+            return unless signed_in
             unless current_user.is_admin?
                 flash[:error] = I18n.t("user_groups.application.errors.admin")
                 redirect_to(main_app.root_url)
@@ -23,12 +24,24 @@ module UserGroup
                   redirect_to main_app.root_url
                   return
             end
+            
+            return unless signed_in
+
             unless (current_user.is_admin? || modifying_current_user?(user_to_modify) )
                 flash[:error] = I18n.t("user_groups.application.errors.permission")
                 redirect_to main_app.root_url
                 return
             end
             @user = user_to_modify
+        end
+
+        def signed_in
+            unless user_signed_in? and !current_user.nil?
+                flash[:error] = I18n.t("devise.failure.unauthenticated")
+                redirect_to user_group.new_user_session_path
+                return false
+            end
+            return true
         end
     end
 end
