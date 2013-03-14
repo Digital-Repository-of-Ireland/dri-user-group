@@ -63,6 +63,10 @@ en:
             password: "Password"
             password_confirm: "Confirm Password"
             locale: "Preferred Language"
+            view_profile: "Profile Availibility: "
+            registered: "Logged in users"
+            public: "Public"
+            private: "Private"
         users:
             new:
                 signup: "Sign Up"

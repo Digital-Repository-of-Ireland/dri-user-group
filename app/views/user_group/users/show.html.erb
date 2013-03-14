@@ -16,6 +16,17 @@
 <%= @user.locale == 'en' ? t('dri.application.lang.en') : t('dri.application.lang.ga') %>
 <br />
 
+<div>
+<%= (t :'user_groups.views.shared.view_profile') %>
+<% if @user.get_view_level == 'public' %> 
+    <%= t('user_groups.views.shared.public')  %>
+<% elsif @user.get_view_level == 'private' %>
+    <%= t('user_groups.views.shared.private') %>
+<% else %>
+    <%= t('user_groups.views.shared.registered') %>
+<% end %>
+</div>
+
 <%#= user.user_signed_in? %>
 <%# https://groups.google.com/forum/?fromgroups=#!topic/plataformatec-devise/tOKU_jcWNp0 %>
 
