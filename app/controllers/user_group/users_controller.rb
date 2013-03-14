@@ -43,7 +43,7 @@ module UserGroup
 
                 sign_in @user
                 flash[:success] = I18n.t("user_groups.users.signup")
-                redirect_to :back
+                redirect_to @user
             else
                 render 'new'
             end
