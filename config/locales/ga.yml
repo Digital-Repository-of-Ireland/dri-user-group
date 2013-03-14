@@ -71,7 +71,6 @@ ga:
         users:
             new:
                 signup: "T_Sign Up"
-                register: "T_Register"
             edit:
                 edit: "T_Edit Account"
                 delete: "T_Delete your account"

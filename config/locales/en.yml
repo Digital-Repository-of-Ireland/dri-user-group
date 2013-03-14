@@ -71,7 +71,6 @@ en:
         users:
             new:
                 signup: "Sign Up"
-                register: "Register"
             edit:
                 edit: "Edit Account"
                 delete: "Delete your account"

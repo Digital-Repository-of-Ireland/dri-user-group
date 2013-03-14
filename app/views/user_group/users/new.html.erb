@@ -17,15 +17,15 @@
   <div><%= f.label :password, (t :'user_groups.views.shared.password') %><br />
   <%= f.password_field :password %></div>
 
-  <div><%= f.label :password_confirmation, (t :'user_groups.shared.new.password_confirm') %><br />
+  <div><%= f.label :password_confirmation, (t :'user_groups.views.shared.password_confirm') %><br />
   <%= f.password_field :password_confirmation %></div>
 
   <div><%= f.label :locale, (t :'user_groups.views.shared.locale') %><br />
   <%= f.select(:locale, [[t('dri.application.lang.en'), 'en'], [t('dri.application.lang.ga'), 'ga']]) %></div>
 
   <% if cookies[:accept_cookies] %>
-    <div><%= f.submit t :'user_groups.views.users.new.register' %></div>
+    <div><%= f.submit t :'user_groups.views.shared.register' %></div>
   <% else %>
-    <div><%= f.submit t :'user_groups.views.users.new.register', :confirm => "#{ t('dri.application.cookies.confirm') }" %></div>
+    <div><%= f.submit t :'user_groups.views.shared.register', :confirm => "#{ t('dri.application.cookies.confirm') }" %></div>
   <% end %>
 <% end %>
