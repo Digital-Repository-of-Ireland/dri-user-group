@@ -67,6 +67,7 @@ ga:
             registered: "T_Logged in users"
             public: "T_Public"
             private: "T_Private"
+            about_me: "T_About Me"
         users:
             new:
                 signup: "T_Sign Up"

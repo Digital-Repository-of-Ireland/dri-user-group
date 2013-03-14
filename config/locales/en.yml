@@ -67,6 +67,7 @@ en:
             registered: "Logged in users"
             public: "Public"
             private: "Private"
+            about_me: "About Me"
         users:
             new:
                 signup: "Sign Up"

@@ -4,7 +4,7 @@ module UserGroup
 
     included do
       before_save :set_locale
-      attr_accessible :locale, :view_level
+      attr_accessible :locale, :view_level, :about_me
     end
 
     def set_locale
