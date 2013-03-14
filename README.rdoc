@@ -25,6 +25,23 @@ To enable the forgot password link you must set up mailer.
   This will show the link the user must go to in the console.
 
 Changes:
+v0.4
+  Major:
+    Admin users must enter their account password if editing their account
+    When a user registers they now get directed to their profile page
+    Added kaminari settings to settings file
+    Updated routes so kaminari uses "friendly urls"
+    Updated security to allow non logged in users to view a public set profile
+    Added an about me section to the user
+    Added a profile view level to the user with 3 options - Public, Private, Logged in users
+  
+  Minor:
+    Fixed some i18n strings being missing
+    Updated count variables to pull from object rather than database
+    Refactored user views removing the admin/public view
+    Improved security checks in controllers- if the user is nil it is now ok
+    If the default group does not exist when a user signs up it gets created
+
 v0.3
   Major:
     Created config file as initializer
@@ -77,7 +94,7 @@ Routes:
 (A) - Admin Only
 (P) - Public
 (L) - Logged In
-(V) - Admin Or In Your Account
+(V) - Admin Or In Your Account∂
 
 --Static Pages--
                 root        /                              (P)  static#home
@@ -97,11 +114,11 @@ destroy_user_session DELETE /users/sign_out(.:format)      (L)  devise/sessions#
                      PUT    /users/password(.:format)      (?)  devise/passwords#update
 
 --User Accounts--
-               users GET    /users(.:format)               (A)  users#index
+               users GET    /users(.:format)               (L)  users#index
                      POST   /users(.:format)               (P)  users#create
             new_user GET    /users/new(.:format)           (P)  users#new
            edit_user GET    /users/:id/edit(.:format)      (V)  users#edit
-                user GET    /users/:id(.:format)           (V)  users#show
+                user GET    /users/:id(.:format)           (V or P)  users#show
                      PUT    /users/:id(.:format)           (V)  users#update
                      DELETE /users/:id(.:format)           (V)  users#destroy
 --Groups--
