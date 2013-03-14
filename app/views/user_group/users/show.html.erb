@@ -33,8 +33,7 @@
 
 <%#= user.user_signed_in? %>
 <%# https://groups.google.com/forum/?fromgroups=#!topic/plataformatec-devise/tOKU_jcWNp0 %>
-
-<%= link_to_if(allowed_edit, (t :'user_groups.views.shared.edit'), user_group.edit_user_path(@user)){} %><br />
+<%= link_to_if(allowed_edit, (t :'user_groups.views.shared.edit'), user_group.edit_user_path(@user), :id => "edit_account" ){} %><br />
 
 <h3 class="no_bottom_margin"><%= (t :'user_groups.views.users.show.sessions') %></h3>
 <%= (t :'user_groups.views.users.show.total_sign_in') %> <%=@user.sign_in_count %><br />
