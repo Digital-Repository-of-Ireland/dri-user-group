@@ -9,9 +9,13 @@ UserGroup::Engine.routes.draw do
     class_name:     'UserGroup::User',
     module: :devise,
   }
-
+  
   resources :users do
     get 'page/:page', :action => :index, :on => :collection
+    member do
+      post :create_token
+      delete :destroy_token
+    end
   end
   
   resources :groups do

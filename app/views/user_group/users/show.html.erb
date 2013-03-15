@@ -31,6 +31,16 @@
 <%=simple_format @user.about_me %></div>
 <br />
 
+<% if allowed_edit %>
+<div><%=  (t :'user_groups.views.shared.token')  %><br />
+<%= @user.authentication_token.blank? ? t('user_groups.views.shared.token_empty'): @user.authentication_token %><br /><br />
+<% if @user.authentication_token %>
+    <p><%= t :'user_groups.views.users.show.token_sign_in' %><br />
+    <%= link_to "http://localhost:3000#{root_path(:auth_token => @user.authentication_token)}", root_path(:auth_token => @user.authentication_token)  %></p>
+<% end %>
+</div>
+<end>
+
 <%#= user.user_signed_in? %>
 <%# https://groups.google.com/forum/?fromgroups=#!topic/plataformatec-devise/tOKU_jcWNp0 %>
 <%= link_to_if(allowed_edit, (t :'user_groups.views.shared.edit'), user_group.edit_user_path(@user), :id => "edit_account" ){} %><br />

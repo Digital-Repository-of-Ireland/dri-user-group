@@ -30,6 +30,13 @@
       <div><%= f.label :about_me, (t :'user_groups.views.shared.about_me')  %><br />
       <%= f.text_area :about_me, :rows => 10 %></div>
 
+      <div><%= f.label :token_authentication_key, (t :'user_groups.views.shared.token')  %><br />
+      <%= @user.authentication_token.blank? ? t('user_groups.views.shared.token_empty'): @user.authentication_token %><br />
+
+      <p><%= link_to (t :'user_groups.views.users.edit.new_token'), create_token_user_path(@user), :method => :post, confirm: (t :'user_groups.views.shared.confirm')  %>
+      <%= link_to (t :'user_groups.views.users.edit.delete_token'), destroy_token_user_path(@user), :method => :delete, confirm: (t :'user_groups.views.shared.confirm')  %></p>
+      </div>
+
       <% if current_user.id == @user.id or !current_user.is_admin? %>
       <div><%= f.label :current_password, (t :'user_groups.views.users.edit.current_password')  %><br />
       <%= f.password_field :current_password %></div>

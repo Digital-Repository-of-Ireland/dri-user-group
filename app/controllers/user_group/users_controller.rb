@@ -4,7 +4,7 @@ module UserGroup
     class UsersController < ApplicationController
         before_filter :authenticate_user!, except: [:new, :create, :show]
         #:can_modify (through can_modify_base) also sets @user
-        before_filter :can_modify, only: [:edit, :update, :destroy]
+        before_filter :can_modify, only: [:edit, :update, :destroy, :create_token, :destroy_token]
         before_filter :can_view_profile, only: [:show]
 
         def index
@@ -90,6 +90,26 @@ module UserGroup
                 
                 flash[:success] = I18n.t("user_groups.users.deleted")
             end
+        end
+
+        #Anyone who is logged in can create a token on their account
+        def create_token
+            @user.reset_authentication_token!
+            #Log date created
+            redirect_to @user
+            flash[:success] = I18n.t("user_groups.users.token")
+        end
+
+        def destroy_token
+            @user.authentication_token = nil
+            #reset date created
+            if @user.save
+                flash[:success] = I18n.t("user_groups.users.deleted_token")
+                redirect_to @user
+            else
+                render 'edit'
+                flash[:error] = I18n.t("user_groups.users.errors.deleted_token")
+            end   
         end
 
         private
