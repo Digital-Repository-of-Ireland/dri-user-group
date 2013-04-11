@@ -33,11 +33,24 @@
 
 <% if allowed_edit %>
 <div><%=  (t :'user_groups.views.shared.token')  %><br />
-<%= @user.authentication_token.blank? ? t('user_groups.views.shared.token_empty'): @user.authentication_token %><br /><br />
-<% if @user.authentication_token %>
-    <p><%= t :'user_groups.views.users.show.token_sign_in' %><br />
-    <%= link_to "http://localhost:3000#{root_path(:auth_token => @user.authentication_token)}", root_path(:auth_token => @user.authentication_token)  %></p>
-<% end %>
+    <% if @user.authentication_token.blank? %>
+        <%= t('user_groups.views.shared.token_empty') %>
+    <% else %>
+        <%= @user.authentication_token %>
+
+        <p><%= t :'user_groups.views.users.show.token_sign_in' %><br />
+        <%= link_to "http://localhost:3000#{root_path(:auth_token => @user.authentication_token)}", root_path(:auth_token => @user.authentication_token)  %></p>
+
+        <% if SETTING_TOKEN_EXPIRY_DAYS == 0 %>
+            <% expiry_date = t :'user_groups.views.users.show.never' %>
+        <% elsif @user.token_expired? %>
+            <% expiry_date = t :'user_groups.views.users.show.expired' %>
+        <% else %>
+            <% expiry_date = (@user.token_creation_date.to_date+SETTING_TOKEN_EXPIRY_DAYS).to_s %>
+        <% end %>
+        <%= (t :'user_groups.views.users.show.expiry') %><%= expiry_date %><br />
+        <%= (t :'user_groups.views.shared.created') %><%= @user.token_creation_date.to_s %><br />
+    <% end %>
 </div>
 <% end %>
 
