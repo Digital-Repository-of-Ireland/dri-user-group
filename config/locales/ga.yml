@@ -85,6 +85,9 @@ ga:
                 current_password: "T_Current Password"
                 new_token: "T_Generate Token"
                 delete_token: "T_Delete Token"
+                expiry: "T_Expiry: "
+                never: "T_Never"
+                expired: "T_Expired"
             index:
                 all_users: "T_All Users"
             show:
