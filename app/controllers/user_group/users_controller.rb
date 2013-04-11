@@ -92,17 +92,16 @@ module UserGroup
             end
         end
 
-        #Anyone who is logged in can create a token on their account
+        #Currently anyone who is logged in can create a token on their account
         def create_token
-            @user.reset_authentication_token!
-            #Log date created
+            @user.create_token
+            @user.save
             redirect_to @user
             flash[:success] = I18n.t("user_groups.users.token")
         end
 
         def destroy_token
-            @user.authentication_token = nil
-            #reset date created
+            @user.destroy_token
             if @user.save
                 flash[:success] = I18n.t("user_groups.users.deleted_token")
                 redirect_to @user

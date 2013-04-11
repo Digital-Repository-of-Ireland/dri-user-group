@@ -4,6 +4,8 @@ SETTING_USER_ORDER = 'second_name'
 SETTING_GROUP_ORDER = 'name'
 PROFILE_VIEW_LEVELS = { 0 => 'private', 1 => 'public', 2 => 'registered' }
 SETTING_PROFILE_INDEX_VIEW_LEVELS = [1 , 2]
+#If set to 0 it never expires
+SETTING_TOKEN_EXPIRY_DAYS = 0
 
 #Paginator settings
 Kaminari.configure do |config|

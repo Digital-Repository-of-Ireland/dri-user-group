@@ -24,7 +24,7 @@ module UserGroup
      devise :database_authenticatable, :token_authenticatable,
             :recoverable, :rememberable, :trackable
       
-      attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me
+      attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date
     
       #Email addresses in database are case insensitive so ensure all the same  
       before_save { self.email.downcase! }
@@ -67,6 +67,25 @@ module UserGroup
     def leave_group(group_id)
       membership = self.memberships.find_by_group_id(group_id)
       membership.destroy unless membership.nil?
+    end
+
+    def create_token
+      self.reset_authentication_token!
+      self.token_creation_date = DateTime.current
+    end
+
+    def destroy_token
+      self.authentication_token = nil
+      self.token_creation_date = nil
+    end
+
+    def token_expired?
+      return true if self.authentication_token.blank? or (SETTING_TOKEN_EXPIRY_DAYS!=0 and (Date.today > age_allowed))
+      return false
+    end
+
+    def age_allowed
+      self.token_creation_date.to_date+SETTING_TOKEN_EXPIRY_DAYS
     end
 
     #Shared with group.rb [move]
