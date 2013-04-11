@@ -31,7 +31,7 @@
 <%=simple_format @user.about_me %></div>
 <br />
 
-<% if allowed_edit %>
+<% if user_signed_in? && current_user.id == @user.id  %>
 <div><%=  (t :'user_groups.views.shared.token')  %><br />
     <% if @user.authentication_token.blank? %>
         <%= t('user_groups.views.shared.token_empty') %>
