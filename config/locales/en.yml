@@ -35,6 +35,7 @@ en:
         deleted_token: "The token has been deleted"
         errors:
             deleted_token: "An error occured deleting the token"
+            validation_image_link: "URL is not a supported image type"
 
 
     views:
@@ -86,6 +87,9 @@ en:
                 current_password: "Current Password"
                 new_token: "Generate Token"
                 delete_token: "Delete Token"
+                image_link: "Profile Photo"
+                image_link_supported: "Supports linking to PNG,JPEG,GIF,BMP images"
+                image_link_gravatar: "Use gravatar? enter gravatar in the field (email as id)"
             index:
                 all_users: "All Users"
             show:
@@ -104,6 +108,8 @@ en:
                 expired: "Expired"
             sign_in:
                 remember_me: "Remember me"
+            photo:
+               alt_text: "Profile Photo"
         groups:
             new:
                 heading: "Create New Group"

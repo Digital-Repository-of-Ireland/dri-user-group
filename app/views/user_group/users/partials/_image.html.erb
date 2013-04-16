@@ -5,6 +5,7 @@
     Concern: security issues? Javascript injection? what is a valid url etc
 %>
 <% unless user.image_link.nil? %>
+    <% alt_text = (t :'user_groups.views.users.photo.alt_text') %>
     <% if user.image_link == SETTING_PROFILE_GRAVATAR_ID %>
         <%= image_tag(Gravatar.new(user.email).image_url,:alt => alt_text, :size => size) %>
     <% elsif user.image_link.include?("http") || user.image_link.include?("www") %>

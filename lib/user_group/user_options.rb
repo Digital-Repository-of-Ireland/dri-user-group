@@ -1,10 +1,22 @@
 module UserGroup
+  class ImageLinkValidator < ActiveModel::Validator
+    def validate(record)
+      unless record.image_link.nil?
+        if record.image_link != SETTING_PROFILE_GRAVATAR_ID
+          record.errors[:image_link] << I18n.t("user_groups.users.errors.validation_image_link") if FastImage.type(record.image_link).nil?
+        end
+      end
+    end 
+  end
+
   module UserOptions
     extend ActiveSupport::Concern
 
     included do
       before_save :set_locale
-      attr_accessible :locale, :view_level, :about_me
+      attr_accessible :locale, :view_level, :about_me, :image_link
+
+      validates_with ImageLinkValidator
     end
 
     def set_locale

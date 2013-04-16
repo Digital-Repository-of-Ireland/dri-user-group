@@ -35,6 +35,7 @@ ga:
         deleted_token: "T_The token has been deleted"
         errors:
             deleted_token: "T_An error occured deleting the token"
+            validation_image_link: "T_URL is not a supported image type"
 
     views:
         shared:
@@ -88,6 +89,9 @@ ga:
                 expiry: "T_Expiry: "
                 never: "T_Never"
                 expired: "T_Expired"
+                image_link: "T_Profile Photo"
+                image_link_supported: "T_Supports linking to PNG,JPEG,GIF,BMP images"
+                image_link_gravatar: "T_Use gravatar? enter gravatar in the field (email as id)"
             index:
                 all_users: "T_All Users"
             show:
@@ -103,6 +107,8 @@ ga:
                 token_sign_in: "T_You can use this url to login"
             sign_in:
                 remember_me: "T_Remember me"
+            photo:
+               alt_text: "T_Profile Photo"
         groups:
             new:
                 heading: "T_Create New Group"
