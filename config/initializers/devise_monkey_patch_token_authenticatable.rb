@@ -14,7 +14,4 @@ Devise::Strategies::TokenAuthenticatable.class_eval do
   end
 end
 
-#Check HTTP authentication
-#Check why it logs in and not stateless, where does it review the api_key?
-  #I dont think it does, if it creates a session (does it timeout?)
 #Does not give error if it doesnt work
