@@ -80,11 +80,11 @@ module UserGroup
     end
 
     def token_expired?
-      return true if self.authentication_token.blank? or (SETTING_TOKEN_EXPIRY_DAYS!=0 and (Date.today > age_allowed))
+      return true if self.authentication_token.blank? or (SETTING_TOKEN_EXPIRY_DAYS!=0 and (Date.today > token_age_allowed))
       return false
     end
 
-    def age_allowed
+    def token_age_allowed
       self.token_creation_date.to_date+SETTING_TOKEN_EXPIRY_DAYS
     end
 
