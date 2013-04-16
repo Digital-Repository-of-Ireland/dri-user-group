@@ -6,7 +6,7 @@
             <th><%=(t :'user_groups.views.shared.join_date')%></th>
             <th><%=(t :'user_groups.views.users.show.leave') if allowed_edit %></th>
         </tr>
-        <% groups = user.groups.order(SETTING_GROUP_ORDER).page(params[:page]) %>
+        <% groups = user.groups.order(SETTING_ORDER_GROUP).page(params[:page]) %>
         <%= paginate groups  %>
         <br />
 

@@ -9,10 +9,10 @@ module UserGroup
 
         def index
             if signed_in and current_user.is_admin?
-                @users = User.order(SETTING_USER_ORDER).page(params[:page])
+                @users = User.order(SETTING_ORDER_USER).page(params[:page])
             else
                 #Must be logged in so show all users that are public/registered
-                @users = User.scoped(:order => SETTING_USER_ORDER, :conditions => {:view_level => SETTING_PROFILE_INDEX_VIEW_LEVELS}).page(params[:page])
+                @users = User.scoped(:order => SETTING_ORDER_USER, :conditions => {:view_level => SETTING_PROFILE_INDEX_VIEW_LEVELS}).page(params[:page])
             end
             @users
         end
@@ -28,13 +28,13 @@ module UserGroup
             @user = User.new(params[:user])
             if @user.save
                 #Join group registered
-                group = UserGroup::Group.find_by_name(SETTING_DEFAULT_GROUP)
+                group = UserGroup::Group.find_by_name(SETTING_GROUP_DEFAULT)
                 if group.nil?
-                  group = UserGroup::Group.find_or_create_by_name(SETTING_DEFAULT_GROUP, description: "Every user account is a member of this group.", is_locked: true)
+                  group = UserGroup::Group.find_or_create_by_name(SETTING_GROUP_DEFAULT, description: "Every user account is a member of this group.", is_locked: true)
                 end
                 group_id = group.id
                 if group_id.nil?
-                    logger.error("ERROR @ SignUp:: group "+SETTING_DEFAULT_GROUP+" does NOT exist")
+                    logger.error("ERROR @ SignUp:: group "+SETTING_GROUP_DEFAULT+" does NOT exist")
                 else
                     membership = @user.join_group(group_id)
                     membership.approve_membership(@user.id)

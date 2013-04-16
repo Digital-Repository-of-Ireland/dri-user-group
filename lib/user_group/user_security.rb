@@ -45,7 +45,7 @@ module UserGroup
     end
   
     def is_admin?
-      group = Group.find_by_name(SETTING_ADMIN_GROUP)
+      group = Group.find_by_name(SETTING_GROUP_ADMIN)
       return true if !group.nil? && self.member?(group.id)
     end
 

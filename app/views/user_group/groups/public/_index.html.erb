@@ -14,7 +14,7 @@
             <%= (t :'user_groups.views.groups.index.pending') %>
             <%#= render partial: 'user_group/shared/leave_group_button', locals: {user: current_user, group: group} %>
         <% else %>
-            <% unless group.name == SETTING_ADMIN_GROUP %>
+            <% unless group.name == SETTING_GROUP_ADMIN %>
             | 
             <div class="inline">
                 <%= form_for(group.memberships.build, url: { controller: :memberships, action: :pending}) do |f| %>
@@ -28,6 +28,6 @@
         <% end %>
         <p><%= group.description %></p>
         
-        <i><%= (t :'user_groups.views.groups.index.members') %></i> <%= group.full_memberships.count unless group.name == SETTING_ADMIN_GROUP or group.name == SETTING_DEFAULT_GROUP%>
+        <i><%= (t :'user_groups.views.groups.index.members') %></i> <%= group.full_memberships.count unless group.name == SETTING_GROUP_ADMIN or group.name == SETTING_GROUP_DEFAULT%>
     </div>
 <% end %>

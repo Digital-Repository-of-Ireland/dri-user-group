@@ -6,7 +6,7 @@
             <th><%= (t :'user_groups.views.shared.join_date') %></th>
             <th><%= (t :'user_groups.views.groups.show.approve') %></th>
         </tr>
-        <% users = group.users.order(SETTING_USER_ORDER).page(params[:page]) %>
+        <% users = group.users.order(SETTING_ORDER_USER).page(params[:page]) %>
         <%= paginate users  %>
         <br />
 
