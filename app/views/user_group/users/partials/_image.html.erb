@@ -1,0 +1,15 @@
+<%# This file must figure out how to display a user profile
+    Users have previously selected if they want to provide a url or gravatar name to their image.
+    (If url it gets checked with fastimage to check validity before being saved)
+    
+    Concern: security issues? Javascript injection? what is a valid url etc
+%>
+<% unless user.image_link.nil? %>
+    <% if user.image_link == SETTING_PROFILE_GRAVATAR_ID %>
+        <%= image_tag(Gravatar.new(user.email).image_url,:alt => alt_text, :size => size) %>
+    <% elsif user.image_link.include?("http") || user.image_link.include?("www") %>
+        <%= image_tag(user.image_link,:alt => alt_text, :size => size) %>
+    <% else %>
+        <%= image_tag(SETTING_PROFILE_DEFAULT_PHOTO, :alt => alt_text, :size => size) %>
+    <% end %>
+<% end %>
