@@ -5,6 +5,7 @@
 
 <h2 class="no_bottom_margin"><%= @user.first_name %> <%= @user.second_name %></h2>
 <br />
+<%= render partial: "user_group/users/partials/image", locals:{ user: @user, size: "180x100"} %>
 <div class="tab"><%= @user.email %></div>
 
 <%= render partial: "user_group/shared/updated_at", locals:{ object: @user} %>
