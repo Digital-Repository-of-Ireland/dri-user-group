@@ -28,6 +28,8 @@
         <% end %>
         <p><%= group.description %></p>
         
-        <i><%= (t :'user_groups.views.groups.index.members') %></i> <%= group.full_memberships.count unless group.name == SETTING_GROUP_ADMIN or group.name == SETTING_GROUP_DEFAULT%>
+        <% unless group.name == SETTING_GROUP_ADMIN or group.name == SETTING_GROUP_DEFAULT %>
+            <i><%= (t :'user_groups.views.groups.index.members') %></i> <%= group.full_memberships.count %>
+        <% end %>
     </div>
 <% end %>
