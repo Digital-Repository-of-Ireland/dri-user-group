@@ -1,5 +1,7 @@
 SETTING_GROUP_DEFAULT = 'registered'
 SETTING_GROUP_ADMIN = 'admin'
+SETTING_GROUP_PUBLIC = 'public'
+SETTING_GROUP_CM = 'cm'
 SETTING_ORDER_USER = 'second_name'
 SETTING_ORDER_GROUP = 'name'
 PROFILE_VIEW_LEVELS = { 0 => 'private', 1 => 'public', 2 => 'registered' }
@@ -20,3 +22,7 @@ Kaminari.configure do |config|
   # config.page_method_name = :page
   # config.param_name = :page
 end
+
+#Policy names
+SETTING_POLICY_ADMIN="Admin"
+SETTING_POLICY_COLLECTION_MANAGER="CollectionManager"
