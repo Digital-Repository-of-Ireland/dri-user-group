@@ -104,11 +104,13 @@ module UserGroup
         #Policy A user is considered a collection manager if they are in the group cm
         #Note: A user can be a local collection manager (If they are down as a manager on the DO/Collection) but this
         #does not grant them collectionmanager pemissions in the system. e.g. Ability to create a collection     
-        group_id = UserGroup::Group.find_by_name(SETTING_GROUP_CM).id
-        return true if self.member?(group_id)
+        group = UserGroup::Group.find_by_name(SETTING_GROUP_CM)
+        return false if group.nil?
+        return true if self.member?(group.id)
       when SETTING_POLICY_ADMIN
-        group_id = UserGroup::Group.find_by_name(SETTING_GROUP_ADMIN).id
-        return true if self.member?(group_id)
+        group = UserGroup::Group.find_by_name(SETTING_GROUP_ADMIN)
+        return false if group.nil?
+        return true if self.member?(group.id)
       else
         logger.debug("Applicable policy- no policy applies")
         return false
