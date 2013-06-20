@@ -38,7 +38,7 @@ module UserGroup
           }
           t.private_metadata(:proxy => [:machine, :integer])
         }
-        #383 Addition (Affed Masterfile flag)
+        #383 Addition (Added Masterfile flag)
         t.masterfile{
           t.machine{
             t.integer
