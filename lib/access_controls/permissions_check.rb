@@ -7,7 +7,7 @@ module UserGroup
 
         id = id_or_object
         object = id_or_object
-        debugger
+
         case action
         when nil, "edit", "update"
           raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, id) unless can? :edit, id
@@ -18,23 +18,19 @@ module UserGroup
           raise Hydra::AccessDenied.new(t('dri.flash.alert.read_permission'), :read, id) unless can? :read, id
         when "show_digital_object"
           logger.debug("[Enforce Permissions] Checking show_digital_object")
-          doc = current_ability.permissions_doc(id)
-          raise Hydra::AccessDenied.new("Document does not exist.", :read, id) if doc.nil?
+          raise Hydra::AccessDenied.new("Document does not exist.", :read, id) if current_ability.permissions_doc(id).nil?
      
           #Embargo should come first
-          if doc.under_embargo? && cannot?(:edit, doc)
+          if current_ability.get_permission_method(id,"under_embargo?") && cannot?(:edit, id)
             raise Hydra::AccessDenied.new("This item is under embargo. You do not have sufficient access privileges to read this document.", :edit, id)
           end
 
-          #WARNING: RETURNS FALSE if not set 
-          #Should change this to get_solr_doc["private"]...
-          if doc.is_private?
-            #CHECK what happens with exception
-            raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document, which has been marked private.", :search, id) unless can? :search, doc
+          if current_ability.get_permission_method(id,"is_private?")
+            raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document, which has been marked private.", :search, id) unless can? :search, id
           end
         
 
-          if !doc.is_published? && cannot?(:edit, doc)
+          if !current_ability.get_permission_method(id,"is_published?") && cannot?(:edit, id)
             raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document, which is in draft mode.", :edit, id)
           end
         when "show_master"
@@ -50,5 +46,6 @@ module UserGroup
         end
       
     end
+
   end
 end
