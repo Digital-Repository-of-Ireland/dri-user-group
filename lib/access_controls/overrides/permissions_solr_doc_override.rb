@@ -6,14 +6,23 @@ module UserGroup
     included do
     end
 
-      def under_embargo?
-    #permissions = permissions_doc(params[:id])
+    #Method not finished
+    def parent_id
+      #This has to be added to solr as parent_id
+      #key = "parent_id"
+      key = "is_governed_by_ssim"
+      #Temp line as string manipulation is currently required on the value
+      return nil unless self[key].present?
+      return self[key].first.split("/").second
+    end
+
+    def under_embargo?
     embargo_key = ActiveFedora::SolrService.solr_name("embargo_release_date", Hydra::Datastream::RightsMetadata.date_indexer)
     if self[embargo_key] 
       embargo_date = Date.parse(self[embargo_key].split(/T/)[0])
       return embargo_date > Date.parse(Time.now.to_s)
     end
-    false
+    return nil
   end
 
   def is_public?
@@ -42,7 +51,10 @@ module UserGroup
   def is_published?
     #TODO:: finish
     key = "properties_status_ssm" #ActiveFedora::SolrService.solr_name('properties_status', Hydra::Datastream::RightsMetadata).to_s
-    self[key].present? && self[key].first.downcase == "published"
+    if self[key].present? 
+      return self[key].first.downcase == "published"
+    end
+    return nil
   end
   
 
