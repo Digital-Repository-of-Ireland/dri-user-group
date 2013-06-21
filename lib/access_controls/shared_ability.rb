@@ -18,7 +18,6 @@ module UserGroup
       #Default: Giving same level as edit
       alias_action :edit, :update, :destroy, :to => :manage_collection
       hydra_default_permissions()
-      debugger
     end
 
     #383 Modified
