@@ -121,6 +121,10 @@ module UserGroup
         @integer_indexer ||= Solrizer::Descriptor.new(:integer, :stored, :indexed)
       end
 
+      def self.not_indexed_indexer
+        @not_indexed_indexer ||= Solrizer::Descriptor.new(:string,:stored,:multivalued)
+      end
+
     end
         
       # Returns the permissions for the selected person/group
@@ -308,8 +312,11 @@ module UserGroup
       #383 Addition (new indexer)
       def integer_indexer
         self.class.integer_indexer
-    end
-      
+      end
+
+      def not_indexed_indexer
+        self.class.not_indexed_indexer
+      end
 
       # Completely clear the permissions
       def clear_permissions!
