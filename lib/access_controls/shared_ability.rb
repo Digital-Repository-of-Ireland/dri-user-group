@@ -3,9 +3,7 @@ module UserGroup
     extend ActiveSupport::Concern
     
     included do
-      def self.user_class
-        Hydra.config[:user_model] ?  Hydra.config[:user_model].constantize : ::User
-      end
+
     end
 
     attr_reader :current_user, :session, :cache
