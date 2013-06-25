@@ -1,7 +1,7 @@
 module UserGroup
   module PermissionsCheck
     def enforce_permissions!(action, item)
-        logger.debug("[Enforce Permission] - A: #{action} O: #{item.to_s}")
+        logger.debug("[Enforce Permissions] - A: #{action} O: #{item.to_s}")
 
         case action
         when nil, "edit", "update"
@@ -12,7 +12,6 @@ module UserGroup
           #Embargo check? 
           raise Hydra::AccessDenied.new(t('dri.flash.alert.read_permission'), :read, item) unless can? :read, item
         when "show_digital_object"
-          logger.debug("[Enforce Permissions] Checking show_digital_object")
           raise Hydra::AccessDenied.new("Document does not exist.", :read, item) if current_ability.permissions_doc(item).nil?
      
           #Embargo should come first
