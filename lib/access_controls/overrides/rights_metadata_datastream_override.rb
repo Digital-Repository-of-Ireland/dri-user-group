@@ -272,27 +272,27 @@ module UserGroup
       def to_solr(solr_doc=Hash.new)
         super(solr_doc)
         vals = edit_access.machine.group
-        solr_doc[ActiveFedora::SolrService.solr_name('edit_access_group', indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('edit_access_group', indexer)] = vals
         vals = discover_access.machine.group
-        solr_doc[ActiveFedora::SolrService.solr_name('discover_access_group', indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('discover_access_group', indexer)] = vals
         vals = read_access.machine.group
-        solr_doc[ActiveFedora::SolrService.solr_name('read_access_group', indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('read_access_group', indexer)] = vals
         vals = edit_access.machine.person
-        solr_doc[ActiveFedora::SolrService.solr_name('edit_access_person', indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('edit_access_person', indexer)] = vals
         vals = discover_access.machine.person
-        solr_doc[ActiveFedora::SolrService.solr_name('discover_access_person', indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('discover_access_person', indexer)] = vals
         vals = read_access.machine.person
-        solr_doc[ActiveFedora::SolrService.solr_name('read_access_person', indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('read_access_person', indexer)] = vals
 
         #383 Addition
         vals = manager_access.machine.group
-        solr_doc[ActiveFedora::SolrService.solr_name('manager_access_group', indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('manager_access_group', indexer)] = vals
         vals = manager_access.machine.person
-        solr_doc[ActiveFedora::SolrService.solr_name('manager_access_person', indexer)] = vals unless vals.empty?        
+        solr_doc[ActiveFedora::SolrService.solr_name('manager_access_person', indexer)] = vals        
         vals = metadata.machine.integer
-        solr_doc[ActiveFedora::SolrService.solr_name('private_metadata', integer_indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('private_metadata', integer_indexer)] = vals
         vals = masterfile.machine.integer
-        solr_doc[ActiveFedora::SolrService.solr_name('master_file', integer_indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('master_file', integer_indexer)] = vals
 
         if embargo_release_date
           embargo_release_date_solr_key_name = ActiveFedora::SolrService.solr_name("embargo_release_date", date_indexer)
