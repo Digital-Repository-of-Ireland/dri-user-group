@@ -25,6 +25,26 @@ To enable the forgot password link you must set up mailer.
   This will show the link the user must go to in the console.
 
 Changes:
+v0.5
+  Major:
+    RightsMetadata datastream bugfix from hydra 6.2.0, see redmine issue 439
+    **Added new modules (lib/access_controls) -**  
+      - PermissionsCheck(enforce_permissions! method) which is used in both the private/public hydra heads
+      - SharedAbility - Code which is the same for ability.rb in both heads.
+      - InheritanceMethods - Provides two methods get_permission_key and get_permission_method used for returning the value starting from the specified level (pid) and checks to the top level (Collection)
+      - Overrides are kept in (lib/access_controls/overrides). There are two for the rights_metadata (datastream and modelmixin) + a file for permissions_solr_doc.
+
+    Added applicable_policy?(policy) to user security module for determing if a particular policy should apply to the current user
+    Added image to user profiles - URL or Gravatar
+    Added token authentication to user model
+
+  Minor:
+    Added new indexer to rightsMetadata datastream (ssm)
+    Fixed issue where api expiry date was using old setting
+    Improved how group membership checks are done to account for nil groups
+    Public views of groups no longer show amount of members for admin or registered group
+    Fixed api key being shown to everyone
+
 v0.4
   Major:
     Admin users must enter their account password if editing their account
