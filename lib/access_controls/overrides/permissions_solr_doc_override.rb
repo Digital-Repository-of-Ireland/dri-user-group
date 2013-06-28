@@ -25,7 +25,11 @@ module UserGroup
         return nil
       end
 
+      #This is a method from the hydra code (we do not use a 'access' field so it will not return correct results)
       def is_public?
+        #Possible fix:
+        #return !is_private?
+
         key = ActiveFedora::SolrService.solr_name("access", Hydra::Datastream::RightsMetadata.indexer)
         self[key].present? && self[key].first.downcase == "public"
       end
