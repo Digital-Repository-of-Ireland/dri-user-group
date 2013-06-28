@@ -26,6 +26,7 @@ def admin_users()
     add_admin_user("jtang@tchpc.tcd.ie","Jimmy","Tang","en")
     add_admin_user("kcassidy@tchpc.tcd.ie","Kathryn","Cassidy","en")
     add_admin_user("skenny@tchpc.tcd.ie","Stuart","Kenny","en")
+		add_admin_user("monica.harasimiuk@dmc.dit.ie","Monica","Harasimiuk","en")
     add_admin_user("me@me.com","M","E","en")
 end
 
