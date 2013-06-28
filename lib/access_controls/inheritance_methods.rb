@@ -1,7 +1,6 @@
 module UserGroup
   module InheritanceMethods
   
-    #Should i return false rather than nil?
     def get_permission_key(pid, key)
       logger.debug("[Get Permission Key] - #{pid}:#{key}")
       return nil if pid.nil? or key.nil?
