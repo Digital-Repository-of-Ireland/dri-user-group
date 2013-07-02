@@ -1,5 +1,4 @@
 UserGroup::Engine.routes.draw do
-  scope ENV["RAILS_RELATIVE_URL_ROOT"] || "/" do
   match '/', to: 'static#home'
   match '/help',  to: 'static#help'
   match '/home',  to: 'static#home'
@@ -31,6 +30,5 @@ UserGroup::Engine.routes.draw do
     collection do
         post :pending
     end
-  end
   end
 end
