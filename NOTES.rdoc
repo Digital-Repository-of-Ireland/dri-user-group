@@ -1,0 +1,5 @@
+During a release, remember to bump the version number in
+
+* lib/user_group/version.rb
+
+and also tag the repo.
