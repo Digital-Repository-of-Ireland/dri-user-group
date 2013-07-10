@@ -20,21 +20,15 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-APP_RAKEFILE = File.expand_path("../test/dummy/Rakefile", __FILE__)
-load 'rails/tasks/engine.rake'
-
-
+#APP_RAKEFILE = File.expand_path("../test/dummy/Rakefile", __FILE__)
+#load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
 
-require 'rake/testtask'
 
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.libs << 'test'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = false
+RSpec::Core::RakeTask.new(:rspec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
+  spec.pattern += FileList['spec/*_spec.rb']
 end
 
-
-task :default => :test
+task :default => :rspec

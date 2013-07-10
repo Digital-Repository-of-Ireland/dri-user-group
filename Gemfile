@@ -14,3 +14,9 @@ gem "json"
 # your gemspec. These might include edge Rails or gems from your path or
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
+
+group :development, :test do
+  gem 'rcov', :platform => :mri_18
+  gem 'simplecov', :platform => :mri_19
+  gem 'simplecov-rcov', :platform => :mri_19
+end
