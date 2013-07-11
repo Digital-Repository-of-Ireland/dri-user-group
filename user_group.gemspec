@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.description = "UserGroup provides through devise user accounts and group management to a rails application."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile", "README.rdoc"]
-  s.test_files = Dir["test/**/*"]
+  s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails"
   s.add_dependency "devise", "~> 2.2.3"
