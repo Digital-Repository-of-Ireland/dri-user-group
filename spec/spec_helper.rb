@@ -4,8 +4,7 @@
 # loaded once.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'app', 'models'))
+Dir[Pathname.new(File.expand_path("../app/**/*.rb", __FILE__))].each {|f| require f}
 
 require 'simplecov'
 SimpleCov.start

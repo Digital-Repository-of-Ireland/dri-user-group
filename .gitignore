@@ -16,3 +16,5 @@ Gemfile.lock
 /tmp
 .DS_Store
 /vendor/gems/*
+
+coverage
