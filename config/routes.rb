@@ -9,6 +9,8 @@ UserGroup::Engine.routes.draw do
     class_name:     'UserGroup::User',
     module: :devise,
   }
+
+  resources :user_groups
   
   resources :users do
     get 'page/:page', :action => :index, :on => :collection
@@ -23,6 +25,7 @@ UserGroup::Engine.routes.draw do
         put :lock
     end
   end
+
   resources :memberships, only: [:create, :destroy] do
     member do
         put :approve
@@ -31,4 +34,5 @@ UserGroup::Engine.routes.draw do
         post :pending
     end
   end
+
 end
