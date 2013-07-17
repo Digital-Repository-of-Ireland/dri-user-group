@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
+  s.require_path = 'lib'
 
   s.add_dependency "rails"
   s.add_dependency "devise", "~> 2.2.3"

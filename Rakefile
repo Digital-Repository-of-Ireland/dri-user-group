@@ -32,4 +32,7 @@ RSpec::Core::RakeTask.new(:rspec) do |spec|
   spec.pattern += FileList['spec/*_spec.rb']
 end
 
+desc "Run all specs in spec directory (excluding plugin specs)"
+RSpec::Core::RakeTask.new(:rspec => 'app:db:test:prepare')
+
 task :default => :rspec

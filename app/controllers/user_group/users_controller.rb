@@ -16,14 +16,14 @@ module UserGroup
             end
             @users
         end
-        
+
         def show
         end
 
         def new
             @user = User.new
         end
-        
+
         def create
             @user = User.new(params[:user])
             if @user.save
@@ -70,7 +70,7 @@ module UserGroup
             if @user.update_attributes(params[:user])
                 flash[:success] = I18n.t("user_groups.shared.updated")
                 (sign_in @user, bypass: true) if modifying_current_user?(@user)
-                redirect_to @user 
+                redirect_to @user
             else
                 render 'edit'
             end
@@ -81,13 +81,13 @@ module UserGroup
             is_current_user = modifying_current_user?(deleting_user)
 
             deleting_user.destroy
-           
+
             if is_current_user
                 redirect_to main_app.root_url
                 flash[:success] = I18n.t("user_groups.users.deleted_self")
             else
                 redirect_to users_url
-                
+
                 flash[:success] = I18n.t("user_groups.users.deleted")
             end
         end
@@ -108,7 +108,7 @@ module UserGroup
             else
                 render 'edit'
                 flash[:error] = I18n.t("user_groups.users.errors.deleted_token")
-            end   
+            end
         end
 
         private
