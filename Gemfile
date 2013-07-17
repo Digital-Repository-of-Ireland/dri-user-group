@@ -28,4 +28,6 @@ group :development, :test do
   gem 'rb-fchange', :require => false
   gem 'rspec-rails'
   gem 'mocha'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
 end
