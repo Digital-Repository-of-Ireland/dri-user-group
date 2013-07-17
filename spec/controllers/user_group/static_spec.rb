@@ -1,10 +1,12 @@
 require 'spec_helper'
 
+
 describe UserGroup::StaticController do
 
+  before(:each) { @routes = UserGroup::Engine.routes }
+
   it "should GET #home" do
-    #{ :get => 'user_group/home', :use_route => :user_group }.should route_to("user_group/static#home")
-    { :get => 'user_group/home', :use_route => :user_group }
+    { :get => :users, :use_route => :user_group }.should be_routable
   end
 
 end

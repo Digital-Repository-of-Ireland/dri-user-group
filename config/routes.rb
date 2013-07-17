@@ -3,7 +3,7 @@ UserGroup::Engine.routes.draw do
   match '/help',  to: 'static#help'
   match '/home',  to: 'static#home'
   match '/admin', to: 'static#admin'
-  
+
   devise_for :users, {
     :skip => :registration,
     class_name:     'UserGroup::User',
@@ -11,7 +11,7 @@ UserGroup::Engine.routes.draw do
   }
 
   resources :user_groups
-  
+
   resources :users do
     get 'page/:page', :action => :index, :on => :collection
     member do
@@ -19,7 +19,7 @@ UserGroup::Engine.routes.draw do
       delete :destroy_token
     end
   end
-  
+
   resources :groups do
     member do
         put :lock

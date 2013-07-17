@@ -2,23 +2,18 @@ require 'spec_helper'
 
 describe UserGroup::UsersController do
 
-  describe "Test Routing?" do
+    before(:each) { @routes = UserGroup::Engine.routes }
+
     it "POST #create" do
-      post :create, :use_route => :user_group
+      { :post => :users, :use_route => :user_group }.should be_routable
     end
 
     it "POST #edit" do
-      post :edit, :use_route => :user_group
+      { :get => :edit_user, :use_route => :user_group }.should be_routable
     end
 
     it "GET #index" do
-      get :index, :use_route => :user_group
+      { :get => :users, :use_route => :user_group }.should be_routable
     end
-
-    it "GET #show" do
-      #get :show, :use_route => :user_group
-    end
-
-  end
 
 end
