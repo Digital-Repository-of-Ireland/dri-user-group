@@ -14,6 +14,7 @@ Gemfile.lock
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /spec/test_app/log/*.log
+spec/test_app/db/*.sqlite3
 /tmp
 .DS_Store
 /vendor/gems/*
