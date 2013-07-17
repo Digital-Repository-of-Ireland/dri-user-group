@@ -1,9 +1,10 @@
 UserGroup::Engine.routes.draw do
+  match '/',      to: 'static#home'
   match '/help',  to: 'static#help'
   match '/home',  to: 'static#home'
   match '/admin', to: 'static#admin'
 
-  root :to => 'static#home'
+  #root :to => 'static#home'
 
   devise_for :users, {
     :skip => :registration,
