@@ -1,5 +1,5 @@
 #Delete this file?
 module UserGroup
-    module StaticHelper
-    end
+  module StaticHelper
+  end
 end

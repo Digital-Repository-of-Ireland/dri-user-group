@@ -1,6 +1,6 @@
 module UserGroup
   module InheritanceMethods
-  
+
     def get_permission_key(pid, key)
       logger.debug("[Get Permission Key] - #{pid}:#{key}")
       return nil if pid.nil? or key.nil?
@@ -10,7 +10,7 @@ module UserGroup
       rescue Blacklight::Exceptions::InvalidSolrID
         return nil
       end
-      
+
       return nil if doc.nil?
       return doc[key] if doc[key].present?
       return get_permission_key(doc.parent_id,key)
@@ -33,7 +33,7 @@ module UserGroup
 
         return get_permission_method(doc.parent_id,method_name)
       end
-      
+
       logger.debug("[Get Permission Method] - Method denied or doesnt exist")
       return nil
     end

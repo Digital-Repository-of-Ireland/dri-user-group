@@ -4,7 +4,7 @@ module UserGroup
 
     included do
       class_attribute :solr_access_filters_logic
-      self.solr_access_filters_logic = [:apply_role_permissions, :apply_individual_permissions ]  
+      self.solr_access_filters_logic = [:apply_role_permissions, :apply_individual_permissions ]
     end
 
     protected
@@ -27,24 +27,24 @@ module UserGroup
 
       solr_parameters[:fq] << filter_published+gated_discovery_filters.join(" OR ")+" ) "
       logger.debug("Solr parameters: #{ solr_parameters.inspect }")
-    end 
+    end
 
     #Admin head should only show content that I have access to
     def apply_admin_gated_discovery(solr_parameters, user_parameters)
       solr_parameters[:fq] ||= []
       solr_parameters[:fq] << gated_discovery_filters.join(" OR ")
       logger.debug("Solr parameters: #{ solr_parameters.inspect }")
-    end 
+    end
 
     def gated_discovery_filters
       # Grant access to public content
       permission_types = discovery_permissions
       user_access_filters = []
-      
+
       permission_types.each do |type|
         user_access_filters << ActiveFedora::SolrService.solr_name("#{type}_access_group", Hydra::Datastream::RightsMetadata.indexer) + ":public"
       end
-      
+
       # Grant access based on user id & role
       solr_access_filters_logic.each do |method_name|
         user_access_filters += send(method_name, permission_types)
@@ -52,32 +52,32 @@ module UserGroup
       user_access_filters
     end
 
-
     def apply_role_permissions(permission_types)
-        # for roles
-        user_access_filters = []
-        current_ability.user_groups.each_with_index do |role, i|
-          permission_types.each do |type|
-            user_access_filters << escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_group", Hydra::Datastream::RightsMetadata.indexer), role)
-          end
+      # for roles
+      user_access_filters = []
+      current_ability.user_groups.each_with_index do |role, i|
+        permission_types.each do |type|
+          user_access_filters << escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_group", Hydra::Datastream::RightsMetadata.indexer), role)
         end
-        user_access_filters
+      end
+      user_access_filters
     end
 
-      def apply_individual_permissions(permission_types)
-        # for individual person access
-        user_access_filters = []
-        if current_user && current_user.user_key.present?
-          permission_types.each do |type|
-            user_access_filters << escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_person", Hydra::Datastream::RightsMetadata.indexer), current_user.user_key)
-          end
+    def apply_individual_permissions(permission_types)
+      # for individual person access
+      user_access_filters = []
+      if current_user && current_user.user_key.present?
+        permission_types.each do |type|
+          user_access_filters << escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_person", Hydra::Datastream::RightsMetadata.indexer), current_user.user_key)
         end
-        user_access_filters
+      end
+      user_access_filters
     end
 
     def discovery_permissions
       @discovery_permissions ||= ["manager","edit","read","discover"]
     end
+
     def disocvery_permissions= (permissions)
       @discovery_permissions = permissions
     end

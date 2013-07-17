@@ -1,7 +1,7 @@
 module UserGroup
   module SharedAbility
     extend ActiveSupport::Concern
-    
+
     included do
 
     end
@@ -31,7 +31,7 @@ module UserGroup
       # # everyone is automatically a member of the group 'public'
       [SETTING_GROUP_PUBLIC]
     end
-    
+
 
     def hydra_default_permissions
       logger.debug("Usergroups are " + user_groups.inspect)
@@ -53,8 +53,8 @@ module UserGroup
       result = !group_intersection.empty? || edit_persons(pid).include?(current_user.user_key)
       logger.debug("[CANCAN] decision: #{result}")
       result
-    end   
-    
+    end
+
     def test_read(pid)
       logger.debug("[CANCAN] Checking read permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & read_groups(pid)
@@ -71,15 +71,15 @@ module UserGroup
     def test_read_master(pid)
       #show master true -> test_read, if false, test_edit permission
       return get_permission_method(pid,"show_master_file?") ? test_read(pid) : test_edit(pid)
-    end 
+    end
 
     def test_manager(pid)
       logger.debug("[CANCAN] Checking manager permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & manager_groups(pid)
       result = !group_intersection.empty? || manager_persons(pid).include?(current_user.user_key)
     end
-    
-    #383 Modified. manager implies edit, so edit_groups is the union of manager and edit groups    
+
+    #383 Modified. manager implies edit, so edit_groups is the union of manager and edit groups
     def edit_groups(pid)
       eg = manager_groups(pid) | ( get_permission_key(pid,self.class.edit_group_field) || [])
       logger.debug("[CANCAN] edit_groups: #{eg.inspect}")
@@ -127,24 +127,24 @@ module UserGroup
       logger.debug("[CANCAN] search_groups: #{sg.inspect}")
       return sg
     end
-    
+
     #383 Addition
     def search_persons(pid)
       sp = read_persons(pid) | (get_permission_key(pid,self.class.search_person_field) ||  [])
       logger.debug("[CANCAN] manager_persons: #{sp.inspect}")
       return sp
-    end    
+    end
 
     module ClassMethods
-      def read_group_field 
+      def read_group_field
         Hydra.config[:permissions][:read][:group]
       end
 
-      def edit_person_field 
+      def edit_person_field
         Hydra.config[:permissions][:edit][:individual]
       end
 
-      def read_person_field 
+      def read_person_field
         Hydra.config[:permissions][:read][:individual]
       end
 
@@ -166,7 +166,7 @@ module UserGroup
       def search_group_field
         Hydra.config[:permissions][:discover][:group]
       end
-      
+
       #383 Addition
       def search_person_field
         Hydra.config[:permissions][:discover][:individual]
