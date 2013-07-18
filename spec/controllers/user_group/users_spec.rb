@@ -18,4 +18,14 @@ describe UserGroup::UsersController do
     response.should be_successful
   end
 
+  it "should test admin users" do
+    @user1 = FactoryGirl.find_or_create(:admin)
+    sign_in @user1
+    get :index
+    # should check for something unique to the admin role
+    response.should be_successful
+  end
+
+  it "should create a new user"
+  it "should create a new user and save it"
 end
