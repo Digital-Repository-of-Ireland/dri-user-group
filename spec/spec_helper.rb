@@ -15,6 +15,7 @@ require 'database_cleaner'
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec/factories/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -57,4 +58,11 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+end
+
+module FactoryGirl
+  def self.find_or_create(handle, by=:email)
+    tmpl = FactoryGirl.build(handle)
+    tmpl.class.send("find_by_#{by}".to_sym, tmpl.send(by)) || FactoryGirl.create(handle)
+  end
 end

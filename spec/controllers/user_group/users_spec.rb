@@ -10,4 +10,11 @@ describe 'Users' do
     @user = UserGroup::UsersController.new
   end
 
+  it "should test users" do
+    @user1 = FactoryGirl.find_or_create(:user)
+    get :index
+    assigns[:users].should include(@user1)
+    response.should be_successful
+  end
+
 end
