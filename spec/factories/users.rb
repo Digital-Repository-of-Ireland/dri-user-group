@@ -1,14 +1,11 @@
+require 'faker'
+
 FactoryGirl.define do
-  ::Kernel.raise
-
-  begin
-      UserGroup::User
-  rescue NameError
-      puts 'has not loaded engine code yet'
-  end
-
   factory :user, :class => UserGroup::User do |u|
-    email 'me@me.com'
-    password 'password'
+    u.email Faker::Internet.email
+    u.password 'password'
+    u.password_confirmation 'password'
+    u.first_name Faker::Name.first_name
+    u.second_name Faker::Name.last_name
   end
 end

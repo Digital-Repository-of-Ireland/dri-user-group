@@ -30,4 +30,6 @@ group :development, :test do
   gem 'mocha'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
+  gem 'faker'
+  gem 'rspec-expectations'
 end
