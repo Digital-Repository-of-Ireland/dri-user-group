@@ -32,4 +32,5 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'faker'
   gem 'rspec-expectations'
+  gem 'ci_reporter'
 end

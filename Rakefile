@@ -25,14 +25,13 @@ load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
 
+require 'ci/reporter/rake/rspec'
 require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(:rspec) do |spec|
+desc "Run all specs in spec directory (excluding plugin specs)"
+RSpec::Core::RakeTask.new(:rspec => ["ci:setup:rspec", "ci:setup:rspec"]) do |spec|
   spec.pattern  = FileList['spec/**/*_spec.rb']
   spec.pattern += FileList['spec/*_spec.rb']
 end
-
-desc "Run all specs in spec directory (excluding plugin specs)"
-RSpec::Core::RakeTask.new(:rspec => 'app:db:test:prepare')
 
 task :default => :rspec

@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "A Group based management system for access controls"
   s.description = "UserGroup provides through devise user accounts and group management to a rails application."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/**/*"] + ["Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
   s.require_path = 'lib'
 
