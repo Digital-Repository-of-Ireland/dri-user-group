@@ -83,8 +83,8 @@ module UserGroup
       deleting_user.destroy
 
       if is_current_user
-        redirect_to main_app.root_url
         flash[:success] = I18n.t("user_groups.users.deleted_self")
+        redirect_to "/user_groups/users/sign_in"
       else
         redirect_to users_url
 
