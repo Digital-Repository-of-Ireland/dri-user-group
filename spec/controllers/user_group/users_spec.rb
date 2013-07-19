@@ -10,15 +10,17 @@ describe UserGroup::UsersController do
     @user = UserGroup::UsersController.new
   end
 
-  it "should test users" do
+  it "does not error when I sign in" do
     @user1 = FactoryGirl.find_or_create(:user)
     sign_in @user1
     get :index
     #assigns[:users].should include(@user1)
     response.should be_successful
+    expect(response.status).to eq(200)
+    expect(response).to render_template(:index)
   end
 
-  it "should test admin users" do
+  it "does not error when I sign in as an admin" do
     @user1 = FactoryGirl.find_or_create(:admin)
     sign_in @user1
     get :index
