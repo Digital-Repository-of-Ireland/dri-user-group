@@ -28,6 +28,13 @@ describe UserGroup::UsersController do
     response.should be_successful
   end
 
-  it "should create a new user"
-  it "should create a new user and save it"
+  it "should create a new user" do
+    post :new
+    response.should be_successful
+  end
+
+  it "should create a new user and save it" do
+    post :create
+    response.should be_successful
+  end
 end
