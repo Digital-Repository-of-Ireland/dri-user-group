@@ -84,7 +84,7 @@ module UserGroup
 
       if is_current_user
         flash[:success] = I18n.t("user_groups.users.deleted_self")
-        redirect_to "/user_groups/users/sign_in"
+        redirect_to main_app.new_user_session_url
       else
         redirect_to users_url
 
