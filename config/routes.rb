@@ -12,8 +12,6 @@ UserGroup::Engine.routes.draw do
     module: :devise,
   }
 
-  resources :user_groups
-
   resources :users do
     get 'page/:page', :action => :index, :on => :collection
     member do
