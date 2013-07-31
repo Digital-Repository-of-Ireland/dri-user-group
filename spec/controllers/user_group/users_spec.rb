@@ -6,10 +6,6 @@ describe UserGroup::UsersController do
     @routes = UserGroup::Engine.routes
   end
 
-  it "should create a new user object" do
-    @user = UserGroup::UsersController.new
-  end
-
   it "does not error when I sign in" do
     @user1 = FactoryGirl.find_or_create(:user)
     sign_in @user1
@@ -28,9 +24,28 @@ describe UserGroup::UsersController do
     response.should be_successful
   end
 
-  it "should create a new user" do
-    post :new
-    response.should be_successful
+  describe "GET #index" do
+    it "populates an array of public users" do
+      @admin = FactoryGirl.find_or_create(:admin)
+      sign_in @admin
+
+      user = FactoryGirl.build(:user)
+      user.set_view_level("public")
+      user.save
+
+      get :index
+      assigns[:users].should_not be_nil
+      assigns[:users].should eq([user])
+    end
+  end
+
+  describe "GET #new" do
+    it "assigns a new user" do
+      get :new
+
+      assigns(:user).should_not be_nil
+      assigns(:user).should be_kind_of(UserGroup::User)
+    end
   end
 
   it "should create a new user and save it" do
