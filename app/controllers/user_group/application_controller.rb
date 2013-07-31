@@ -1,6 +1,7 @@
 module UserGroup
   class ApplicationController < ::ApplicationController
     #protect_from_forgery
+    before_filter :authenticate_user!
 
     protected
     def admin_users
