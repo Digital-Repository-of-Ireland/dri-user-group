@@ -49,6 +49,8 @@ RSpec.configure do |config|
   config.before(:each, :type => "controller") { @routes = UserGroup::Engine.routes }
   config.include Devise::TestHelpers, :type => :controller
 
+  config.include Rails.application.routes.url_helpers
+
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)

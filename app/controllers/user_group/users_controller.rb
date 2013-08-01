@@ -26,7 +26,7 @@ module UserGroup
 
     def create
       @user = User.new(params[:user])
-      if @user.save
+      if @user.valid? && @user.save
         #Join group registered
         group = UserGroup::Group.find_by_name(SETTING_GROUP_DEFAULT)
         if group.nil?
