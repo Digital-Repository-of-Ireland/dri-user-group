@@ -1,9 +1,20 @@
 require 'faker'
 
 FactoryGirl.define do
+  sequence :name do
+    Faker::Lorem.word
+  end
+end
+
+FactoryGirl.define do
   factory :group, :class => UserGroup::Group do |g|
-    g.name 'test'
+    g.name { FactoryGirl.generate(:name) }
     g.description 'a test group'
+    g.is_locked false
+  end
+
+  factory :invalid_group, parent: :group do |g|
+    g.name nil
   end
 
  factory :group_admin, :class => UserGroup::Group do |g|
