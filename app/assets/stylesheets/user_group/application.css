@@ -107,7 +107,6 @@
 }
 
 body{
-  text-align: center;
 }
 
 .alert{
@@ -115,13 +114,13 @@ body{
 }
 
 .alert-error, .alert-alert {
-  color: red !important; 
+  color: red !important;
 }
 
 .field_with_errors {
   padding: 2px;
   background-color: red;
-  display: inline-block; 
+  display: inline-block;
 }
 
 .error_explanation {
@@ -139,12 +138,12 @@ body{
     margin: -7px;
     margin-bottom: 0px;
     background-color: #c00;
-    color: #fff; 
+    color: #fff;
   }
   ul li {
     font-size: 12px;
-    list-style: square; 
-    } 
+    list-style: square;
+    }
 }
 
 .error_messages li{

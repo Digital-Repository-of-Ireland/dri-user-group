@@ -134,6 +134,20 @@ en:
                 approve: "Approved By"
         static_pages:
             todo: "TODO"
+            help: "Users and Groups Help Page"
+            title: "Users and Groups"
+            logged_in: "You are logged in as"
+            account_mgt: "Manage my account"
+            links:
+              show_profile: "View my Profile"
+              edit_profile: "Edit my Profile"
+              browse_groups: "Browse all groups"
+              browse_users: "View other users"
+            link_desc:
+              show_profile_desc: "Here you can view the details of your account profile"
+              edit_profile_desc: "Edit or update your account details"
+              browse_groups_desc: "Browse the system to find groups, you can apply to join groups to get access to restricted resources"
+              browse_users_desc: "Find other users"
         partials:
             error_messages:
                 text: "The form contains "
