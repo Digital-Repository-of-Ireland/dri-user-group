@@ -11,7 +11,12 @@ class SimpleCov::Formatter::MergedFormatter
   end
 end
 SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
-SimpleCov.start
+
+SimpleCov.start do
+  add_filter '/spec/'
+  add_filter '/config/'
+  add_filter '/features/'
+end
 
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../spec/test_app/config/environment", __FILE__)
