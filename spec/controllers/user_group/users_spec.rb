@@ -4,6 +4,8 @@ describe UserGroup::UsersController do
 
   before(:each) do
     @routes = UserGroup::Engine.routes
+
+    controller.stub(:new_user_session_url)
   end
 
   describe "GET #index" do
@@ -137,18 +139,20 @@ describe UserGroup::UsersController do
     end
   end
     
-  #describe 'DELETE destroy' do 
-  #  before :each do 
-  #    @user = FactoryGirl.create(:user) 
-  #    sign_in @user
-  #  end 
-  #
-  #  it "deletes the user" do 
-  #    expect{ 
-  #      delete :destroy, id: @user 
-  #    }.to change(UserGroup::User,:count).by(-1) 
-  #  end 
-  #end
+  describe 'DELETE destroy' do 
+    before :each do 
+      @admin = FactoryGirl.create(:admin) 
+      sign_in @admin
+    end 
+  
+   it "deletes the user" do
+     @user = FactoryGirl.create(:user)
+ 
+     expect{ 
+       delete :destroy, id: @user 
+     }.to change(UserGroup::User,:count).by(-1) 
+   end 
+ end
 
   describe 'tokens' do
     before :each do

@@ -19,7 +19,7 @@ module UserGroup
 
     def create
       @group = Group.new(params[:group])
-      if @group.save
+      if @group.valid? && @group.save
         flash[:success] = I18n.t("user_groups.groups.created")
         redirect_to @group
       else
