@@ -1,6 +1,6 @@
 #http://stackoverflow.com/questions/7693040/how-to-translate-model-in-namespace
 #UPDATE for rails >= 3.2.12
-en:
+ga:
   activerecord:
     errors:
       models:
