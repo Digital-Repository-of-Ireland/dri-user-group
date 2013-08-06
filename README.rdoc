@@ -4,6 +4,9 @@ Install Gem:
 
 1) gem install user_group-<version>.gem
 
+== Notes
+Will need to keep an eye for the ability.rb fix, and remove our override when we can pull in their fix.
+
 == Use In Rails Application:
 
 To install this engine you must first go to the rails application in
