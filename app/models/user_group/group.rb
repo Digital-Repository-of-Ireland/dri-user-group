@@ -1,8 +1,8 @@
 module UserGroup
   class NotPositiveIntegerValidator < ActiveModel::Validator
-      def validate(record)
-          record.errors[:name] << I18n.t("user_groups.groups.errors.validation") if record.name =~ /^[0-9]+$/
-      end 
+    def validate(record)
+      record.errors[:name] << I18n.t("user_groups.groups.errors.validation") if record.name =~ /^[0-9]+$/
+    end
   end
 
   class Group < ActiveRecord::Base
@@ -10,7 +10,7 @@ module UserGroup
     has_many :users, through: :memberships, uniq: true
 
     attr_accessible :name, :description, :is_locked
-    
+
     #DB uniqueness is case insensitive
     before_save { self.name.downcase! }
 
@@ -21,8 +21,8 @@ module UserGroup
 
     #is it ok having this public?
     def toggle_lock
-      if self.is_locked 
-         self.is_locked = false
+      if self.is_locked
+        self.is_locked = false
       else
         self.is_locked = true
       end

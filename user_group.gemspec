@@ -13,8 +13,9 @@ Gem::Specification.new do |s|
   s.summary     = "A Group based management system for access controls"
   s.description = "UserGroup provides through devise user accounts and group management to a rails application."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile", "README.rdoc"]
-  s.test_files = Dir["test/**/*"]
+  s.files = Dir["{app,config,db,lib}/**/**/*"] + ["Rakefile", "README.rdoc"]
+  s.test_files = Dir["spec/**/*"]
+  s.require_path = 'lib'
 
   s.add_dependency "rails"
   s.add_dependency "devise", "~> 2.2.3"
@@ -28,4 +29,7 @@ Gem::Specification.new do |s|
   # s.add_dependency "jquery-rails"
 
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency "factory_girl_rails"
 end

@@ -1,10 +1,17 @@
-= UserGroup =
+= UserGroup
 
 Install Gem:
+
 1) gem install user_group-<version>.gem
 
-Use In Rails Application:
-To install this engine you must first go to the rails application in which this will be included. Perform the following actions:
+== Notes
+Will need to keep an eye for the ability.rb fix, and remove our override when we can pull in their fix.
+
+== Use In Rails Application:
+
+To install this engine you must first go to the rails application in
+which this will be included. Perform the following actions:
+
 1) Edit your gemfile to include user_group (gem 'user_group')
     Note: user_group includes devise by default.
 2) bundle update
@@ -18,13 +25,36 @@ To install this engine you must first go to the rails application in which this 
 8) Start the server and go to localhost:3000/user_groups and login as email: admin@example.com, password: password
 9) Ensure your application provides a main_app route
 
-To enable the forgot password link you must set up mailer.
-  add config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-  to config/environments/development.rb
+To enable the forgot password link you must set up mailer add the following
 
-  This will show the link the user must go to in the console.
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
-Changes:
+to config/environments/development.rb
+
+This will show the link the user must go to in the console.
+
+== Changes:
+
+v0.5
+  Major:
+    RightsMetadata datastream bugfix from hydra 6.2.0, see redmine issue 439
+    **Added new modules (lib/access_controls) -**
+      - PermissionsCheck(enforce_permissions! method) which is used in both the private/public hydra heads
+      - SharedAbility - Code which is the same for ability.rb in both heads.
+      - InheritanceMethods - Provides two methods get_permission_key and get_permission_method used for returning the value starting from the specified level (pid) and checks to the top level (Collection)
+      - Overrides are kept in (lib/access_controls/overrides). There are two for the rights_metadata (datastream and modelmixin) + a file for permissions_solr_doc.
+
+    Added applicable_policy?(policy) to user security module for determing if a particular policy should apply to the current user
+    Added image to user profiles - URL or Gravatar
+    Added token authentication to user model
+
+  Minor:
+    Added new indexer to rightsMetadata datastream (ssm)
+    Fixed issue where api expiry date was using old setting
+    Improved how group membership checks are done to account for nil groups
+    Public views of groups no longer show amount of members for admin or registered group
+    Fixed api key being shown to everyone
+
 v0.4
   Major:
     Admin users must enter their account password if editing their account
@@ -34,7 +64,7 @@ v0.4
     Updated security to allow non logged in users to view a public set profile
     Added an about me section to the user
     Added a profile view level to the user with 3 options - Public, Private, Logged in users
-  
+
   Minor:
     Fixed some i18n strings being missing
     Updated count variables to pull from object rather than database
@@ -59,7 +89,7 @@ v0.3
     Fix for missing routes error
     Moved user model code into a UserSecurity module located at lib/user_group/user_security.rb
     Changed user model to include the UserSecurity
-  
+
     These changes are done to faciilite using this user model with blacklight.
     To use with blacklight first the app/models/user_group/user.rb model should be copied to the same directory in your rails application. Next the line
       include Blacklight::User
@@ -89,7 +119,7 @@ v0.1
   Initial Prototype
   Basic Functionality
 
-Routes:
+== Routes:
 
 (A) - Admin Only
 (P) - Public
@@ -102,7 +132,7 @@ Routes:
                 home        /home(.:format)                (P)  static#home
                admin        /admin(.:format)               (A)  static#admin
 
- --Sessions--              
+ --Sessions--
     new_user_session GET    /users/sign_in(.:format)       (P)  devise/sessions#new
         user_session POST   /users/sign_in(.:format)       (P)  devise/sessions#create
 destroy_user_session DELETE /users/sign_out(.:format)      (L)  devise/sessions#destroy

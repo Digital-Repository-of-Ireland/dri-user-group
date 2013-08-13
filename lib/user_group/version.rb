@@ -1,3 +1,12 @@
 module UserGroup
-  VERSION = "0.0.4"
+#  output = `git describe --tags`.strip.split('-')
+#
+#  version = output.shift
+#  version = version.gsub 'v', ''
+#  increment = output.shift
+#  #hash = output.shift
+#
+#  VERSION  = "0.0.#{increment}"
+
+  VERSION = "0.0.6"
 end
