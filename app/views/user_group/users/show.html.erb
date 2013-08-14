@@ -19,7 +19,7 @@
 
 <div>
 <%= (t :'user_groups.views.shared.view_profile') %>
-<% if @user.get_view_level == 'public' %> 
+<% if @user.get_view_level == 'public' %>
     <%= t('user_groups.views.shared.public')  %>
 <% elsif @user.get_view_level == 'private' %>
     <%= t('user_groups.views.shared.private') %>
@@ -40,7 +40,7 @@
         <%= @user.authentication_token %>
 
         <p><%= t :'user_groups.views.users.show.token_sign_in' %><br />
-        <%= link_to "http://localhost:3000#{root_path(:auth_token => @user.authentication_token)}", root_path(:auth_token => @user.authentication_token)  %></p>
+        <%= link_to request.env["HTTP_HOST"] + "#{root_path(:auth_token => @user.authentication_token)}", root_path(:auth_token => @user.authentication_token)  %></p>
 
         <% if SETTING_PROFILE_TOKEN_EXPIRY_DAYS == 0 %>
             <% expiry_date = t :'user_groups.views.users.show.never' %>
