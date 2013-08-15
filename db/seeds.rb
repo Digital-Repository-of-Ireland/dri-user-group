@@ -21,6 +21,8 @@ end
 public
 def admin_user()
     add_group_user("admin@dri.ie","Admin","Admin","en","admin")
+    group_id = UserGroup::Group.find_by_name("cm").id
+    add_and_approve_membership("admin@dri.ie",group_id)
 end
 
 def public_user()
