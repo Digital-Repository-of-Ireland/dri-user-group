@@ -1,4 +1,4 @@
 <% unless group.is_locked %>
-    <h3>Delete Group</h3>
+    <h3><%= (t :'user_groups.views.groups.edit.delete') %></h3>
     <%= link_to (t :'user_groups.views.shared.delete'), group, method: :delete, confirm: (t :'user_groups.views.shared.confirm') %>
 <% end %>

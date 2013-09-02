@@ -1,0 +1,52 @@
+== ROUTES
+
+(A) - Admin Only
+(P) - Public
+(L) - Logged In
+(V) - Admin Or In Your Account∂
+
+=== Static Pages
+
+                root        /                              (P)  static#home
+                help        /help(.:format)                (P)  static#help
+                home        /home(.:format)                (P)  static#home
+               admin        /admin(.:format)               (A)  static#admin
+
+=== Sessions
+
+      new_user_session GET    /users/sign_in(.:format)       (P)  devise/sessions#new
+          user_session POST   /users/sign_in(.:format)       (P)  devise/sessions#create
+  destroy_user_session DELETE /users/sign_out(.:format)      (L)  devise/sessions#destroy
+
+=== Passwords (Untested)
+
+       user_password POST   /users/password(.:format)      (?)  devise/passwords#create
+   new_user_password GET    /users/password/new(.:format)  (?)  devise/passwords#new
+  edit_user_password GET    /users/password/edit(.:format) (?)  devise/passwords#edit
+                     PUT    /users/password(.:format)      (?)  devise/passwords#update
+
+=== User Accounts
+
+               users GET    /users(.:format)               (L)  users#index
+                     POST   /users(.:format)               (P)  users#create
+            new_user GET    /users/new(.:format)           (P)  users#new
+           edit_user GET    /users/:id/edit(.:format)      (V)  users#edit
+                user GET    /users/:id(.:format)           (V or P)  users#show
+                     PUT    /users/:id(.:format)           (V)  users#update
+                     DELETE /users/:id(.:format)           (V)  users#destroy
+=== Groups
+
+              groups GET    /groups(.:format)              (L)  groups#index
+                     POST   /groups(.:format)              (A)  groups#create
+           new_group GET    /groups/new(.:format)          (A)  groups#new
+          edit_group GET    /groups/:id/edit(.:format)     (A)  groups#edit
+               group GET    /groups/:id(.:format)          (A)  groups#show
+                     PUT    /groups/:id(.:format)          (A)  groups#update
+                     DELETE /groups/:id(.:format)          (A)  groups#destroy
+
+=== Memberships
+
+ approve_membership PUT     /memberships/:id/approve(.:format)(A)  memberships#approve
+ pending_memberships POST   /memberships/pending(.:format)   (L)  memberships#pending
+         memberships POST   /memberships(.:format)           (A)  memberships#create
+         membership DELETE  /memberships/:id(.:format)       (V)  memberships#destroy

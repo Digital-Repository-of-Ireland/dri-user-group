@@ -22,8 +22,7 @@ module UserGroup
     # @param user_parameters the current user-subitted parameters
     def apply_public_gated_discovery(solr_parameters, user_parameters)
       solr_parameters[:fq] ||= []
-      #This line does NOT work...properties_status_ssm:published doesn't return anything
-      filter_published =  ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.not_indexed_indexer) + ":published"+ " AND (" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":0 " + " OR "
+      filter_published =  ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) + ":published"+ " AND (" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":0 " + " OR "
 
       solr_parameters[:fq] << filter_published+gated_discovery_filters.join(" OR ")+" ) "
       logger.debug("Solr parameters: #{ solr_parameters.inspect }")

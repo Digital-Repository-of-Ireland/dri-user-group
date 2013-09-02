@@ -21,3 +21,4 @@ spec/test_app/db/*.sqlite3
 
 coverage
 *.swp
+rdoc

@@ -1,7 +1,7 @@
 require 'active_support/core_ext/string'
 module UserGroup
   module PermissionsSolrDocOverride
-    extend ActiveSupport::Concern      
+    extend ActiveSupport::Concern
 
       included do
       end
@@ -18,7 +18,7 @@ module UserGroup
 
       def under_embargo?
         embargo_key = ActiveFedora::SolrService.solr_name("embargo_release_date", Hydra::Datastream::RightsMetadata.date_indexer)
-        if self[embargo_key] 
+        if self[embargo_key]
           embargo_date = Date.parse(self[embargo_key].split(/T/)[0])
           return embargo_date > Date.parse(Time.now.to_s)
         end
@@ -53,12 +53,12 @@ module UserGroup
       end
 
       def is_published?
-        key = ActiveFedora::SolrService.solr_name('properties_status', Hydra::Datastream::RightsMetadata.not_indexed_indexer)        
-        if self[key].present? 
+        key = ActiveFedora::SolrService.solr_name('properties_status', Hydra::Datastream::RightsMetadata.indexer)
+        if self[key].present?
           return self[key].first.downcase == "published"
         end
         return nil
       end
-  
+
   end
 end

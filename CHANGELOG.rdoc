@@ -1,0 +1,92 @@
+== CHANGELOG
+
+=== v0.5
+
+Major:
+
+RightsMetadata datastream bugfix from hydra 6.2.0, see redmine issue 439
+
+<b>Added new modules (lib/access_controls)</b>
+
+- PermissionsCheck(enforce_permissions! method) which is used in both the private/public hydra heads
+- SharedAbility - Code which is the same for ability.rb in both heads.
+- InheritanceMethods - Provides two methods get_permission_key and get_permission_method used for returning the value starting from the specified level (pid) and checks to the top level (Collection)
+- Overrides are kept in (lib/access_controls/overrides). There are two for the rights_metadata (datastream and modelmixin) + a file for permissions_solr_doc.
+
+Added applicable_policy?(policy) to user security module for determing if a particular policy should apply to the current user
+Added image to user profiles - URL or Gravatar
+Added token authentication to user model
+
+Minor:
+- Added new indexer to rightsMetadata datastream (ssm)
+- Fixed issue where api expiry date was using old setting
+- Improved how group membership checks are done to account for nil groups
+- Public views of groups no longer show amount of members for admin or registered group
+- Fixed api key being shown to everyone
+
+=== v0.4
+
+Major:
+- Admin users must enter their account password if editing their account
+- When a user registers they now get directed to their profile page
+- Added kaminari settings to settings file
+- Updated routes so kaminari uses "friendly urls"
+- Updated security to allow non logged in users to view a public set profile
+- Added an about me section to the user
+- Added a profile view level to the user with 3 options - Public, Private, Logged in users
+
+Minor:
+- Fixed some i18n strings being missing
+- Updated count variables to pull from object rather than database
+- Refactored user views removing the admin/public view
+- Improved security checks in controllers- if the user is nil it is now ok
+- If the default group does not exist when a user signs up it gets created
+
+=== v0.3
+Major:
+- Created config file as initializer
+- Fixed user not being able to logout in test env
+- Added devise guests
+- Updated error messages to use a flash notice
+- Added cookie confirm from rnag app
+- Autoload user modules rather than require
+- Updated devise views (from rnag app) and localisation strings
+- Removed rake bootstrap file & replaced with seeds file
+- Removed root_path now requires that the main_app provides a root_path
+- Accounts now join the group registered automaticially
+- Created UserOptions module for providing info such as language, profile settings etc
+- Added header as a partial to views
+- Fix for missing routes error
+- Moved user model code into a UserSecurity module located at lib/user_group/user_security.rb
+- Changed user model to include the UserSecurity
+
+These changes are done to faciilite using this user model with blacklight.
+To use with blacklight first the app/models/user_group/user.rb model should be copied to the same directory in your rails application. Next the line
+
+	include Blacklight::User
+
+must be included.
+
+Alternative was to have this gem depend on blacklight (which would help for styling)
+and have the class include the blacklight user automatically.
+
+Minor:
+- Added pagination to lists (through kaminari), useful for users and groups.
+- Fixed bug with not being able to edit a group
+- Fixed bug with is_locked group method
+- Can update users that have no name
+- Updated views to have partial structure and seperate admin and ordinary views
+- Styling updates
+- Groups now show name even when locked
+
+=== v0.2
+
+- UserGroup now an engine (gem)
+- Sample data created
+- Static content has been Internationalisied
+
+=== v0.1
+
+- Initial Prototype
+- Basic Functionality
+

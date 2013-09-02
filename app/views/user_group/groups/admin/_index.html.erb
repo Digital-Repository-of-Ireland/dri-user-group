@@ -6,9 +6,9 @@
 <% for group in @groups %>
     <div class="index-element">
         <%= link_to group.name.capitalize, group %> 
-        | 
-        <%= (t :'user_groups.views.shared.delete') %>
-        <%#= link_to "delete", group, method: :delete, confirm: "Are you sure?" %>
+        <% unless group.is_locked %>| 
+          <%= link_to (t :'user_groups.views.shared.delete'), group, method: :delete, confirm: (t :'user_groups.views.shared.confirm') %>
+        <% end %>
         <p><%= group.description %></p>
         
         <%= render :partial => "pending_link", :locals => { :group => group }  %>

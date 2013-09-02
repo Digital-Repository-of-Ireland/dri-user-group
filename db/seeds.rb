@@ -1,8 +1,8 @@
 private
-def add_admin_user(email,first_name,second_name,locale)
+def add_group_user(email,first_name,second_name,locale,group)
     user = add_regular_user(email,first_name,second_name,locale)
-    admin_group_id = UserGroup::Group.find_by_name("admin").id
-    add_and_approve_membership(user,admin_group_id)
+    group_id = UserGroup::Group.find_by_name(group).id
+    add_and_approve_membership(user,group_id)
 end
 
 def add_regular_user(email,first_name,second_name,locale)
@@ -19,15 +19,18 @@ def add_and_approve_membership(user,group_id)
 end
 
 public
-def admin_users()
-    add_admin_user("raymond.noonan@nuim.ie","Raymond","Noonan","en")
-    add_admin_user("damien.gallagher@nuim.ie","Damien","Gallagher","en")
-    add_admin_user("admin@example.com","Admin","Account","en")
-    add_admin_user("jtang@tchpc.tcd.ie","Jimmy","Tang","en")
-    add_admin_user("kcassidy@tchpc.tcd.ie","Kathryn","Cassidy","en")
-    add_admin_user("skenny@tchpc.tcd.ie","Stuart","Kenny","en")
-		add_admin_user("monica.harasimiuk@dmc.dit.ie","Monica","Harasimiuk","en")
-    add_admin_user("me@me.com","M","E","en")
+def admin_user()
+    add_group_user("admin@dri.ie","Admin","Admin","en","admin")
+    group_id = UserGroup::Group.find_by_name("cm").id
+    add_and_approve_membership(UserGroup::User.find_by_email("admin@dri.ie"),group_id)
+end
+
+def public_user()
+    add_regular_user("user@dri.ie","Public","User","en")
+end
+
+def collection_manager()
+    add_group_user("manager@dri.ie","Collection","Manager","en","cm")
 end
 
 def groups()
@@ -35,6 +38,10 @@ def groups()
     UserGroup::Group.find_or_create_by_name("registered", description: "Every user account is a member of this group.", is_locked: true)
     UserGroup::Group.find_or_create_by_name("cm", description: "Members of this group are collection managers", is_locked: true)
 end
+
 groups()
-admin_users()
+admin_user()
+public_user()
+collection_manager()
+
 puts "Ran seed user_group"
