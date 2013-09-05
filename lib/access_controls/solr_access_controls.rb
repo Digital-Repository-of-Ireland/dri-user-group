@@ -23,8 +23,12 @@ module UserGroup
     def apply_public_gated_discovery(solr_parameters, user_parameters)
       solr_parameters[:fq] ||= []
       filter_published =  ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) + ":published"+ " AND (" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":0 " + " OR "
-
       solr_parameters[:fq] << filter_published+gated_discovery_filters.join(" OR ")+" ) "
+      
+      # A SOLR join to filter out governing collections that are not published
+      filter_published_parent = "{!join from=id to=governing_id_sim}" + ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) +":published"
+      solr_parameters[:fq] << filter_published_parent
+      
       logger.debug("Solr parameters: #{ solr_parameters.inspect }")
     end
 
