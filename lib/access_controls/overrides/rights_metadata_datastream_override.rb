@@ -203,9 +203,12 @@ module UserGroup
       #383 Addition (private_metadata, master_file)
       attr_reader :private_metadata
       def private_metadata=(is_private)
-        if(is_private=="-1")
-          self.find_by_terms(*[:metadata,:machine,:integer]).first ? self.find_by_terms(*[:metadata,:machine,:integer]).first.remove : nil
-        elsif(is_private=="0" or is_private=="1")
+        # Not sure why this check for -1 was needed. Won't we need to sometimes query for
+        # private_metadata that are set to inherited? How are we supposed to do a SOLR query for inherited
+        # values if we don't know if an object is set to inherited?
+        #if(is_private=="-1")
+        #  self.find_by_terms(*[:metadata,:machine,:integer]).first ? self.find_by_terms(*[:metadata,:machine,:integer]).first.remove : nil
+        if(is_private=="0" or is_private=="1" or is_private=="-1")
           self.update_values({[:metadata,:machine,:integer]=>is_private.to_s})
         else
           return "INVALID SETTING"
@@ -274,22 +277,43 @@ module UserGroup
         super(solr_doc)
         vals = edit_access.machine.group
         solr_doc[ActiveFedora::SolrService.solr_name('edit_access_group', indexer)] = vals
-        vals = discover_access.machine.group
-        solr_doc[ActiveFedora::SolrService.solr_name('discover_access_group', indexer)] = vals
+        vals2 = edit_access.machine.person
+        solr_doc[ActiveFedora::SolrService.solr_name('edit_access_person', indexer)] = vals2
+        if (vals.empty? && vals2.empty?)
+          solr_doc[ActiveFedora::SolrService.solr_name('edit_access_inherit', indexer)] = ["true"]
+        else
+          solr_doc[ActiveFedora::SolrService.solr_name('edit_access_inherit', indexer)] = ["false"]
+        end
+
         vals = read_access.machine.group
         solr_doc[ActiveFedora::SolrService.solr_name('read_access_group', indexer)] = vals
-        vals = edit_access.machine.person
-        solr_doc[ActiveFedora::SolrService.solr_name('edit_access_person', indexer)] = vals
-        vals = discover_access.machine.person
-        solr_doc[ActiveFedora::SolrService.solr_name('discover_access_person', indexer)] = vals
-        vals = read_access.machine.person
-        solr_doc[ActiveFedora::SolrService.solr_name('read_access_person', indexer)] = vals
+        vals2 = read_access.machine.person
+        solr_doc[ActiveFedora::SolrService.solr_name('read_access_person', indexer)] = vals2
+        if (vals.empty? && vals2.empty?)
+          solr_doc[ActiveFedora::SolrService.solr_name('read_access_inherit', indexer)] = ["true"]
+        else
+          solr_doc[ActiveFedora::SolrService.solr_name('read_access_inherit', indexer)] = ["false"]
+        end
 
-        #383 Addition
         vals = manager_access.machine.group
         solr_doc[ActiveFedora::SolrService.solr_name('manager_access_group', indexer)] = vals
-        vals = manager_access.machine.person
-        solr_doc[ActiveFedora::SolrService.solr_name('manager_access_person', indexer)] = vals        
+        vals2 = manager_access.machine.person
+        solr_doc[ActiveFedora::SolrService.solr_name('manager_access_person', indexer)] = vals2        
+        if (vals.empty? && vals2.empty?)
+          solr_doc[ActiveFedora::SolrService.solr_name('manager_access_inherit', indexer)] = ["true"]
+        else
+          solr_doc[ActiveFedora::SolrService.solr_name('manager_access_inherit', indexer)] = ["false"]
+        end
+
+        vals = discover_access.machine.group
+        solr_doc[ActiveFedora::SolrService.solr_name('discover_access_group', indexer)] = vals
+        
+        
+        vals = discover_access.machine.person
+        solr_doc[ActiveFedora::SolrService.solr_name('discover_access_person', indexer)] = vals
+        
+
+        #383 Addition
         vals = metadata.machine.integer
         solr_doc[ActiveFedora::SolrService.solr_name('private_metadata', integer_indexer)] = vals
         vals = masterfile.machine.integer
