@@ -27,6 +27,7 @@ ga:
         created: "Cruthaíodh an grúpa"
         deleted: "Scriosadh an grúpa"
     users:
+        account_created: "Account successfully created."
         signup: "Fáilte! D'éirigh leat síniú isteach."
         deleted: "Scriosadh an t-úsáideoir"
         deleted_self: "Scriosadh do chuntas"

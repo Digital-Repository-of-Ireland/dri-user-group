@@ -41,9 +41,14 @@ module UserGroup
           membership.save
         end
 
-        sign_in @user
-        flash[:success] = I18n.t("user_groups.users.signup")
-        redirect_to @user
+        if user_signed_in? && current_user.is_admin?
+          flash[:success] = I18n.t("user_groups.users.account_created")
+          redirect_to @user
+        else
+          sign_in @user
+          flash[:success] = I18n.t("user_groups.users.signup")
+          redirect_to @user
+        end
       else
         render 'new'
       end
