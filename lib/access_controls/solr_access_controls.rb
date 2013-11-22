@@ -17,6 +17,31 @@ module UserGroup
       apply_admin_gated_discovery(solr_parameters,user_parameters)
     end
 
+    def add_access_controls_to_solr_params(solr_parameters, user_parameters)
+      apply_gated_discovery(solr_parameters, user_parameters)
+    end
+
+    def apply_gated_discovery(solr_parameters, user_parameters)
+      
+      solr_parameters[:fq] ||= []
+      
+      # Should be able to see published records
+      # Filter for published objects that with published parents   
+      governed_objects = "(" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
+           " AND ("+ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) + ":published" +
+           " AND _query_:\"{!join from=id to=governing_id_sim}" + ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) +":published\"))"
+
+      # Filter for published objects
+      objects = "(-" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
+           " AND "+ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) + ":published)"
+
+      filter_published = governed_objects + " OR " + objects
+
+      # Or any models that the user can edit or manage
+      solr_parameters[:fq] << "(" + filter_published + ") OR (" + generate_permission_filters({"manager" => "","edit" => ""}).join(" OR ") + ")" unless (current_user && current_user.is_admin?)
+
+    end
+
     # Contrller before filter that sets up access-controlled lucene query in order to provide gated discovery behavior
     # @param solr_parameters the current solr parameters
     # @param user_parameters the current user-subitted parameters
@@ -75,10 +100,15 @@ module UserGroup
         end
         
         if (setting == "")
-          permission_query = "((" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "true") + " AND " +
+          if type == "manager" || type == "edit"
+            permission_query = "_query_:\"{!join from=id to=governing_id_sim}" + permission_query + "\" OR " +
+                               "("+permission_query+")"
+          else
+            permission_query = "((" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "true") + " AND " +
                               "_query_:\"{!join from=id to=governing_id_sim}" + permission_query + "\" ) OR " + 
                               "(" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "false") + " AND " +
                               "("+permission_query+")))"
+          end
         else
           # discovery is the only permission type that enter this else statement
           permission_query = "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":0 OR " +
