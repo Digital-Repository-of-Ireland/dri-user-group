@@ -28,12 +28,12 @@ module UserGroup
       # Should be able to see published records
       # Filter for published objects that with published parents   
       governed_objects = "(" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
-           " AND ("+ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) + ":published" +
-           " AND _query_:\"{!join from=id to=governing_id_sim}" + ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) +":published\"))"
+           " AND (status_sim:published" +
+           " AND _query_:\"{!join from=id to=governing_id_sim}status_sim:published\"))"
 
       # Filter for published objects
       objects = "(-" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
-           " AND "+ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) + ":published)"
+           " AND status_sim:published)"
 
       filter_published = governed_objects + " OR " + objects
 
