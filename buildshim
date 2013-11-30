@@ -22,13 +22,11 @@ install_deps)
 configure)
     rm Gemfile.lock
     bundle install --quiet
-    bundle exec rake app:db:test:prepare
-    bundle exec rake app:db:migrate
     ;;
 compile)
     ;;
 check)
-    bundle exec rake rspec
+    bundle exec rake ci
     ;;
 package)
     ;;
