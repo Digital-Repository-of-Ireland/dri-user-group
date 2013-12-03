@@ -9,14 +9,6 @@ module UserGroup
 
     protected
 
-    def add_public_head_access_controls_to_solr_params(solr_parameters, user_parameters)
-      apply_public_gated_discovery(solr_parameters,user_parameters)
-    end
-
-    def add_admin_head_access_controls_to_solr_params(solr_parameters, user_parameters)
-      apply_admin_gated_discovery(solr_parameters,user_parameters)
-    end
-
     def add_access_controls_to_solr_params(solr_parameters, user_parameters)
       apply_gated_discovery(solr_parameters, user_parameters)
     end
@@ -28,44 +20,20 @@ module UserGroup
       # Should be able to see published records
       # Filter for published objects that with published parents   
       governed_objects = "(" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
-           " AND (status_sim:published" +
-           " AND _query_:\"{!join from=id to=governing_id_sim}status_sim:published\"))"
+           " AND (" + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published" +
+           " AND _query_:\"{!join from=id to=governing_id_sim}" + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published\"))"
 
       # Filter for published objects
       objects = "(-" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
-           " AND status_sim:published)"
+           " AND " + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published)"
 
       filter_published = governed_objects + " OR " + objects
 
       # Or any models that the user can edit or manage
-      solr_parameters[:fq] << "(" + filter_published + ") OR (" + generate_permission_filters({"manager" => "","edit" => ""}).join(" OR ") + ")" unless (current_user && current_user.is_admin?)
+      solr_parameters[:fq] << "(" + filter_published + 
+                   ") OR (" + manager_and_edit_filter + 
+                   ")" unless (current_user && current_user.is_admin?)
 
-    end
-
-    # Contrller before filter that sets up access-controlled lucene query in order to provide gated discovery behavior
-    # @param solr_parameters the current solr parameters
-    # @param user_parameters the current user-subitted parameters
-    def apply_public_gated_discovery(solr_parameters, user_parameters)
-      solr_parameters[:fq] ||= []
-
-      
-      # First, check if collection and child are both published
-      filter_published =  "("+ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) + ":published AND " +
-         "_query_:\"{!join from=id to=governing_id_sim}" + ActiveFedora::SolrService.solr_name("properties_status", Hydra::Datastream::RightsMetadata.indexer) +":published\")"
-
-        # Finally, check access other permissions for the digital object NOTE: gated_discovery_filters will have to be rewritten for inheritance
-      solr_parameters[:fq] << filter_published
-      solr_parameters[:fq] << generate_permission_filters.join(" OR ")
-
-      logger.debug("Solr parameters: #{ solr_parameters.inspect }")
-    end
-
-    #Admin head should only show content that I have been specifically assigned to
-    def apply_admin_gated_discovery(solr_parameters, user_parameters)
-      solr_parameters[:fq] ||= []
-      # NOTE: gated_discovery_filters will need to be rewritten to take inheritence into account
-      solr_parameters[:fq] << generate_permission_filters({"manager" => "","edit" => ""}).join(" OR ")
-      logger.debug("Solr parameters: #{ solr_parameters.inspect }")
     end
 
     def gated_discovery_filters
@@ -84,7 +52,15 @@ module UserGroup
       user_access_filters
     end
 
-    def generate_permission_filters(permission_types={"discover" => "private_metadata", "manager" => "","edit" => "","read" => ""})
+    def published_or_permitted_filter
+      ActiveFedora::SolrService.solr_name("status", :symbol) + ":published OR " + manager_and_edit_filter
+    end
+
+    def manager_and_edit_filter
+      generate_permission_filters(["manager","edit"]).join(" OR ")
+    end
+
+    def generate_permission_filters(permission_types=["discover", "manager", "edit", "read"])
       filters = []
     
       user_roles = current_ability.user_groups
@@ -92,34 +68,31 @@ module UserGroup
 
       string_user_roles = "("+user_roles.join(" OR ")+")"
 
-      permission_types.each do |type, setting|
+      permission_types.each do |type|
         permission_query = escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_group", Hydra::Datastream::RightsMetadata.indexer), string_user_roles)
 
         if current_user && current_user.user_key.present?
           permission_query += " OR " + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_person", Hydra::Datastream::RightsMetadata.indexer), current_user.user_key)
         end
         
-        if (setting == "")
-          if type == "manager" || type == "edit"
-            permission_query = "_query_:\"{!join from=id to=governing_id_sim}" + permission_query + "\" OR " +
+        if type == "manager" || type == "edit"
+          permission_query = "_query_:\"{!join from=id to=governing_id_sim}" + permission_query + "\" OR " +
                                "("+permission_query+")"
-          else
-            permission_query = "((" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "true") + " AND " +
-                              "_query_:\"{!join from=id to=governing_id_sim}" + permission_query + "\" ) OR " + 
-                              "(" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "false") + " AND " +
-                              "("+permission_query+")))"
-          end
-        else
-          # discovery is the only permission type that enter this else statement
+        elsif type == "discover"
           permission_query = "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":0 OR " +
-                             "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":\"-1\" AND " + 
+                             "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":\"-1\" AND " +
          "_query_:\"{!join from=id to=governing_id_sim}" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":0 OR " +
           "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":1 AND (" + permission_query + "))\") OR " +
                              "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":1 AND " +
                              "(" + permission_query + ")))"
-        end
+        else
+          permission_query = "((" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "true") + " AND " +
+                             "_query_:\"{!join from=id to=governing_id_sim}" + permission_query + "\" ) OR " + 
+                             "(" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "false") + " AND " +
+                             "("+permission_query+")))"
+         end
 
-        filters << permission_query
+       filters << permission_query
       end
 
       filters
