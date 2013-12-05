@@ -52,8 +52,12 @@ module UserGroup
       user_access_filters
     end
 
+    def published_filter
+      ActiveFedora::SolrService.solr_name("status", :symbol) + ":published"
+    end
+
     def published_or_permitted_filter
-      ActiveFedora::SolrService.solr_name("status", :symbol) + ":published OR " + manager_and_edit_filter
+      published_filter + " OR " + manager_and_edit_filter
     end
 
     def manager_and_edit_filter
