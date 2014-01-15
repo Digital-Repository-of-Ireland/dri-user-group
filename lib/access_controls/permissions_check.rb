@@ -25,7 +25,7 @@ module UserGroup
 
         doc = current_ability.permissions_doc(item)
         unless doc.parent_id.nil?
-          if !current_ability.get_permission_method(doc.parent_id,"is_published?") && cannot?(:edit, doc.parent_id)
+          if !current_ability.get_permission_method(doc.parent_id,"is_published?") && cannot?(:edit, item)
             raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document, which is in draft mode.", :edit, item)
           end
         end
