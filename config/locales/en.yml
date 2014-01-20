@@ -1,169 +1,168 @@
 # Sample localization file for English. Add more files in this directory for other locales.
+
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
-en:
-  user_groups:
-    shared:
-        errors:
-            user: "Could not find user"
-        updated: "Updated"
-    application:
-        errors:
-            admin: "You must be an admin"
-            permission: "You do not have permission"
-    memberships:
-        errors:
-            approving: "Error approving membership"
-            membership: "Could not find membership"
-            group: "Could not find group"
-        pending: "Application pending for group"
-        joined: "Joined group"
-        leave: "Left group"
-        approve: "Approved membership"
-    groups:
-        errors:
-            locked: "Group is locked"
-            validation: "cannot be a positive whole number"
-        created: "Group created"
-        deleted: "Group has been deleted"
-    users:
-        account_created: "Account successfully created."
-        signup: "Welcome! You have signed up successfully."
-        deleted: "User has been deleted"
-        deleted_self: "Your account has been deleted"
-        wrong_password: "Invalid Password"
-        token: "A new token has been created"
-        deleted_token: "The token has been deleted"
-        errors:
-            deleted_token: "An error occured deleting the token"
-            validation_image_link: "URL is not a supported image type"
-
-
-    views:
-        shared:
-            confirm: "Are you sure?"
-            back: "Back"
-            update: "Update"
-            first_name: "First Name"
-            second_name: "Second Name"
-            email: "Email"
-            group_membership: "Group Membership"
-            pending: "Pending"
-            add: "Add"
-            cancel: "Cancel"
-            groups: "Groups"
-            delete: "Delete"
-            users: "Users"
-            edit: "Edit"
-            admin: "Admin User"
-            name: "Name"
-            description: "Description"
-            created: "Created At: "
-            updated: "Updated At: "
-            join_date: "Join Date"
-            remove: "Remove"
-            sign_in: "Sign in"
-            register: "Register"
-            add_user: "Add User"
-            add_group: "Add Group"
-            password: "Password"
-            password_confirm: "Confirm Password"
-            locale: "Preferred Language"
-            view_profile: "Profile Availibility: "
-            registered: "Logged in users"
-            public: "Public"
-            private: "Private"
-            about_me: "About Me"
-            token: "Token Authentication Key"
-            token_empty: "Not Generated Yet"
-        users:
-            new:
-                signup: "Sign Up"
-            edit:
-                edit: "Edit Account"
-                delete: "Delete your account"
-                delete_heading: "Delete account"
-                unhappy: "Unhappy?"
-                join_groups: "Want to join some groups?"
-                current_password: "Current Password"
-                new_token: "Generate Token"
-                delete_token: "Delete Token"
-                image_link: "Profile Photo"
-                image_link_supported: "Supports linking to PNG,JPEG,GIF,BMP images"
-                image_link_gravatar: "Use gravatar? enter gravatar in the field (email as id)"
-            index:
-                all_users: "All Users"
-            show:
-                registered: "Registered User"
-                sessions: "Sessions"
-                total_sign_in: "Total sign in's: "
-                last_sign_in: "Last sign in"
-                time: "Time: "
-                ip: "IP: "
-                membership: "Membership"
-                group: "Group"
-                leave: "Leave"
-                token_sign_in: "You can use this url to login"
-                expiry: "Expiry: "
-                never: "Never"
-                expired: "Expired"
-            sign_in:
-                remember_me: "Remember me"
-            photo:
-               alt_text: "Profile Photo"
-        groups:
-            new:
-                heading: "Create New Group"
-                create: "Create Group"
-            edit:
-                locked: "Group details are locked"
-                unlock: "Unlock Group"
-                lock: "Lock Group"
-                lock_confirm: "Locking the group protects the name and description from being changed. The group cannot be deleted. Proceed?"
-                update: "Update"
-                delete: "Delete Group"
-            index:
-                groups: "All Groups"
-                member: "You are a member of this group."
-                pending: "Your membership is pending"
-                apply: "Apply"
-                pending2: "Pending:"
-                members: "Members:"
-            show:
-                edit: "Edit Group"
-                member: "Member"
-                approve: "Approved By"
-        static_pages:
-            todo: "TODO"
-            help: "Users and Groups Help Page"
-            title: "Users and Groups"
-            logged_in: "You are logged in as"
-            account_mgt: "Manage my account"
-            links:
-              show_profile: "View my Profile"
-              edit_profile: "Edit my Profile"
-              browse_groups: "Browse all groups"
-              browse_users: "View other users"
-            link_desc:
-              show_profile_desc: "Here you can view the details of your account profile"
-              edit_profile_desc: "Edit or update your account details"
-              browse_groups_desc: "Browse the system to find groups, you can apply to join groups to get access to restricted resources"
-              browse_users_desc: "Find other users"
-        partials:
-            error_messages:
-                text: "The form contains "
-                error: "error"
-            join_group:
-                user: "User ID or Email"
-                group: "Group ID or Name"
-                join: "Join Group"
-            leave_group:
-                leave: "Leave: "
-            pending:
-                approve: "Approve"
-        header:
-            home: "Home"
-            help: "Help"
-            admin: "Admin"
-            account: "My Account"
-            signout: "Sign out"
+--- 
+en: 
+  user_groups: 
+    application: 
+      errors: 
+        admin: "You must be an admin"
+        permission: "You do not have permission"
+    groups: 
+      created: "Group created"
+      deleted: "Group has been deleted"
+      errors: 
+        locked: "Group is locked"
+        validation: "cannot be a positive whole number"
+    memberships: 
+      approve: "Approved membership"
+      errors: 
+        approving: "Error approving membership"
+        group: "Could not find group"
+        membership: "Could not find membership"
+      joined: "Joined group"
+      leave: "Left group"
+      pending: "Application pending for group"
+    shared: 
+      errors: 
+        user: "Could not find user"
+      updated: Updated
+    users: 
+      account_created: "Account successfully created."
+      deleted: "User has been deleted"
+      deleted_self: "Your account has been deleted"
+      deleted_token: "The token has been deleted"
+      errors: 
+        deleted_token: "An error occured deleting the token"
+        validation_image_link: "URL is not a supported image type"
+      signup: "Welcome! You have signed up successfully."
+      token: "A new token has been created"
+      wrong_password: "Invalid Password"
+    views: 
+      groups: 
+        edit: 
+          delete: "Delete Group"
+          lock: "Lock Group"
+          lock_confirm: "Locking the group protects the name and description from being changed. The group cannot be deleted. Proceed?"
+          locked: "Group details are locked"
+          unlock: "Unlock Group"
+          update: Update
+        index: 
+          apply: Apply
+          groups: "All Groups"
+          member: "You are a member of this group."
+          members: "Members:"
+          pending: "Your membership is pending"
+          pending2: "Pending:"
+        new: 
+          create: "Create Group"
+          heading: "Create New Group"
+        show: 
+          approve: "Approved By"
+          edit: "Edit Group"
+          member: Member
+      header: 
+        account: "My Account"
+        admin: Admin
+        help: Help
+        home: Home
+        signout: "Sign out"
+      partials: 
+        error_messages: 
+          error: error
+          text: "The form contains "
+        join_group: 
+          group: "Group ID or Name"
+          join: "Join Group"
+          user: "User ID or Email"
+        leave_group: 
+          leave: "Leave: "
+        pending: 
+          approve: Approve
+      shared: 
+        about_me: "About Me"
+        add: Add
+        add_group: "Add Group"
+        add_user: "Add User"
+        admin: "Admin User"
+        back: Back
+        cancel: Cancel
+        confirm: "Are you sure?"
+        created: "Created At: "
+        delete: Delete
+        description: Description
+        edit: Edit
+        email: Email
+        first_name: "First Name"
+        group_membership: "Group Membership"
+        groups: Groups
+        join_date: "Join Date"
+        locale: "Preferred Language"
+        name: Name
+        password: Password
+        password_confirm: "Confirm Password"
+        pending: Pending
+        private: Private
+        public: Public
+        register: Register
+        registered: "Logged in users"
+        remove: Remove
+        second_name: "Second Name"
+        sign_in: "Sign in"
+        token: "Token Authentication Key"
+        token_empty: "Not Generated Yet"
+        update: Update
+        updated: "Updated At: "
+        users: Users
+        view_profile: "Profile Availibility: "
+      static_pages: 
+        account_mgt: "Manage my account"
+        help: "Users and Groups Help Page"
+        link_desc: 
+          browse_groups_desc: "Browse the system to find groups, you can apply to join groups to get access to restricted resources"
+          browse_users_desc: "Find other users"
+          edit_profile_desc: "Edit or update your account details"
+          show_profile_desc: "Here you can view the details of your account profile"
+        links: 
+          browse_groups: "Browse all groups"
+          browse_users: "View other users"
+          edit_profile: "Edit my Profile"
+          show_profile: "View my Profile"
+        logged_in: "You are logged in as"
+        title: "Users and Groups"
+        todo: TODO
+      users: 
+        edit: 
+          current_password: "Current Password"
+          delete: "Delete your account"
+          delete_heading: "Delete account"
+          delete_token: "Delete Token"
+          edit: "Edit Account"
+          image_link: "Profile Photo"
+          image_link_gravatar: "Use gravatar? enter gravatar in the field (email as id)"
+          image_link_supported: "Supports linking to PNG,JPEG,GIF,BMP images"
+          join_groups: "Want to join some groups?"
+          new_token: "Generate Token"
+          unhappy: Unhappy?
+        index: 
+          all_users: "All Users"
+        new: 
+          signup: "Sign Up"
+        photo: 
+          alt_text: "Profile Photo"
+        show: 
+          expired: Expired
+          expiry: "Expiry: "
+          group: Group
+          ip: "IP: "
+          last_sign_in: "Last sign in"
+          leave: Leave
+          membership: Membership
+          never: Never
+          registered: "Registered User"
+          sessions: Sessions
+          time: "Time: "
+          token_sign_in: "You can use this url to login"
+          total_sign_in: "Total sign in's: "
+        sign_in: 
+          remember_me: "Remember me"
