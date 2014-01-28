@@ -232,5 +232,14 @@ Devise.setup do |config|
   #
   # When using omniauth, Devise cannot automatically set Omniauth path,
   # so you need to do it manually. For the users scope, it would be:
-  # config.omniauth_path_prefix = "/my_engine/users/auth"
+  #config.omniauth_path_prefix = "/users/auth"
+  #
+  config.omniauth :shibboleth, {:uid_field => 'uid',
+                  :shib_session_id_field     => "Shib-Session-ID",
+                  :shib_application_id_field => "Shib-Application-ID",
+                  :info_fields => {:email => 'mail', :name => 'cn', :last_name => 'sn', :given_name => 'givenName'},
+                  #:extra_fields => [:schacHomeOrganization],
+                  :debug => false
+  }
+
 end

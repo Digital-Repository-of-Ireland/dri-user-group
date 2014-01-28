@@ -22,9 +22,9 @@ module UserGroup
       #Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
       #Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
       devise :database_authenticatable, :token_authenticatable,
-        :recoverable, :rememberable, :trackable
+        :recoverable, :rememberable, :trackable, :omniauthable, :omniauth_providers => [:shibboleth]
 
-      attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date
+      attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :provider, :uid, :remember_me, :token_creation_date
 
       #Email addresses in database are case insensitive so ensure all the same
       before_save { self.email.downcase! }
@@ -32,8 +32,8 @@ module UserGroup
       validates :email, presence: true, uniqueness: { case_sensitive: false }
       validates :first_name, presence: true, length: { maximum: 50 }
       validates :second_name, presence: true, length: { maximum: 50 }
-      validates :password_confirmation, presence: true, :on => :create
-      validates :password, presence: true, confirmation: true, length: {minimum: 6}, :on => :create
+      validates :password_confirmation, presence: true, :on => :create, if: :password_required?
+      validates :password, presence: true, confirmation: true, length: {minimum: 6}, :on => :create, if: :password_required?
     end
 
     def to_s
@@ -116,5 +116,19 @@ module UserGroup
         return false
       end
     end
+
+    def apply_omniauth(omniauth)
+      logger.debug("Omniauth #{omniauth.inspect.to_yaml}")
+      self.provider = omniauth['provider']  
+      self.uid = omniauth['uid']
+      self.email = omniauth['info']['email'] if email.blank?
+      self.first_name = omniauth['info']['given_name'] if first_name.blank?
+      self.second_name = omniauth['info']['last_name'] if second_name.blank?
+    end
+
+    def password_required?
+      self.provider.blank?
+    end
+
   end
 end

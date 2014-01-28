@@ -7,7 +7,7 @@ UserGroup::Engine.routes.draw do
   #root :to => 'static#home'
 
   devise_for :users, {
-    :skip => :registration,
+    :skip => [:registration, :omniauth_callbacks],
     class_name:     'UserGroup::User',
     module: :devise,
   }
