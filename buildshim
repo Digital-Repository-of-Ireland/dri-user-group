@@ -28,7 +28,7 @@ configure)
 compile)
     ;;
 check)
-    bundle exec rake rspec
+    bundle exec rake rspec --backtrace
     ;;
 package)
     ;;
