@@ -24,7 +24,8 @@ Gem::Specification.new do |s|
   s.add_dependency "kaminari", "~> 0.14.1"
   s.add_dependency "gravatar-ultimate"
   s.add_dependency "fastimage"
-
+  s.add_dependency "omniauth"
+  s.add_dependency "omniauth-shibboleth"
 
   # s.add_dependency "jquery-rails"
 
