@@ -1,85 +1,85 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
---- 
-en: 
-  user_groups: 
-    application: 
-      errors: 
+---
+en:
+  user_groups:
+    application:
+      errors:
         admin: "You must be an admin"
         permission: "You do not have permission"
-    groups: 
+    groups:
       created: "Group created"
       deleted: "Group has been deleted"
-      errors: 
+      errors:
         locked: "Group is locked"
         validation: "cannot be a positive whole number"
-    memberships: 
+    memberships:
       approve: "Approved membership"
-      errors: 
+      errors:
         approving: "Error approving membership"
         group: "Could not find group"
         membership: "Could not find membership"
       joined: "Joined group"
       leave: "Left group"
       pending: "Application pending for group"
-    shared: 
-      errors: 
+    shared:
+      errors:
         user: "Could not find user"
       updated: Updated
-    users: 
+    users:
       account_created: "Account successfully created."
       deleted: "User has been deleted"
       deleted_self: "Your account has been deleted"
       deleted_token: "The token has been deleted"
-      errors: 
+      errors:
         deleted_token: "An error occured deleting the token"
         validation_image_link: "URL is not a supported image type"
       signup: "Welcome! You have signed up successfully."
       token: "A new token has been created"
       wrong_password: "Invalid Password"
-    views: 
-      groups: 
-        edit: 
+    views:
+      groups:
+        edit:
           delete: "Delete Group"
           lock: "Lock Group"
           lock_confirm: "Locking the group protects the name and description from being changed. The group cannot be deleted. Proceed?"
           locked: "Group details are locked"
           unlock: "Unlock Group"
           update: Update
-        index: 
+        index:
           apply: Apply
           groups: "All Groups"
           member: "You are a member of this group."
           members: "Members:"
           pending: "Your membership is pending"
           pending2: "Pending:"
-        new: 
+        new:
           create: "Create Group"
           heading: "Create New Group"
-        show: 
+        show:
           approve: "Approved By"
           edit: "Edit Group"
           member: Member
-      header: 
+      header:
         account: "My Account"
-        admin: Admin
+        admin: Administer Users
         help: Help
         home: Home
         signout: "Sign out"
-      partials: 
-        error_messages: 
+      partials:
+        error_messages:
           error: error
           text: "The form contains "
-        join_group: 
+        join_group:
           group: "Group ID or Name"
           join: "Join Group"
           user: "User ID or Email"
-        leave_group: 
+        leave_group:
           leave: "Leave: "
-        pending: 
+        pending:
           approve: Approve
-      shared: 
+      shared:
         about_me: "About Me"
         add: Add
         add_group: "Add Group"
@@ -115,15 +115,15 @@ en:
         updated: "Updated At: "
         users: Users
         view_profile: "Profile Availibility: "
-      static_pages: 
+      static_pages:
         account_mgt: "Manage my account"
         help: "Users and Groups Help Page"
-        link_desc: 
+        link_desc:
           browse_groups_desc: "Browse the system to find groups, you can apply to join groups to get access to restricted resources"
           browse_users_desc: "Find other users"
           edit_profile_desc: "Edit or update your account details"
           show_profile_desc: "Here you can view the details of your account profile"
-        links: 
+        links:
           browse_groups: "Browse all groups"
           browse_users: "View other users"
           edit_profile: "Edit my Profile"
@@ -131,8 +131,8 @@ en:
         logged_in: "You are logged in as"
         title: "Users and Groups"
         todo: TODO
-      users: 
-        edit: 
+      users:
+        edit:
           current_password: "Current Password"
           delete: "Delete your account"
           delete_heading: "Delete account"
@@ -144,13 +144,13 @@ en:
           join_groups: "Want to join some groups?"
           new_token: "Generate Token"
           unhappy: Unhappy?
-        index: 
+        index:
           all_users: "All Users"
-        new: 
+        new:
           signup: "Sign Up"
-        photo: 
+        photo:
           alt_text: "Profile Photo"
-        show: 
+        show:
           expired: Expired
           expiry: "Expiry: "
           group: Group
@@ -164,5 +164,5 @@ en:
           time: "Time: "
           token_sign_in: "You can use this url to login"
           total_sign_in: "Total sign in's: "
-        sign_in: 
+        sign_in:
           remember_me: "Remember me"
