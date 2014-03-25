@@ -21,7 +21,7 @@ module UserGroup
       #Timeoutable: expires sessions that have no activity in a specified period of time.
       #Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
       #Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
-      devise :database_authenticatable, :token_authenticatable,
+      devise :confirmable, :database_authenticatable, :token_authenticatable,
         :recoverable, :rememberable, :trackable, :omniauthable, :omniauth_providers => [:shibboleth]
 
       attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :provider, :uid, :remember_me, :token_creation_date

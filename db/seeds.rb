@@ -6,7 +6,7 @@ def add_group_user(email,first_name,second_name,locale,group)
 end
 
 def add_regular_user(email,first_name,second_name,locale)
-    user = UserGroup::User.find_or_create_by_email(email, :password => "password", :password_confirmation => "password", :locale => locale, :first_name => first_name, :second_name => second_name) 
+    user = UserGroup::User.find_or_create_by_email(email, :password => "password", :password_confirmation => "password", :locale => locale, :first_name => first_name, :second_name => second_name, :confirmed_at => Time.now) 
     registered_group_id = UserGroup::Group.find_by_name("registered").id
     add_and_approve_membership(user,registered_group_id)
     return user
