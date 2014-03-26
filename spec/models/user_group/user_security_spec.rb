@@ -7,7 +7,8 @@ describe UserGroup::UserSecurity do
     @user_sname = "sname"
     @user_locale = "en"
     @user_password = "password"
-    @user = UserGroup::User.create(:email => @user_email, :password => @user_password, :password_confirmation => @user_password, :locale => @user_locale, :first_name => @user_fname, :second_name => @user_sname) 
+    @user = UserGroup::User.create(:email => @user_email, :password => @user_password, :password_confirmation => @user_password, :locale => @user_locale, :first_name => @user_fname, :second_name => @user_sname)
+    @user.skip_confirmation! 
   end
         
   #User security additions
