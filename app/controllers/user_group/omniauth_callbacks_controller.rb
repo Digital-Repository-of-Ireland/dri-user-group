@@ -16,7 +16,16 @@ module UserGroup
         redirect_to main_app.root_url
       else
         @user = UserGroup::User.send(create_method, omniauth)
+        
         if @user.save
+          # join registered group
+          group = UserGroup::Group.find_or_create_by_name(SETTING_GROUP_DEFAULT, description: "Every user account is a member of this group.", is_locked: true)
+          unless group.nil?
+            membership = @user.join_group(group.id)
+            membership.approve_membership(@user.id)
+            membership.save
+          end 
+
           flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => auth_type
           sign_in @user, :event => :authentication
           redirect_to main_app.root_url
