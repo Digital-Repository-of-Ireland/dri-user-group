@@ -60,14 +60,14 @@ module UserGroup
     def update
       current_password = params[:user].delete(:current_password)
       if modifying_current_user?(@user) || !current_user.is_admin?
-        unless @user.valid_password?(current_password)
+        unless !@user.password_required? || @user.valid_password?(current_password)
           flash[:error] = I18n.t("user_groups.users.wrong_password")
           redirect_to :back
           return
         end
       end
       #Remove password if not being updated
-      if params[:user][:password].empty? && params[:user][:password_confirmation].empty?
+      if (params[:user].has_key?(:password) && params[:user][:password].empty?) && (params[:user].has_key?(:password_confirmation) && params[:user][:password_confirmation].empty?)
         params[:user].delete(:password)
         params[:user].delete(:password_confirmation)
       end
