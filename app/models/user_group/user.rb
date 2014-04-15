@@ -6,6 +6,7 @@ module UserGroup
     def self.create_for_shibboleth(access_token)
       u = UserGroup::User.new
       u.apply_omniauth(access_token)
+      u.skip_confirmation!
       u
     end
 
