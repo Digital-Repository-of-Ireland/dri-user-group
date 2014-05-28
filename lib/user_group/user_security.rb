@@ -49,6 +49,21 @@ module UserGroup
       return true if !group.nil? && self.member?(group.id)
     end
 
+    def is_cm?
+      group = Group.find_by_name(SETTING_GROUP_CM)
+      return true if !group.nil? && self.member?(group.id)
+    end
+
+    def is_registered?
+      group = Group.find_by_name(SETTING_GROUP_DEFAULT)
+      return true if !group.nil? && self.member?(group.id)
+    end
+
+    def is_public?
+      group = Group.find_by_name(SETTING_GROUP_PUBLIC)
+      return true if !group.nil? && self.member?(group.id)
+    end
+
     def member?(group_id)
       membership = self.memberships.find_by_group_id(group_id)
       return true if !membership.nil? && membership.approved?
