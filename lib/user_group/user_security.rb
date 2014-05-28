@@ -8,7 +8,7 @@ module UserGroup
     included do
       has_many :memberships, dependent: :destroy
       has_many :groups, through: :memberships, uniq: true
-
+      has_many :authentications
 
       #Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
       #Token Authenticatable: signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
@@ -24,7 +24,7 @@ module UserGroup
       devise :confirmable, :database_authenticatable, :token_authenticatable,
         :recoverable, :rememberable, :trackable, :omniauthable, :omniauth_providers => [:shibboleth]
 
-      attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :provider, :uid, :remember_me, :token_creation_date
+      attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date
 
       #Email addresses in database are case insensitive so ensure all the same
       before_save { self.email.downcase! }
@@ -134,15 +134,14 @@ module UserGroup
 
     def apply_omniauth(omniauth)
       logger.debug("Omniauth #{omniauth.inspect.to_yaml}")
-      self.provider = omniauth['provider']  
-      self.uid = omniauth['uid']
       self.email = omniauth['info']['email'] if email.blank?
       self.first_name = omniauth['info']['given_name'] if first_name.blank?
       self.second_name = omniauth['info']['last_name'] if second_name.blank?
+      self.authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
     end
 
     def password_required?
-      self.provider.blank?
+      (self.authentications.empty? || !self.password.blank?)
     end
 
   end

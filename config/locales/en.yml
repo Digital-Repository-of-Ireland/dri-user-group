@@ -35,6 +35,7 @@ en:
       errors:
         deleted_token: "An error occured deleting the token"
         validation_image_link: "URL is not a supported image type"
+        missing_account_details: "Authentication successful. Please fill in missing account details: %{reason}."
       signup: "Welcome! You have signed up successfully."
       token: "A new token has been created"
       wrong_password: "Invalid Password"

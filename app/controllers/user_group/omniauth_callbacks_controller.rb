@@ -9,11 +9,15 @@ module UserGroup
       omniauth = request.env['omniauth.auth']
       create_method = "create_for_#{auth_type.downcase}".to_sym
 
-      @user = UserGroup::User.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
-      if @user
+      authentication = UserGroup::Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
+      if authentication
         flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => auth_type
-        sign_in @user, :event => :authentication
+        sign_in authentication.user, :event => :authentication
         redirect_to main_app.root_url
+      elsif current_user
+        current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
+        flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => auth_type
+        redirect_to main_app.root_url        
       else
         @user = UserGroup::User.send(create_method, omniauth)
         
@@ -31,9 +35,9 @@ module UserGroup
           redirect_to main_app.root_url
         else
           errors = @user.errors.full_messages.join(", ").html_safe
-          flash[:error] = I18n.t "devise.omniauth_callbacks.failure", :kind => auth_type, :reason => errors
-          session["devise.#{auth_type.downcase}_data"] = omniauth
-          redirect_to request.env['omniauth.origin'] || main_app.root_url 
+          flash[:alert] = I18n.t("user_groups.users.errors.missing_account_details", :reason => errors)
+          session[:omniauth] = omniauth.except('extra')
+          redirect_to new_user_url || main_app.root_url 
         end
       end
     end

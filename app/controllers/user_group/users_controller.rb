@@ -22,10 +22,19 @@ module UserGroup
 
     def new
       @user = User.new
+      
+      if session[:omniauth]
+        @user.apply_omniauth(session[:omniauth])
+      end
     end
 
     def create
       @user = User.new(params[:user])
+
+      if session[:omniauth]
+        @user.apply_omniauth(session[:omniauth])
+      end
+
       if @user.valid? && @user.save
         #Join group registered
         group = UserGroup::Group.find_by_name(SETTING_GROUP_DEFAULT)
@@ -52,6 +61,8 @@ module UserGroup
       else
         render 'new'
       end
+
+      session[:omniauth] = nil unless @user.new_record?
     end
 
     def edit
