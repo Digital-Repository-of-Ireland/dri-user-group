@@ -234,10 +234,10 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   #config.omniauth_path_prefix = "/users/auth"
   #
-  config.omniauth :shibboleth, {:uid_field => 'uid',
+  config.omniauth :shibboleth, {:uid_field => 'eppn',
                   :shib_session_id_field     => "Shib-Session-ID",
                   :shib_application_id_field => "Shib-Application-ID",
-                  :info_fields => {:email => 'mail', :name => 'cn', :last_name => 'sn', :given_name => 'givenName'},
+                  :info_fields => {:email => 'mail', :last_name => 'sn', :given_name => 'givenName'},
                   #:extra_fields => [:schacHomeOrganization],
                   :debug => false
   }
