@@ -21,7 +21,7 @@ end
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../spec/test_app/config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
+require 'rspec/expectations'
 require 'user_group'
 require 'factory_girl_rails'
 require 'database_cleaner'
