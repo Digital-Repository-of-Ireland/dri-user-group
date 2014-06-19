@@ -8,7 +8,7 @@ module UserGroup
     included do
       has_many :memberships, dependent: :destroy
       has_many :groups, through: :memberships, uniq: true
-
+      has_many :authentications
 
       #Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
       #Token Authenticatable: signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
@@ -21,8 +21,8 @@ module UserGroup
       #Timeoutable: expires sessions that have no activity in a specified period of time.
       #Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
       #Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
-      devise :database_authenticatable, :token_authenticatable,
-        :recoverable, :rememberable, :trackable
+      devise :confirmable, :database_authenticatable, :token_authenticatable,
+        :recoverable, :rememberable, :trackable, :omniauthable, :omniauth_providers => [:shibboleth]
 
       attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date
 
@@ -32,8 +32,8 @@ module UserGroup
       validates :email, presence: true, uniqueness: { case_sensitive: false }
       validates :first_name, presence: true, length: { maximum: 50 }
       validates :second_name, presence: true, length: { maximum: 50 }
-      validates :password_confirmation, presence: true, :on => :create
-      validates :password, presence: true, confirmation: true, length: {minimum: 6}, :on => :create
+      validates :password_confirmation, presence: true, :on => :create, if: :password_required?
+      validates :password, presence: true, confirmation: true, length: {minimum: 6}, :on => :create, if: :password_required?
     end
 
     def to_s
@@ -46,6 +46,21 @@ module UserGroup
 
     def is_admin?
       group = Group.find_by_name(SETTING_GROUP_ADMIN)
+      return true if !group.nil? && self.member?(group.id)
+    end
+
+    def is_cm?
+      group = Group.find_by_name(SETTING_GROUP_CM)
+      return true if !group.nil? && self.member?(group.id)
+    end
+
+    def is_registered?
+      group = Group.find_by_name(SETTING_GROUP_DEFAULT)
+      return true if !group.nil? && self.member?(group.id)
+    end
+
+    def is_public?
+      group = Group.find_by_name(SETTING_GROUP_PUBLIC)
       return true if !group.nil? && self.member?(group.id)
     end
 
@@ -116,5 +131,18 @@ module UserGroup
         return false
       end
     end
+
+    def apply_omniauth(omniauth)
+      logger.debug("Omniauth #{omniauth.inspect.to_yaml}")
+      self.email = omniauth['info']['email'] if email.blank?
+      self.first_name = omniauth['info']['given_name'] if first_name.blank?
+      self.second_name = omniauth['info']['last_name'] if second_name.blank?
+      self.authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
+    end
+
+    def password_required?
+      (self.authentications.empty? || !self.password.blank?)
+    end
+
   end
 end

@@ -10,6 +10,7 @@ describe UserGroup do
     @user.email = "FirstName.SecondName@host.domain"
     @user.password = "foobar"
     @user.password_confirmation = "foobar"
+    @user.confirmed_at = Time.now
     @user.should be_valid
   end
 end

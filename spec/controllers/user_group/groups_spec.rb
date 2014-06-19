@@ -6,6 +6,7 @@ describe UserGroup::GroupsController do
     @routes = UserGroup::Engine.routes
 
     @login_user = FactoryGirl.create(:admin)
+    @login_user.confirm!
     sign_in @login_user
   end
 
@@ -15,7 +16,7 @@ describe UserGroup::GroupsController do
       group.save
 
       get :index
-      assigns[:groups].should_not be_nil
+      expect(assigns[:groups]).not_to be_nil
       expect(assigns[:groups]).to match_array([UserGroup::Group.find_by_name(SETTING_GROUP_ADMIN), group])
     end
   end
@@ -24,8 +25,8 @@ describe UserGroup::GroupsController do
     it "assigns a new group" do
       get :new
 
-      assigns(:group).should_not be_nil
-      assigns(:group).should be_kind_of(UserGroup::Group)
+      expect(assigns(:group)).not_to be_nil
+      expect(assigns(:group)).to be_kind_of(UserGroup::Group)
     end
   end
 
@@ -34,7 +35,7 @@ describe UserGroup::GroupsController do
       @group = FactoryGirl.create(:group)
         
       get :show, id: @group 
-      response.should render_template :show 
+      expect(response).to render_template :show 
     end 
   end
 
@@ -48,20 +49,21 @@ describe UserGroup::GroupsController do
 
       it "redirects to the new group" do 
         post :create, group: FactoryGirl.attributes_for(:group) 
-        response.should redirect_to UserGroup::Group.last 
+        expect(response).to redirect_to UserGroup::Group.last 
       end
     end
 
     context "with invalid attributes" do 
       it "does not save the new group" do 
+        count = UserGroup::Group.count
         expect{ 
           post :create, group: FactoryGirl.attributes_for(:invalid_group) 
-        }.to_not change(UserGroup::Group,:count).by(1) 
+        }.not_to change(UserGroup::Group,:count).from(count) 
       end
 
       it "re-renders the new method" do 
         post :create, group: FactoryGirl.attributes_for(:invalid_group) 
-        response.should render_template :new 
+        expect(response).to render_template :new 
       end
     end
   end
@@ -75,15 +77,15 @@ describe UserGroup::GroupsController do
       it "located the requested @group" do 
         put :update, id: @group, 
         group: FactoryGirl.attributes_for(:group) 
-        assigns(:group).should eq(@group) 
+        expect(assigns(:group)).to eq(@group) 
       end 
 
       it "changes @group's attributes" do 
         put :update, id: @group,
           group: FactoryGirl.attributes_for(:group, name: "group", description: "test")
         @group.reload 
-        @group.name.should eq("group") 
-        @group.description.should eq("test") 
+        expect(@group.name).to eq("group") 
+        expect(@group.description).to eq("test") 
       end 
 
       it "does not change locked group" do
@@ -93,13 +95,13 @@ describe UserGroup::GroupsController do
         put :update, id: @group,
           group: FactoryGirl.attributes_for(:group, name: "locked", description: "locked")
         @group.reload
-        @group.name.should_not eq("locked")
-        @group.description.should_not eq("locked")
+        expect(@group.name).not_to eq("locked")
+        expect(@group.description).not_to eq("locked")
       end
 
       it "redirects to the updated group" do 
         put :update, id: @group, group: FactoryGirl.attributes_for(:group) 
-        response.should redirect_to @group
+        expect(response).to redirect_to @group
       end 
     end
 
@@ -110,13 +112,13 @@ describe UserGroup::GroupsController do
         put :update, id: @group,
           group: FactoryGirl.attributes_for(:group, name: nil, description: "tester")
         @group.reload
-        @group.description.should_not eq("tester")
-        @group.name.should eq(name)
+        expect(@group.description).not_to eq("tester")
+        expect(@group.name).to eq(name)
       end
 
       it "re-renders the edit method" do
         put :update, id: @group, group: FactoryGirl.attributes_for(:invalid_group)
-        response.should render_template :edit
+        expect(response).to render_template :edit
       end
     end
   end
@@ -139,21 +141,21 @@ describe UserGroup::GroupsController do
     end
 
     it "locks the group" do
-      @group.is_locked?.should be_false
+      expect(@group.is_locked?).to be_falsey
 
       put :lock, id: @group
       @group.reload
-      @group.is_locked?.should be_true
+      expect(@group.is_locked?).to be true
     end
 
     it "unlocks the group" do
       @group.toggle_lock
       @group.save
-      @group.is_locked?.should be_true
+      expect(@group.is_locked?).to be true
 
       put :lock, id: @group
       @group.reload
-      @group.is_locked?.should be_false
+      expect(@group.is_locked?).to be_falsey
     end
   end
 

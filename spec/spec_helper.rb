@@ -21,7 +21,7 @@ end
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../spec/test_app/config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
+require 'rspec/expectations'
 require 'user_group'
 require 'factory_girl_rails'
 require 'database_cleaner'
@@ -41,6 +41,7 @@ RSpec.configure do |config|
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
+  config.infer_spec_type_from_file_location!
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -76,6 +77,9 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.expect_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
 end
 
 module FactoryGirl

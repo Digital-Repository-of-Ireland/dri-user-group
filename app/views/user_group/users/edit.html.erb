@@ -14,13 +14,13 @@
 
       <div><%= f.label :second_name, (t :'user_groups.views.shared.second_name')  %><br />
       <%= f.text_field :second_name %></div>
-      
+
       <div><%= f.label :password, (t :'user_groups.views.shared.password')  %><br />
-      <%= f.password_field :password %></div>
+      <%= f.password_field :password, :disabled => @user.password_required? ? false : true %></div>
       
       <div><%= f.label :password_confirmation, (t :'user_groups.views.shared.password_confirm')  %><br />
-      <%= f.password_field :password_confirmation %></div>
-
+      <%= f.password_field :password_confirmation, :disabled => @user.password_required? ? false : true %></div>
+      
       <div><%= f.label :locale, (t :'user_groups.views.shared.locale') %><br />
       <%= f.select(:locale, [[t('dri.application.lang.en'), 'en'], [t('dri.application.lang.ga'), 'ga']]) %></div>
 
@@ -45,7 +45,7 @@
 
       <% if current_user.id == @user.id or !current_user.is_admin? %>
       <div><%= f.label :current_password, (t :'user_groups.views.users.edit.current_password')  %><br />
-      <%= f.password_field :current_password %></div>
+      <%= f.password_field :current_password, :disabled => @user.password_required? ? false : true %></div>
       <% end %>
   </div>
 

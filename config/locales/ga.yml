@@ -1,168 +1,168 @@
 # Sample localization file for English. Add more files in this directory for other locales.
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+---
 ga:
   user_groups:
-    shared:
-        errors:
-            user: "Ní fhéadfaí an t-úsáideoir a aimsiú"
-        updated: "Tugtha cothrom le dáta"
     application:
-        errors:
-            admin: "Ní mór duit bheith i do riarathóir"
-            permission: "Níl cead agat"
-    memberships:
-        errors:
-            approving: "Tharla earráid le linn dearbhú ballraíochta"
-            membership: "Ní fhéadfaí ballraíocht a aimsiú"
-            group: "Ní fhéadfaí an grúpa a aimsiú"
-        pending: "Iarratas ar feitheamh don ngrúpa"
-        joined: "Dulta isteach sa ghrúpa"
-        leave: "Imithe amach as an ngrúpa"
-        approve: "Ballraíocht faofaithe"
+      errors:
+        admin: "Ní mór duit bheith i do riarathóir"
+        permission: "Níl cead agat"
     groups:
-        errors:
-            locked: "Tá an grúpa faoi ghlas"
-            validation: "Ní féidir léi a bheith ina slánuimhir dhearfach"
-        created: "Cruthaíodh an grúpa"
-        deleted: "Scriosadh an grúpa"
+      created: "Cruthaíodh an grúpa"
+      deleted: "Scriosadh an grúpa"
+      errors:
+        locked: "Tá an grúpa faoi ghlas"
+        validation: "Ní féidir léi a bheith ina slánuimhir dhearfach"
+    memberships:
+      approve: "Ballraíocht faofaithe"
+      errors:
+        approving: "Tharla earráid le linn dearbhú ballraíochta"
+        group: "Ní fhéadfaí an grúpa a aimsiú"
+        membership: "Ní fhéadfaí ballraíocht a aimsiú"
+      joined: "Dulta isteach sa ghrúpa"
+      leave: "Imithe amach as an ngrúpa"
+      pending: "Iarratas ar feitheamh don ngrúpa"
+    shared:
+      errors:
+        user: "Ní fhéadfaí an t-úsáideoir a aimsiú"
+      updated: "Tugtha cothrom le dáta"
     users:
-        signup: "Fáilte! D'éirigh leat síniú isteach."
-        deleted: "Scriosadh an t-úsáideoir"
-        deleted_self: "Scriosadh do chuntas"
-        wrong_password: "Pasfhocal neamhbhailí"
-        token: "Cruthaíodh ceadchomhartha nua"
-        deleted_token: "Scriosadh an ceadchomhartha"
-        errors:
-            deleted_token: "Tharla earráid le linn scriosadh an cheadchomhartha"
-            validation_image_link: "Ní cineál íomhá a ghlactar leis é an URL"
-
-
+      account_created: "Account successfully created."
+      deleted: "Scriosadh an t-úsáideoir"
+      deleted_self: "Scriosadh do chuntas"
+      deleted_token: "Scriosadh an ceadchomhartha"
+      errors:
+        deleted_token: "Tharla earráid le linn scriosadh an cheadchomhartha"
+        validation_image_link: "Ní cineál íomhá a ghlactar leis é an URL"
+      signup: "Fáilte! D'éirigh leat síniú isteach."
+      token: "Cruthaíodh ceadchomhartha nua"
+      wrong_password: "Pasfhocal neamhbhailí"
     views:
-        shared:
-            confirm: "An bhfuil tú cinnte?"
-            back: "Siar"
-            update: "Tabhair cothrom le dáta"
-            first_name: "Ainm"
-            second_name: "Sloinne"
-            email: "Ríomhphost"
-            group_membership: "Ballraíocht Ghrúpa"
-            pending: "Ar feitheamh"
-            add: "Cuir leis"
-            cancel: "Cuir ar ceal"
-            groups: "Grúpaí"
-            delete: "Scrios"
-            users: "Usáideoirí"
-            edit: "Cuir in eagar"
-            admin: "Úsáideoir Riaracháin"
-            name: "Ainm"
-            description: "Cur Síos"
-            created: "Dáta Cruthaithe: "
-            updated: "Dáta tugtha cothrom le dáta: "
-            join_date: "Dáta a bhfuarthas ballraíocht"
-            remove: "Bain"
-            sign_in: "Sínigh isteach"
-            register: "Cláraigh"
-            add_user: "Cuir Úsáideoir leis"
-            add_group: "Cuir Grúpa leis"
-            password: "Pasfhocal"
-            password_confirm: "Deimhnigh Pasfhocal"
-            locale: "Rogha Teangan"
-            view_profile: "Fáil ar an bpróifíl: "
-            registered: "Úsáideoirí atá logáilte isteach"
-            public: "Poiblí"
-            private: "Príobháideach"
-            about_me: "Eolas fúm"
-            token: "Eochair fhíordheimhnithe ceadchomhartha"
-            token_empty: "Níor gineadh go fóill í"
-        users:
-            new:
-                signup: "Cláraigh"
-            edit:
-                edit: "Cuir an cuntas in eagar"
-                delete: "Scrios do chuntas"
-                delete_heading: "Scrios cuntas"
-                unhappy: "Míshásta?"
-                join_groups: "Ar mhaith leat ballraíocht a fháil i ngrúpaí ar bith?"
-                current_password: "Pasfhocal Reatha"
-                new_token: "Gin ceadchomhartha"
-                delete_token: "Scrios ceadchomhartha"
-                image_link: "Grianghraf phróifíle"
-                image_link_supported: "Glactar le nascadh d'íomhánna PNG,JPEG,GIF,BMP"
-                image_link_gravatar: "Úsáid abhatár domhanda? Cuir isteach abhatár domhanda sa réimse (ríomhphost mar id)"
-            index:
-                all_users: "Gach Úsáideoir"
-            show:
-                registered: "Úsáideoir Cláraithe"
-                sessions: "Seisiúin"
-                total_sign_in: "Líon iomlán sínithe isteach: "
-                last_sign_in: "Síniú isteach deireanach"
-                time: "Am: "
-                ip: "IP: "
-                membership: "Ballraíocht"
-                group: "Grúpa"
-                leave: "Fág"
-                token_sign_in: "Is féidir leat an url seo a úsáid le logáil isteach"
-                expiry: "Dul in éag: "
-                never: "Choíche"
-                expired: "Imithe in éag"
-            sign_in:
-                remember_me: "Cuimhnigh orm"
-            photo:
-               alt_text: "Grianghraf phróifíle"
-        groups:
-            new:
-                heading: "Cruthaigh Grúpa Nua"
-                create: "Cruthaigh Grúpa"
-            edit:
-                locked: "Tá sonraí faoin ngrúpa faoi ghlas"
-                unlock: "Díghlasáil an grúpa"
-                lock: "Cuir an grúpa faoi ghlas"
-                lock_confirm: "Ní féidir ainm an ghrúpa, ná an cur síos air, a athrú nuair atá sé faoi ghlas. Ní féidir é a scriosadh. Lean ar aghaidh?"
-                update: "Tabhair cothrom le dáta"
-                delete: "Scrios Grúpa"
-            index:
-                groups: "Gach Grúpa"
-                member: "Ball den ghrúpa seo thú."
-                pending: "Tá do bhallraíocht ar feitheamh"
-                apply: "Déan iarratas"
-                pending2: "Ar feitheamh:"
-                members: "Baill:"
-            show:
-                edit: "Cuir eagar ar an ngrúpa"
-                member: "Ball"
-                approve: "Faofaithe ag"
-        static_pages:
-            todo: "TODO"
-            help: "Leathanach cabhrach úsáideoirí agus grúpaí"
-            title: "Úsáideoirí agus Grúpaí"
-            logged_in: "Tá tú logáilte isteach mar"
-            account_mgt: "Déan bainistiú ar mo chuntas"
-            links:
-              show_profile: "Féach ar mo phróifíl"
-              edit_profile: "Cuir mo phróifíl in eagar"
-              browse_groups: "Dearc ar gach grúpa"
-              browse_users: "Féach ar úsáideoirí eile"
-            link_desc:
-              show_profile_desc: "Is féidir leat féachaint ar shonraí phróifíl do chuntais anseo"
-              edit_profile_desc: "Cuir sonraí do chuntais in eagar nó tabhair cothrom le dáta iad"
-              browse_groups_desc: "Dearc ar an gcóras le grúpaí a aimsiú. Chun rochtain a fháil ar acmhainní teoranta, cuir iarratas isteach ar bhallraíocht sna grúpa cuí"
-              browse_users_desc: "Aimsigh úsáideoirí eile"
-        partials:
-            error_messages:
-                text: "San fhoirm tá "
-                error: "Earráid"
-            join_group:
-                user: "ID nó ríomhphost an úsáideora"
-                group: "Ainm nó ID an ghrúpa"
-                join: "Téigh isteach sa ghrúpa"
-            leave_group:
-                leave: "Fág: "
-            pending:
-                approve: "Faomh"
-        header:
-            home: "Baile"
-            help: "Cabhair"
-            admin: "Riarathóir"
-            account: "Mo Chuntas"
-            signout: "Sínigh Amach"
+      groups:
+        edit:
+          delete: "Scrios Grúpa"
+          lock: "Cuir an grúpa faoi ghlas"
+          lock_confirm: "Ní féidir ainm an ghrúpa, ná an cur síos air, a athrú nuair atá sé faoi ghlas. Ní féidir é a scriosadh. Lean ar aghaidh?"
+          locked: "Tá sonraí faoin ngrúpa faoi ghlas"
+          unlock: "Díghlasáil an grúpa"
+          update: "Tabhair cothrom le dáta"
+        index:
+          apply: "Déan iarratas"
+          groups: "Gach Grúpa"
+          member: "Ball den ghrúpa seo thú."
+          members: "Baill:"
+          pending: "Tá do bhallraíocht ar feitheamh"
+          pending2: "Ar feitheamh:"
+        new:
+          create: "Cruthaigh Grúpa"
+          heading: "Cruthaigh Grúpa Nua"
+        show:
+          approve: "Faofaithe ag"
+          edit: "Cuir eagar ar an ngrúpa"
+          member: Ball
+      header:
+        account: "Mo Chuntas"
+        admin: Administer Users
+        help: Cabhair
+        home: Baile
+        signout: "Sínigh Amach"
+      partials:
+        error_messages:
+          error: Earráid
+          text: "San fhoirm tá "
+        join_group:
+          group: "Ainm nó ID an ghrúpa"
+          join: "Téigh isteach sa ghrúpa"
+          user: "ID nó ríomhphost an úsáideora"
+        leave_group:
+          leave: "Fág: "
+        pending:
+          approve: Faomh
+      shared:
+        about_me: "Eolas fúm"
+        add: "Cuir leis"
+        add_group: "Cuir Grúpa leis"
+        add_user: "Cuir Úsáideoir leis"
+        admin: "Úsáideoir Riaracháin"
+        back: Siar
+        cancel: "Cuir ar ceal"
+        confirm: "An bhfuil tú cinnte?"
+        created: "Dáta Cruthaithe: "
+        delete: Scrios
+        description: "Cur Síos"
+        edit: "Cuir in eagar"
+        email: Ríomhphost
+        first_name: Ainm
+        group_membership: "Ballraíocht Ghrúpa"
+        groups: Grúpaí
+        join_date: "Dáta a bhfuarthas ballraíocht"
+        locale: "Rogha Teangan"
+        name: Ainm
+        password: Pasfhocal
+        password_confirm: "Deimhnigh Pasfhocal"
+        pending: "Ar feitheamh"
+        private: Príobháideach
+        public: Poiblí
+        register: Cláraigh
+        registered: "Úsáideoirí atá logáilte isteach"
+        remove: Bain
+        second_name: Sloinne
+        sign_in: "Sínigh isteach"
+        token: "Eochair fhíordheimhnithe ceadchomhartha"
+        token_empty: "Níor gineadh go fóill í"
+        update: "Tabhair cothrom le dáta"
+        updated: "Dáta tugtha cothrom le dáta: "
+        users: Usáideoirí
+        view_profile: "Fáil ar an bpróifíl: "
+      static_pages:
+        account_mgt: "Déan bainistiú ar mo chuntas"
+        help: "Leathanach cabhrach úsáideoirí agus grúpaí"
+        link_desc:
+          browse_groups_desc: "Dearc ar an gcóras le grúpaí a aimsiú. Chun rochtain a fháil ar acmhainní teoranta, cuir iarratas isteach ar bhallraíocht sna grúpa cuí"
+          browse_users_desc: "Aimsigh úsáideoirí eile"
+          edit_profile_desc: "Cuir sonraí do chuntais in eagar nó tabhair cothrom le dáta iad"
+          show_profile_desc: "Is féidir leat féachaint ar shonraí phróifíl do chuntais anseo"
+        links:
+          browse_groups: "Dearc ar gach grúpa"
+          browse_users: "Féach ar úsáideoirí eile"
+          edit_profile: "Cuir mo phróifíl in eagar"
+          show_profile: "Féach ar mo phróifíl"
+        logged_in: "Tá tú logáilte isteach mar"
+        title: "Úsáideoirí agus Grúpaí"
+        todo: TODO
+      users:
+        edit:
+          current_password: "Pasfhocal Reatha"
+          delete: "Scrios do chuntas"
+          delete_heading: "Scrios cuntas"
+          delete_token: "Scrios ceadchomhartha"
+          edit: "Cuir an cuntas in eagar"
+          image_link: "Grianghraf phróifíle"
+          image_link_gravatar: "Úsáid abhatár domhanda? Cuir isteach abhatár domhanda sa réimse (ríomhphost mar id)"
+          image_link_supported: "Glactar le nascadh d'íomhánna PNG,JPEG,GIF,BMP"
+          join_groups: "Ar mhaith leat ballraíocht a fháil i ngrúpaí ar bith?"
+          new_token: "Gin ceadchomhartha"
+          unhappy: Míshásta?
+        index:
+          all_users: "Gach Úsáideoir"
+        new:
+          signup: Cláraigh
+        photo:
+          alt_text: "Grianghraf phróifíle"
+        show:
+          expired: "Imithe in éag"
+          expiry: "Dul in éag: "
+          group: Grúpa
+          ip: "IP: "
+          last_sign_in: "Síniú isteach deireanach"
+          leave: Fág
+          membership: Ballraíocht
+          never: Choíche
+          registered: "Úsáideoir Cláraithe"
+          sessions: Seisiúin
+          time: "Am: "
+          token_sign_in: "Is féidir leat an url seo a úsáid le logáil isteach"
+          total_sign_in: "Líon iomlán sínithe isteach: "
+        sign_in:
+          remember_me: "Cuimhnigh orm"

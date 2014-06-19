@@ -53,7 +53,7 @@ module UserGroup
       end
 
       def is_published?
-        key = ActiveFedora::SolrService.solr_name('properties_status', Hydra::Datastream::RightsMetadata.indexer)
+        key = ActiveFedora::SolrService.solr_name('status', Hydra::Datastream::RightsMetadata.indexer)
         if self[key].present?
           return self[key].first.downcase == "published"
         end

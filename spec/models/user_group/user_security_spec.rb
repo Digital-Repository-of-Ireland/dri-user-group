@@ -7,7 +7,8 @@ describe UserGroup::UserSecurity do
     @user_sname = "sname"
     @user_locale = "en"
     @user_password = "password"
-    @user = UserGroup::User.create(:email => @user_email, :password => @user_password, :password_confirmation => @user_password, :locale => @user_locale, :first_name => @user_fname, :second_name => @user_sname) 
+    @user = UserGroup::User.create(:email => @user_email, :password => @user_password, :password_confirmation => @user_password, :locale => @user_locale, :first_name => @user_fname, :second_name => @user_sname)
+    @user.skip_confirmation! 
   end
         
   #User security additions
@@ -34,7 +35,7 @@ describe UserGroup::UserSecurity do
 
     context "not an admin" do
       it "should not be true" do
-        @user.is_admin?.should be_false
+        @user.is_admin?.should be_falsey
       end
     end
   end
@@ -53,7 +54,7 @@ describe UserGroup::UserSecurity do
       end
 
       it "should not be a pending member of the group" do
-        @user.pending_member?(@group.id).should be_false
+        @user.pending_member?(@group.id).should be_falsey
       end
     end
   end
@@ -70,7 +71,7 @@ describe UserGroup::UserSecurity do
       end
 
       it "should not be a member of the group" do
-        @user.member?(@group.id).should be_false
+        @user.member?(@group.id).should be_falsey
       end
     end        
   end
@@ -91,7 +92,7 @@ describe UserGroup::UserSecurity do
     context "invalid group" do
       it "should return an invalid membership" do
         membership = @user.join_group(nil)
-        membership.valid?.should be_false
+        membership.valid?.should be_falsey
       end
     end
   end
@@ -111,7 +112,7 @@ describe UserGroup::UserSecurity do
 
       it "should remove the user from the group" do
         @user.leave_group(@group.id)
-        @user.member?(@group_id).should be_false and @user.pending_member?(@group.id).should be_false
+        @user.member?(@group_id).should be_falsey and @user.pending_member?(@group.id).should be_falsey
       end  
     end
 
@@ -122,7 +123,7 @@ describe UserGroup::UserSecurity do
 
        it "should remove the user from the group" do
          @user.leave_group(@group.id)
-         @user.member?(@group_id).should be_false and @user.pending_member?(@group.id).should be_false
+         @user.member?(@group_id).should be_falsey and @user.pending_member?(@group.id).should be_falsey
        end
     end
   end
@@ -136,7 +137,7 @@ describe UserGroup::UserSecurity do
     it "should create a login token" do
        @user.authentication_token.should be_nil
        @user.create_token
-       @user.authentication_token.empty?.should be_false
+       @user.authentication_token.empty?.should be_falsey
     end
   end
 

@@ -31,6 +31,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'database_cleaner', '~> 1.0.1'
   gem 'faker'
-  gem 'rspec-expectations'
   gem 'ci_reporter'
+  gem 'rspec-legacy_formatters'
 end

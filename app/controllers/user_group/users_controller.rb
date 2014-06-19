@@ -22,10 +22,19 @@ module UserGroup
 
     def new
       @user = User.new
+      
+      if session[:omniauth]
+        @user.apply_omniauth(session[:omniauth])
+      end
     end
 
     def create
       @user = User.new(params[:user])
+
+      if session[:omniauth]
+        @user.apply_omniauth(session[:omniauth])
+      end
+
       if @user.valid? && @user.save
         #Join group registered
         group = UserGroup::Group.find_by_name(SETTING_GROUP_DEFAULT)
@@ -41,12 +50,19 @@ module UserGroup
           membership.save
         end
 
-        sign_in @user
-        flash[:success] = I18n.t("user_groups.users.signup")
-        redirect_to @user
+        if user_signed_in? && current_user.is_admin?
+          flash[:success] = I18n.t("user_groups.users.account_created")
+          redirect_to @user
+        else
+          sign_in @user
+          flash[:success] = I18n.t("user_groups.users.signup")
+          redirect_to @user
+        end
       else
         render 'new'
       end
+
+      session[:omniauth] = nil unless @user.new_record?
     end
 
     def edit
@@ -55,14 +71,14 @@ module UserGroup
     def update
       current_password = params[:user].delete(:current_password)
       if modifying_current_user?(@user) || !current_user.is_admin?
-        unless @user.valid_password?(current_password)
+        unless !@user.password_required? || @user.valid_password?(current_password)
           flash[:error] = I18n.t("user_groups.users.wrong_password")
           redirect_to :back
           return
         end
       end
       #Remove password if not being updated
-      if params[:user][:password].empty? && params[:user][:password_confirmation].empty?
+      if (params[:user].has_key?(:password) && params[:user][:password].empty?) && (params[:user].has_key?(:password_confirmation) && params[:user][:password_confirmation].empty?)
         params[:user].delete(:password)
         params[:user].delete(:password_confirmation)
       end

@@ -2,6 +2,8 @@ require 'devise'
 require 'kaminari'
 require 'gravatar-ultimate'
 require 'fastimage'
+require 'omniauth'
+require 'omniauth-shibboleth'
 
 module UserGroup
   class Engine < ::Rails::Engine
