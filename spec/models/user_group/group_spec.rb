@@ -19,8 +19,8 @@ describe UserGroup::Group do
 
   it "should be toggleable" do
     @group = UserGroup::Group.new
-    @group.toggle_lock.should be_true
-    @group.toggle_lock.should_not be_true
+    @group.toggle_lock.should be true
+    @group.toggle_lock.should_not be true
   end
 
   it "should test full_memberships" do

@@ -5,7 +5,7 @@ describe UserGroup::UsersController do
   before(:each) do
     @routes = UserGroup::Engine.routes
 
-    controller.stub(:new_user_session_url)
+    allow(controller).to receive(:new_user_session_url)
   end
 
   describe "GET #index" do

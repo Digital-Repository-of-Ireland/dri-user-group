@@ -11,7 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130415112700) do
+ActiveRecord::Schema.define(:version => 20140526160017) do
+
+  create_table "user_group_authentications", :force => true do |t|
+    t.integer "user_id"
+    t.string  "provider"
+    t.string  "uid"
+  end
 
   create_table "user_group_groups", :force => true do |t|
     t.string   "name"
@@ -55,9 +61,13 @@ ActiveRecord::Schema.define(:version => 20130415112700) do
     t.string   "about_me",               :default => ""
     t.datetime "token_creation_date"
     t.string   "image_link"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
   end
 
   add_index "user_group_users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
+  add_index "user_group_users", ["confirmation_token"], :name => "index_user_group_users_on_confirmation_token", :unique => true
   add_index "user_group_users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "user_group_users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 

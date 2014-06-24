@@ -20,19 +20,16 @@ module UserGroup
       # Should be able to see published records
 
       # Filter for published objects that do not have ancestors that have set their status to not published 
-      #ancestor_objects = "(" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
-      #     " AND (" + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published" +
-      #     " -_query_:\"{!join from=id to=ancestor_id_tesim} -" + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published\"))"
-
-      governed_objects = "(" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
-       " AND (" + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published" +
-       " AND _query_:\"{!join from=id to=governing_id_sim}" + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published\"))"
+      ancestor_objects = "(" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
+           " AND (" + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published" +
+           " -_query_:\"{!join from=id to=ancestor_id_sim} -" + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published\"))"
 
       # Filter for published objects
       objects = "(-" + ActiveFedora::SolrService.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
            " AND " + ActiveFedora::SolrService.solr_name("status", :symbol) + ":published)"
 
-      filter_published = governed_objects + " OR " + objects
+      #filter_published = governed_objects + " OR " + objects
+      filter_published = ancestor_objects + " OR " + objects
 
       # Or any models that the user can edit or manage
       solr_parameters[:fq] << "(" + filter_published + 
@@ -85,18 +82,18 @@ module UserGroup
         end
         
         if type == "manager" || type == "edit"
-          permission_query = "_query_:\"{!join from=id to=governing_id_sim}" + permission_query + "\" OR " +
+          permission_query = "_query_:\"{!join from=id to=ancestor_id_sim}" + permission_query + "\" OR " +
                                "("+permission_query+")"
         elsif type == "discover"
           permission_query = "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":0 OR " +
                              "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":\"-1\" AND " +
-         "_query_:\"{!join from=id to=governing_id_sim}" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":0 OR " +
+         "_query_:\"{!join from=id to=ancestor_id_sim}" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":0 OR " +
           "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":1 AND (" + permission_query + "))\") OR " +
                              "(" + ActiveFedora::SolrService.solr_name("private_metadata", Hydra::Datastream::RightsMetadata.integer_indexer) + ":1 AND " +
                              "(" + permission_query + ")))"
         else
           permission_query = "((" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "true") + " AND " +
-                             "_query_:\"{!join from=id to=governing_id_sim}" + permission_query + "\" ) OR " + 
+                             "_query_:\"{!join from=id to=ancestor_id_sim}" + permission_query + "\" ) OR " + 
                              "(" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "false") + " AND " +
                              "("+permission_query+")))"
          end
