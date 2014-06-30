@@ -29,7 +29,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'mocha'
   gem 'factory_girl_rails'
-  gem 'database_cleaner', '~> 1.0.1'
+  gem 'database_cleaner'
   gem 'faker'
   gem 'ci_reporter'
   gem 'rspec-legacy_formatters'

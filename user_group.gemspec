@@ -17,11 +17,11 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
   s.require_path = 'lib'
 
-  s.add_dependency "rails"
-  s.add_dependency "devise", "~> 2.2.3"
+  s.add_dependency "rails", ">= 4.0"
+  s.add_dependency "devise", "~> 3.1.0"
   s.add_dependency "devise-i18n-views"
   s.add_dependency "devise-guests", "~> 0.3"
-  s.add_dependency "kaminari", "~> 0.14.1"
+  s.add_dependency "kaminari"
   s.add_dependency "gravatar-ultimate"
   s.add_dependency "fastimage"
   s.add_dependency "omniauth"
