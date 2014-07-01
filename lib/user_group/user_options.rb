@@ -5,7 +5,7 @@ module UserGroup
 
     included do
       before_save :set_locale
-      attr_accessible :locale, :view_level, :about_me, :image_link
+      #attr_accessible :locale, :view_level, :about_me, :image_link
 
       validates_with ImageLinkValidator
     end

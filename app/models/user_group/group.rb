@@ -7,9 +7,7 @@ module UserGroup
 
   class Group < ActiveRecord::Base
     has_many :memberships, dependent: :destroy
-    has_many :users, through: :memberships, uniq: true
-
-    attr_accessible :name, :description, :is_locked
+    has_many :users, -> { uniq }, through: :memberships
 
     #DB uniqueness is case insensitive
     before_save { self.name.downcase! }

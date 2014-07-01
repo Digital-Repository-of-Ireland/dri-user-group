@@ -1,6 +1,5 @@
 module UserGroup
   class Membership < ActiveRecord::Base
-    attr_accessible :created_at, :group_id, :user_id
     belongs_to :group
     belongs_to :user
 

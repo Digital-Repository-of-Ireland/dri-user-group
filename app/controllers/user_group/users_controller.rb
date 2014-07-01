@@ -29,7 +29,7 @@ module UserGroup
     end
 
     def create
-      @user = User.new(params[:user])
+      @user = User.new(user_params)
 
       if session[:omniauth]
         @user.apply_omniauth(session[:omniauth])
@@ -83,7 +83,7 @@ module UserGroup
         params[:user].delete(:password_confirmation)
       end
       #Update user
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(user_params)
         flash[:success] = I18n.t("user_groups.shared.updated")
         (sign_in @user, bypass: true) if modifying_current_user?(@user)
         redirect_to @user
@@ -128,6 +128,10 @@ module UserGroup
     end
 
     private
+    def user_params
+      params.require(:user).permit(:first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date)
+    end
+
     def can_modify
       can_modify_base(params[:id])
     end

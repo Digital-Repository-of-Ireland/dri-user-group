@@ -7,7 +7,7 @@ module UserGroup
 
     included do
       has_many :memberships, dependent: :destroy
-      has_many :groups, through: :memberships, uniq: true
+      has_many :groups, -> { uniq }, through: :memberships
       has_many :authentications
 
       #Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
@@ -24,7 +24,7 @@ module UserGroup
       devise :confirmable, :database_authenticatable, :token_authenticatable,
         :recoverable, :rememberable, :trackable, :omniauthable, :omniauth_providers => [:shibboleth]
 
-      attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date
+      #attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date
 
       #Email addresses in database are case insensitive so ensure all the same
       before_save { self.email.downcase! }
