@@ -11,7 +11,6 @@ module UserGroup
       has_many :authentications
 
       #Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
-      #Token Authenticatable: signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
       #Omniauthable: adds Omniauth (https://github.com/intridea/omniauth) support;
       #Confirmable: sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
       #Recoverable: resets the user password and sends reset instructions.
@@ -21,7 +20,7 @@ module UserGroup
       #Timeoutable: expires sessions that have no activity in a specified period of time.
       #Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
       #Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
-      devise :confirmable, :database_authenticatable, :token_authenticatable,
+      devise :confirmable, :database_authenticatable,
         :recoverable, :rememberable, :trackable, :omniauthable, :omniauth_providers => [:shibboleth]
 
       #attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date
@@ -85,7 +84,7 @@ module UserGroup
     end
 
     def create_token
-      self.reset_authentication_token!
+      self.authentication_token = generate_authentication_token
       self.token_creation_date = DateTime.current
     end
 
@@ -142,6 +141,15 @@ module UserGroup
 
     def password_required?
       (self.authentications.empty? || !self.password.blank?)
+    end
+
+    private
+
+    def generate_authentication_token
+      loop do
+        token = Devise.friendly_token
+        break token unless self.class.unscoped.where(authentication_token: token).first
+      end
     end
 
   end

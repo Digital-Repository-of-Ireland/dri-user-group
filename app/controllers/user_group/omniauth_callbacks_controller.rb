@@ -23,7 +23,7 @@ module UserGroup
         
         if @user.save
           # join registered group
-          group = UserGroup::Group.find_or_create_by_name(SETTING_GROUP_DEFAULT, description: "Every user account is a member of this group.", is_locked: true)
+          group = UserGroup::Group.where(name: SETTING_GROUP_DEFAULT, description: "Every user account is a member of this group.", is_locked: true).first_or_create
           unless group.nil?
             membership = @user.join_group(group.id)
             membership.approve_membership(@user.id)

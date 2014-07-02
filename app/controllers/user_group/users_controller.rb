@@ -39,7 +39,7 @@ module UserGroup
         #Join group registered
         group = UserGroup::Group.find_by_name(SETTING_GROUP_DEFAULT)
         if group.nil?
-          group = UserGroup::Group.find_or_create_by_name(SETTING_GROUP_DEFAULT, description: "Every user account is a member of this group.", is_locked: true)
+          group = UserGroup::Group.where(name: SETTING_GROUP_DEFAULT, description: "Every user account is a member of this group.", is_locked: true).first_or_create
         end
         group_id = group.id
         if group_id.nil?
