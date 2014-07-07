@@ -12,7 +12,7 @@ module UserGroup
         @users = User.order(SETTING_ORDER_USER).page(params[:page])
       else
         #Must be logged in so show all users that are public/registered
-        @users = User.scoped(:order => SETTING_ORDER_USER, :conditions => {:view_level => SETTING_PROFILE_INDEX_VIEW_LEVELS}).page(params[:page])
+        @users = User.where(:view_level => SETTING_PROFILE_INDEX_VIEW_LEVELS).order(SETTING_ORDER_USER).page(params[:page])
       end
       @users
     end
