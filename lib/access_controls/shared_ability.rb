@@ -34,7 +34,7 @@ module UserGroup
 
 
     def hydra_default_permissions
-      logger.debug("Usergroups are " + user_groups.inspect)
+      Rails.logger.debug("Usergroups are " + user_groups.inspect)
       self.ability_logic.each do |method|
         send(method)
       end
@@ -48,22 +48,22 @@ module UserGroup
     end
 
     def test_edit(pid)
-      logger.debug("[CANCAN] Checking edit permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+      Rails.logger.debug("[CANCAN] Checking edit permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & edit_groups(pid)
       result = !group_intersection.empty? || edit_persons(pid).include?(current_user.user_key)
-      logger.debug("[CANCAN] decision: #{result}")
+      Rails.logger.debug("[CANCAN] decision: #{result}")
       result
     end
 
     def test_read(pid)
-      logger.debug("[CANCAN] Checking read permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+      Rails.logger.debug("[CANCAN] Checking read permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & read_groups(pid)
       result = !group_intersection.empty? || read_persons(pid).include?(current_user.user_key)
       result
     end
 
     def test_search(pid)
-      logger.debug("[CANCAN] Checking search permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+      Rails.logger.debug("[CANCAN] Checking search permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & search_groups(pid)
       result = !group_intersection.empty? || search_persons(pid).include?(current_user.user_key)
     end
@@ -74,7 +74,7 @@ module UserGroup
     end
 
     def test_manager(pid)
-      logger.debug("[CANCAN] Checking manager permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+      Rails.logger.debug("[CANCAN] Checking manager permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & manager_groups(pid)
       result = !group_intersection.empty? || manager_persons(pid).include?(current_user.user_key)
     end
@@ -82,56 +82,56 @@ module UserGroup
     #383 Modified. manager implies edit, so edit_groups is the union of manager and edit groups
     def edit_groups(pid)
       eg = manager_groups(pid) | ( get_permission_key(pid,self.class.edit_group_field) || [])
-      logger.debug("[CANCAN] edit_groups: #{eg.inspect}")
+      Rails.logger.debug("[CANCAN] edit_groups: #{eg.inspect}")
       return eg
     end
 
     #edit implies read, so read_groups is the union of edit and read groups
     def read_groups(pid)
       rg = edit_groups(pid) | ( get_permission_key(pid,self.class.read_group_field) || [])
-      logger.debug("[CANCAN] read_groups: #{rg.inspect}")
+      Rails.logger.debug("[CANCAN] read_groups: #{rg.inspect}")
       return rg
     end
 
     #383 Modified. manager implies edit, so edit_persons is the union of manager and edit persons
     def edit_persons(pid)
       ep = manager_persons(pid) | ( get_permission_key(pid,self.class.edit_person_field) ||  [])
-      logger.debug("[CANCAN] edit_persons: #{ep.inspect}")
+      Rails.logger.debug("[CANCAN] edit_persons: #{ep.inspect}")
       return ep
     end
 
     # edit implies read, so read_persons is the union of edit and read persons
     def read_persons(pid)
       rp = edit_persons(pid) | ( get_permission_key(pid,self.class.read_person_field) || [])
-      logger.debug("[CANCAN] read_persons: #{rp.inspect}")
+      Rails.logger.debug("[CANCAN] read_persons: #{rp.inspect}")
       return rp
     end
 
     #383 Addition. Managers are at the top level
     def manager_groups(pid)
       mg = get_permission_key(pid,self.class.manager_group_field) ||  []
-      logger.debug("[CANCAN] manager_groups: #{mg.inspect}")
+      Rails.logger.debug("[CANCAN] manager_groups: #{mg.inspect}")
       return mg
     end
 
     #383 Addition
     def manager_persons(pid)
       mp = get_permission_key(pid,self.class.manager_person_field) ||  []
-      logger.debug("[CANCAN] manager_persons: #{mp.inspect}")
+      Rails.logger.debug("[CANCAN] manager_persons: #{mp.inspect}")
       return mp
     end
 
     #383 Addition. A search group/person has access to a DO (but not the assets)
     def search_groups(pid)
       sg = read_groups(pid) | (get_permission_key(pid,self.class.search_group_field) ||  [])
-      logger.debug("[CANCAN] search_groups: #{sg.inspect}")
+      Rails.logger.debug("[CANCAN] search_groups: #{sg.inspect}")
       return sg
     end
 
     #383 Addition
     def search_persons(pid)
       sp = read_persons(pid) | (get_permission_key(pid,self.class.search_person_field) ||  [])
-      logger.debug("[CANCAN] manager_persons: #{sp.inspect}")
+      Rails.logger.debug("[CANCAN] manager_persons: #{sp.inspect}")
       return sp
     end
 
