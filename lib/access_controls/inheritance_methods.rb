@@ -2,7 +2,7 @@ module UserGroup
   module InheritanceMethods
 
     def get_permission_key(pid, key)
-      logger.debug("[Get Permission Key] - #{pid}:#{key}")
+      Rails.logger.debug("[Get Permission Key] - #{pid}:#{key}")
       return nil if pid.nil? or key.nil?
 
       begin
@@ -17,7 +17,7 @@ module UserGroup
     end
 
     def get_permission_method(pid,method_name)
-      logger.debug("[Get Permission Method] - #{pid}:#{method_name}")
+      Rails.logger.debug("[Get Permission Method] - #{pid}:#{method_name}")
       return nil if pid.nil? or method_name.nil?
 
       begin
@@ -34,7 +34,7 @@ module UserGroup
         return get_permission_method(doc.parent_id,method_name)
       end
 
-      logger.debug("[Get Permission Method] - Method denied or doesnt exist")
+      Rails.logger.debug("[Get Permission Method] - Method denied or doesnt exist")
       return nil
     end
   end

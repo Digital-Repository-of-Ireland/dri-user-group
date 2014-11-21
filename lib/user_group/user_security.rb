@@ -126,13 +126,13 @@ module UserGroup
         return false if group.nil?
         return true if self.member?(group.id)
       else
-        logger.debug("Applicable policy- no policy applies")
+        Rails.logger.debug("Applicable policy- no policy applies")
         return false
       end
     end
 
     def apply_omniauth(omniauth)
-      logger.debug("Omniauth #{omniauth.inspect.to_yaml}")
+      Rails.logger.debug("Omniauth #{omniauth.inspect.to_yaml}")
       self.email = omniauth['info']['email'] if email.blank?
       self.first_name = omniauth['info']['given_name'] if first_name.blank?
       self.second_name = omniauth['info']['last_name'] if second_name.blank?
