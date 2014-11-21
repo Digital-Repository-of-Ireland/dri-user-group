@@ -1,9 +1,10 @@
-module UserGroup
-  module RightsMetadataModelMixinOverride
+module Hydra
+  module AccessControls
+    module Permissions
     extend ActiveSupport::Concern  
 
-    included do
-    end
+    #included do
+    #end
       ## Updates those permissions that are provided to it. Does not replace any permissions unless they are provided
       # @example
       #  obj.permissions= [{:name=>"group1", :access=>"discover", :type=>'group'},
@@ -433,6 +434,6 @@ module UserGroup
           Hash[rightsMetadata.quick_search_by_type(type).select {|k, v| v == 'manager'}]
         end
       end
-
+  end
   end
 end
