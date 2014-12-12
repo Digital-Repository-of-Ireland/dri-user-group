@@ -16,10 +16,6 @@ gem "json"
 # your gem to rubygems.org.
 
 group :development, :test do
-  gem 'rcov', :platform => :mri_18
-  gem 'simplecov', :platform => [:mri_19, :mri_20]
-  gem 'simplecov-rcov', :platform => [:mri_19, :mri_20]
-
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-bundler'

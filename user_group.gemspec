@@ -27,10 +27,6 @@ Gem::Specification.new do |s|
   s.add_dependency "omniauth"
   s.add_dependency "omniauth-shibboleth"
 
-  # s.add_dependency "jquery-rails"
-
-  #s.add_development_dependency "sqlite3"
-  #s.add_development_dependency "rspec-rails"
-  #s.add_development_dependency "simplecov"
-  #s.add_development_dependency "factory_girl_rails"
+  s.add_development_dependency('simplecov')
+  s.add_development_dependency('simplecov-rcov')
 end
