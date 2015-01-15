@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "fastimage"
   s.add_dependency "omniauth"
   s.add_dependency "omniauth-shibboleth"
+  s.add_dependency "paper_trail", "~> 3.0.6"
 
   s.add_development_dependency('simplecov')
   s.add_development_dependency('simplecov-rcov')
