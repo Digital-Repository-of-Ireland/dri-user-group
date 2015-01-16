@@ -2,7 +2,7 @@ module UserGroup
   module UserSecurity
     extend ActiveSupport::Concern
     #Adding ActiveSupport::Concern looks for modules named ClassMethods and InstanceMethods and bootstraps them
-    #InstanceMethods is now depricated
+    #InstanceMethods is now deprecated
     #Also provides the included which will run when class is included
 
     included do

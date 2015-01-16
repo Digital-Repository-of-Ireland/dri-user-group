@@ -11,8 +11,6 @@ gem "jquery-rails"
 gem "sqlite3"
 gem "json"
 
-gem 'paper_trail', '~> 3.0.6'
-
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
 # Git. Remember to move these dependencies to your gemspec before releasing
@@ -33,4 +31,5 @@ group :development, :test do
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
   gem 'rspec-legacy_formatters'
+  gem 'paper_trail', '~> 3.0.6'
 end

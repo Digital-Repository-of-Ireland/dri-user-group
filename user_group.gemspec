@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.add_dependency "rails", "~> 4.1.0"
-  s.add_dependency "devise", "~> 3.1.0"
+  s.add_dependency "devise"
   s.add_dependency "devise-i18n-views"
   s.add_dependency "devise-guests", "~> 0.3"
   s.add_dependency "kaminari"

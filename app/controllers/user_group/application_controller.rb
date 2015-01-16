@@ -44,5 +44,6 @@ module UserGroup
       end
       return true
     end
+
   end
 end
