@@ -6,8 +6,8 @@ def add_group_user(email,first_name,second_name,locale,group)
 end
 
 def add_regular_user(email,first_name,second_name,locale)
-    user = UserGroup::User.find_or_create_by_email(email, :password => "password", :password_confirmation => "password", :locale => locale, :first_name => first_name, :second_name => second_name)
-    user.confirm! 
+    user = UserGroup::User.where(:email => email).first_or_create(:password => "J3xG9ABC", :password_confirmation => "J3xG9ABC", :locale => locale, :first_name => first_name, :second_name => second_name)
+    user.confirm!
     registered_group_id = UserGroup::Group.find_by_name("registered").id
     add_and_approve_membership(user,registered_group_id)
     return user
@@ -35,9 +35,9 @@ def collection_manager()
 end
 
 def groups()
-    UserGroup::Group.find_or_create_by_name("admin", description: "Members of this group have admin permissions", is_locked: true)
-    UserGroup::Group.find_or_create_by_name("registered", description: "Every user account is a member of this group.", is_locked: true)
-    UserGroup::Group.find_or_create_by_name("cm", description: "Members of this group are collection managers", is_locked: true)
+    UserGroup::Group.where(name: "admin").first_or_create(description: "Members of this group have admin permissions", is_locked: true)
+    UserGroup::Group.where(name: "registered").first_or_create(description: "Every user account is a member of this group.", is_locked: true)
+    UserGroup::Group.where(name: "cm").first_or_create(description: "Members of this group are collection managers", is_locked: true)
 end
 
 groups()

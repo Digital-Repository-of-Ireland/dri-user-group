@@ -10,16 +10,13 @@ gem "jquery-rails"
 
 gem "sqlite3"
 gem "json"
+
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
 group :development, :test do
-  gem 'rcov', :platform => :mri_18
-  gem 'simplecov', :platform => [:mri_19, :mri_20]
-  gem 'simplecov-rcov', :platform => [:mri_19, :mri_20]
-
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-bundler'
@@ -29,8 +26,10 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'mocha'
   gem 'factory_girl_rails'
-  gem 'database_cleaner', '~> 1.0.1'
+  gem 'database_cleaner'
   gem 'faker'
-  gem 'ci_reporter'
+  gem 'ci_reporter_cucumber'
+  gem 'ci_reporter_rspec'
   gem 'rspec-legacy_formatters'
+  gem 'paper_trail', '~> 3.0.6'
 end

@@ -171,10 +171,6 @@ Devise.setup do |config|
   # REST_AUTH_SITE_KEY to pepper)
   # config.encryptor = :sha512
 
-  # ==> Configuration for :token_authenticatable
-  # Defines name of the authentication token params key
-  config.token_authentication_key = :auth_token
-
   # ==> Scopes configuration
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "users/sessions/new". It's turned off by default because it's slower if you
@@ -204,6 +200,8 @@ Devise.setup do |config|
   # Must be changed to get in test env to allow capybara to use the sign out route...
   config.sign_out_via = :delete
   #config.sign_out_via = Rails.env.test? ? :get : :delete
+
+  config.secret_key = 'bcb0bbac93be2f011d5d8e365a7074eb0c61d678bde4484c5922f6ba568a1ca0c2630a97f3eaa573fa7f48fa8c0e166d18fb5571ac2e0f9ceaf20424412c5dd5'
 
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting

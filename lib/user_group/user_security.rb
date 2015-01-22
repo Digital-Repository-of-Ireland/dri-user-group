@@ -2,16 +2,15 @@ module UserGroup
   module UserSecurity
     extend ActiveSupport::Concern
     #Adding ActiveSupport::Concern looks for modules named ClassMethods and InstanceMethods and bootstraps them
-    #InstanceMethods is now depricated
+    #InstanceMethods is now deprecated
     #Also provides the included which will run when class is included
 
     included do
       has_many :memberships, dependent: :destroy
-      has_many :groups, through: :memberships, uniq: true
+      has_many :groups, -> { uniq }, through: :memberships
       has_many :authentications
 
       #Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
-      #Token Authenticatable: signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
       #Omniauthable: adds Omniauth (https://github.com/intridea/omniauth) support;
       #Confirmable: sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
       #Recoverable: resets the user password and sends reset instructions.
@@ -21,10 +20,10 @@ module UserGroup
       #Timeoutable: expires sessions that have no activity in a specified period of time.
       #Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
       #Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
-      devise :confirmable, :database_authenticatable, :token_authenticatable,
+      devise :confirmable, :database_authenticatable,
         :recoverable, :rememberable, :trackable, :omniauthable, :omniauth_providers => [:shibboleth]
 
-      attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date
+      #attr_accessible :first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date
 
       #Email addresses in database are case insensitive so ensure all the same
       before_save { self.email.downcase! }
@@ -85,7 +84,7 @@ module UserGroup
     end
 
     def create_token
-      self.reset_authentication_token!
+      self.authentication_token = generate_authentication_token
       self.token_creation_date = DateTime.current
     end
 
@@ -127,13 +126,13 @@ module UserGroup
         return false if group.nil?
         return true if self.member?(group.id)
       else
-        logger.debug("Applicable policy- no policy applies")
+        Rails.logger.debug("Applicable policy- no policy applies")
         return false
       end
     end
 
     def apply_omniauth(omniauth)
-      logger.debug("Omniauth #{omniauth.inspect.to_yaml}")
+      Rails.logger.debug("Omniauth #{omniauth.inspect.to_yaml}")
       self.email = omniauth['info']['email'] if email.blank?
       self.first_name = omniauth['info']['given_name'] if first_name.blank?
       self.second_name = omniauth['info']['last_name'] if second_name.blank?
@@ -142,6 +141,15 @@ module UserGroup
 
     def password_required?
       (self.authentications.empty? || !self.password.blank?)
+    end
+
+    private
+
+    def generate_authentication_token
+      loop do
+        token = Devise.friendly_token
+        break token unless self.class.unscoped.where(authentication_token: token).first
+      end
     end
 
   end

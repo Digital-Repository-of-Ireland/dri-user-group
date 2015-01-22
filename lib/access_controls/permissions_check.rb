@@ -1,7 +1,7 @@
 module UserGroup
   module PermissionsCheck
     def enforce_permissions!(action, item)
-      logger.debug("[Enforce Permissions] - A: #{action} O: #{item.to_s}")
+      Rails.logger.debug("[Enforce Permissions] - A: #{action} O: #{item.to_s}")
 
       case action
       when nil, "edit", "update"

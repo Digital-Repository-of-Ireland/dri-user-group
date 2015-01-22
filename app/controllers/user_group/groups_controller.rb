@@ -18,7 +18,7 @@ module UserGroup
     end
 
     def create
-      @group = Group.new(params[:group])
+      @group = Group.new(group_params)
       if @group.valid? && @group.save
         flash[:success] = I18n.t("user_groups.groups.created")
         redirect_to @group
@@ -34,7 +34,7 @@ module UserGroup
     def update
       @group = Group.find(params[:id])
       return if is_locked?(@group)
-      if @group.update_attributes(params[:group])
+      if @group.update_attributes(group_params)
         flash[:success] = I18n.t("user_groups.shared.updated")
         redirect_to @group
       else
@@ -62,6 +62,10 @@ module UserGroup
     end
 
     private
+    def group_params
+      params.require(:group).permit(:name, :description, :is_locked)
+    end
+
     def is_locked?(group)
       if group.is_locked?
         flash[:error] = I18n.t("user_groups.groups.errors.locked")

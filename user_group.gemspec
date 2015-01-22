@@ -17,20 +17,17 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
   s.require_path = 'lib'
 
-  s.add_dependency "rails"
-  s.add_dependency "devise", "~> 2.2.3"
+  s.add_dependency "rails", "~> 4.1.0"
+  s.add_dependency "devise"
   s.add_dependency "devise-i18n-views"
   s.add_dependency "devise-guests", "~> 0.3"
-  s.add_dependency "kaminari", "~> 0.14.1"
+  s.add_dependency "kaminari"
   s.add_dependency "gravatar-ultimate"
   s.add_dependency "fastimage"
   s.add_dependency "omniauth"
   s.add_dependency "omniauth-shibboleth"
+  s.add_dependency "paper_trail", "~> 3.0.6"
 
-  # s.add_dependency "jquery-rails"
-
-  #s.add_development_dependency "sqlite3"
-  #s.add_development_dependency "rspec-rails"
-  #s.add_development_dependency "simplecov"
-  #s.add_development_dependency "factory_girl_rails"
+  s.add_development_dependency('simplecov')
+  s.add_development_dependency('simplecov-rcov')
 end

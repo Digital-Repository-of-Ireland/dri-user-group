@@ -1,6 +1,6 @@
 module UserGroup
   class Membership < ActiveRecord::Base
-    attr_accessible :created_at, :group_id, :user_id
+    has_paper_trail
     belongs_to :group
     belongs_to :user
 

@@ -12,7 +12,7 @@ module UserGroup
         @users = User.order(SETTING_ORDER_USER).page(params[:page])
       else
         #Must be logged in so show all users that are public/registered
-        @users = User.scoped(:order => SETTING_ORDER_USER, :conditions => {:view_level => SETTING_PROFILE_INDEX_VIEW_LEVELS}).page(params[:page])
+        @users = User.where(:view_level => SETTING_PROFILE_INDEX_VIEW_LEVELS).order(SETTING_ORDER_USER).page(params[:page])
       end
       @users
     end
@@ -29,7 +29,7 @@ module UserGroup
     end
 
     def create
-      @user = User.new(params[:user])
+      @user = User.new(user_params)
 
       if session[:omniauth]
         @user.apply_omniauth(session[:omniauth])
@@ -39,7 +39,7 @@ module UserGroup
         #Join group registered
         group = UserGroup::Group.find_by_name(SETTING_GROUP_DEFAULT)
         if group.nil?
-          group = UserGroup::Group.find_or_create_by_name(SETTING_GROUP_DEFAULT, description: "Every user account is a member of this group.", is_locked: true)
+          group = UserGroup::Group.where(name: SETTING_GROUP_DEFAULT, description: "Every user account is a member of this group.", is_locked: true).first_or_create
         end
         group_id = group.id
         if group_id.nil?
@@ -83,7 +83,7 @@ module UserGroup
         params[:user].delete(:password_confirmation)
       end
       #Update user
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(user_params)
         flash[:success] = I18n.t("user_groups.shared.updated")
         (sign_in @user, bypass: true) if modifying_current_user?(@user)
         redirect_to @user
@@ -128,6 +128,10 @@ module UserGroup
     end
 
     private
+    def user_params
+      params.require(:user).permit(:first_name, :second_name, :email, :password, :password_confirmation, :remember_me, :token_creation_date)
+    end
+
     def can_modify
       can_modify_base(params[:id])
     end
