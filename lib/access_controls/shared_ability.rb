@@ -50,7 +50,7 @@ module UserGroup
     def test_edit(pid)
       Rails.logger.debug("[CANCAN] Checking edit permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & edit_groups(pid)
-      result = !group_intersection.empty? || edit_persons(pid).include?(current_user.user_key)
+      result = !group_intersection.empty? || edit_users(pid).include?(current_user.user_key)
       Rails.logger.debug("[CANCAN] decision: #{result}")
       result
     end
@@ -58,25 +58,20 @@ module UserGroup
     def test_read(pid)
       Rails.logger.debug("[CANCAN] Checking read permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & read_groups(pid)
-      result = !group_intersection.empty? || read_persons(pid).include?(current_user.user_key)
+      result = !group_intersection.empty? || read_users(pid).include?(current_user.user_key)
       result
     end
 
     def test_search(pid)
       Rails.logger.debug("[CANCAN] Checking search permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & search_groups(pid)
-      result = !group_intersection.empty? || search_persons(pid).include?(current_user.user_key)
+      result = !group_intersection.empty? || search_users(pid).include?(current_user.user_key)
     end
-
-    def test_read_master(pid)
-      #show master true -> test_read, if false, test_edit permission
-      return get_permission_method(pid,"show_master_file?") ? test_read(pid) : test_edit(pid)
-    end
-
+   
     def test_manager(pid)
       Rails.logger.debug("[CANCAN] Checking manager permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & manager_groups(pid)
-      result = !group_intersection.empty? || manager_persons(pid).include?(current_user.user_key)
+      result = !group_intersection.empty? || manager_users(pid).include?(current_user.user_key)
     end
 
     #383 Modified. manager implies edit, so edit_groups is the union of manager and edit groups
@@ -94,16 +89,16 @@ module UserGroup
     end
 
     #383 Modified. manager implies edit, so edit_persons is the union of manager and edit persons
-    def edit_persons(pid)
-      ep = manager_persons(pid) | ( get_permission_key(pid,self.class.edit_person_field) ||  [])
-      Rails.logger.debug("[CANCAN] edit_persons: #{ep.inspect}")
+    def edit_users(pid)
+      ep = manager_users(pid) | ( get_permission_key(pid,self.class.edit_user_field) ||  [])
+      Rails.logger.debug("[CANCAN] edit_users: #{ep.inspect}")
       return ep
     end
 
     # edit implies read, so read_persons is the union of edit and read persons
-    def read_persons(pid)
-      rp = edit_persons(pid) | ( get_permission_key(pid,self.class.read_person_field) || [])
-      Rails.logger.debug("[CANCAN] read_persons: #{rp.inspect}")
+    def read_userss(pid)
+      rp = edit_users(pid) | ( get_permission_key(pid,self.class.read_user_field) || [])
+      Rails.logger.debug("[CANCAN] read_users: #{rp.inspect}")
       return rp
     end
 
@@ -115,9 +110,9 @@ module UserGroup
     end
 
     #383 Addition
-    def manager_persons(pid)
-      mp = get_permission_key(pid,self.class.manager_person_field) ||  []
-      Rails.logger.debug("[CANCAN] manager_persons: #{mp.inspect}")
+    def manager_users(pid)
+      mp = get_permission_key(pid,self.class.manager_user_field) ||  []
+      Rails.logger.debug("[CANCAN] manager_users: #{mp.inspect}")
       return mp
     end
 
@@ -129,47 +124,47 @@ module UserGroup
     end
 
     #383 Addition
-    def search_persons(pid)
-      sp = read_persons(pid) | (get_permission_key(pid,self.class.search_person_field) ||  [])
+    def search_users(pid)
+      sp = read_users(pid) | (get_permission_key(pid,self.class.search_user_field) ||  [])
       Rails.logger.debug("[CANCAN] manager_persons: #{sp.inspect}")
       return sp
     end
 
     module ClassMethods
       def read_group_field
-        Hydra.config[:permissions][:read][:group]
+        Hydra.config.permissions.read.group
       end
 
-      def edit_person_field
-        Hydra.config[:permissions][:edit][:individual]
+      def edit_user_field
+        Hydra.config.permissions.edit.individual
       end
 
-      def read_person_field
-        Hydra.config[:permissions][:read][:individual]
+      def read_user_field
+        Hydra.config.permissions.read.individual
       end
 
       def edit_group_field
-        Hydra.config[:permissions][:edit][:group]
+        Hydra.config.permissions.edit.group
       end
 
       #383 Addition
       def manager_group_field
-        Hydra.config[:permissions][:manager][:group]
+        Hydra.config.permissions.manager.group
       end
 
       #383 Addition
-      def manager_person_field
-        Hydra.config[:permissions][:manager][:individual]
+      def manager_user_field
+        Hydra.config.permissions.manager.individual
       end
 
       #383 Addition
       def search_group_field
-        Hydra.config[:permissions][:discover][:group]
+        Hydra.config.permissions.discover.group
       end
 
       #383 Addition
-      def search_person_field
-        Hydra.config[:permissions][:discover][:individual]
+      def search_user_field
+        Hydra.config.permissions.discover.individual
       end
     end
 
