@@ -20,7 +20,7 @@ module UserGroup
     end
 
     def == other
-      other.is_a?(Permission) && id == other.id && self.access_to_id == other.access_to_id &&
+      other.is_a?(PermissionOverride) && id == other.id && self.access_to_id == other.access_to_id &&
         self.agent.first.rdf_subject == other.agent.first.rdf_subject && self.mode.first.rdf_subject == other.mode.first.rdf_subject
     end
 
@@ -60,7 +60,7 @@ module UserGroup
                      when "person"
                        Hydra::AccessControls::Agent.new(::RDF::URI.new("#{PERSON_AGENT_URL_PREFIX}##{name}"))
                      when "user"
-                       Deprecation.warn Permission, "Passing \"user\" as the type to Permission is deprecated. Use \"person\" instead. This will be an error in ActiveFedora 9."
+                       Deprecation.warn PermissionOverride, "Passing \"user\" as the type to Permission is deprecated. Use \"person\" instead. This will be an error in ActiveFedora 9."
                        Hydra::AccessControls::Agent.new(::RDF::URI.new("#{PERSON_AGENT_URL_PREFIX}##{name}"))
                      else
                        raise ArgumentError, "Unknown agent type #{type.inspect}"

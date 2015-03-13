@@ -11,8 +11,15 @@ module Hydra
         alias_method :permissions_attributes=, :permissions_attributes_with_uniqueness=
       end
 
-      def indexer
-        Hydra::AccessControls::PermissionsIndexingService
+      def to_solr(solr_doc = {}, opts = {})
+        super.tap do |doc|
+          [:discover, :read, :edit, :manager].each do |access|
+            vals = send("#{access}_groups")
+            doc[Hydra.config.permissions[access].group] = vals unless vals.empty?
+            vals = send("#{access}_users")
+            doc[Hydra.config.permissions[access].individual] = vals unless vals.empty?
+          end
+        end
       end
 
       # When chaging a permission for an object/user, ensure an update is done, not a duplicate
@@ -516,22 +523,5 @@ module Hydra
       end
 
     end
-
-    class PermissionsIndexingService < ActiveFedora::IndexingService
-
-      # Performs the indexing of this object into Solr
-      def generate_solr_document
-        super.tap do |solr_doc|
-          [:discover, :read, :edit, :manager].each do |access|
-            vals = object.send("#{access}_groups")
-            doc[Hydra.config.permissions[access].group] = vals unless vals.empty?
-            vals = object.send("#{access}_users")
-            doc[Hydra.config.permissions[access].individual] = vals unless vals.empty?
-          end
-        end
-      end
-    
-    end
-    
   end
 end
