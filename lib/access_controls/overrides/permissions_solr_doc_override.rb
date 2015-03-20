@@ -6,14 +6,11 @@ module UserGroup
       included do
       end
 
-      #Method not finished
       def parent_id
-        #This has to be added to solr as parent_id
-        #key = "parent_id"
-        key = ActiveFedora::SolrQueryBuilder.solr_name("is_governed_by")
+        key = ActiveFedora::SolrQueryBuilder.solr_name("isGovernedBy", :stored_searchable, type: :symbol)
         #Temp line as string manipulation is currently required on the value
         return nil unless self[key].present?
-        return self[key].first.split("/").second
+        return self[key]
       end
 
       def under_embargo?
@@ -26,7 +23,7 @@ module UserGroup
       end
 
       def is_published?
-        key = ActiveFedora::SolrQueryBuilder.solr_name('status')
+        key = ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)
         if self[key].present?
           return self[key].first.downcase == "published"
         end

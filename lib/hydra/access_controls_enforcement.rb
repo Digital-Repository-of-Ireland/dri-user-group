@@ -15,10 +15,6 @@ module Hydra::AccessControlsEnforcement
 
   end
 
-  def current_ability
-    @current_ability || raise("current_ability has not been set on #{self}")
-  end
-
   protected
 
   def gated_discovery_filters(permission_types = discovery_permissions, ability = current_ability)
@@ -69,15 +65,15 @@ module Hydra::AccessControlsEnforcement
   #   class CatalogController < ApplicationController
   #     CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
   #   end
-  def add_access_controls_to_solr_params(solr_parameters)
-    apply_gated_discovery(solr_parameters)
+  def add_access_controls_to_solr_params(solr_parameters, user_parameters)
+    apply_gated_discovery(solr_parameters, user_parameters)
   end
 
-  def add_access_controls_to_solr_params_no_pub(solr_parameters)
-    apply_gated_discovery_no_pub(solr_parameters)
+  def add_access_controls_to_solr_params_no_pub(solr_parameters, user_parameters)
+    apply_gated_discovery_no_pub(solr_parameters, user_parameters)
   end
 
-  def apply_gated_discovery_no_pub(solr_parameters)
+  def apply_gated_discovery_no_pub(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
 
     # Or any models that the user can edit or manage
@@ -98,16 +94,16 @@ module Hydra::AccessControlsEnforcement
 
   # Controller before filter that sets up access-controlled lucene query in order to provide gated discovery behavior
   # @param solr_parameters the current solr parameters
-  def apply_gated_discovery(solr_parameters)
+  def apply_gated_discovery(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
 
     # Filter for published objects that do not have ancestors that have set their status to not published
-    ancestor_objects = "(" + ActiveFedora::SolrQueryBuilder.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
+    ancestor_objects = "(" + ActiveFedora::SolrQueryBuilder.solr_name("isGovernedBy", :symbol) + ":[* TO *]" +
            " AND (" + ActiveFedora::SolrQueryBuilder.solr_name("status", :symbol) + ":published" +
            " -_query_:\"{!join from=id to=ancestor_id_sim} -" + ActiveFedora::SolrQueryBuilder.solr_name("status", :symbol) + ":published\"))"
 
     # Filter for published objects
-    objects = "(-" + ActiveFedora::SolrQueryBuilder.solr_name("is_governed_by", :symbol) + ":[* TO *]" +
+    objects = "(-" + ActiveFedora::SolrQueryBuilder.solr_name("isGovernedBy", :symbol) + ":[* TO *]" +
               " AND " + ActiveFedora::SolrQueryBuilder.solr_name("status", :symbol) + ":published)"
 
     filter_published = ancestor_objects + " OR " + objects
