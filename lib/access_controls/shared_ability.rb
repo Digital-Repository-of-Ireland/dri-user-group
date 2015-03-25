@@ -96,7 +96,7 @@ module UserGroup
     end
 
     # edit implies read, so read_persons is the union of edit and read persons
-    def read_userss(pid)
+    def read_users(pid)
       rp = edit_users(pid) | ( get_permission_key(pid,self.class.read_user_field) || [])
       Rails.logger.debug("[CANCAN] read_users: #{rp.inspect}")
       return rp
