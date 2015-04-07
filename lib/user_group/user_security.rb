@@ -50,7 +50,7 @@ module UserGroup
 
     def is_om?
       group = Group.find_by_name(SETTING_GROUP_OM)
-      return true if !group.nil && self.member?(group.id)
+      return true if !group.nil? && self.member?(group.id)
     end
 
     def is_cm?
