@@ -39,7 +39,7 @@ end
 def organisation_manager()
     add_group_user("orgmanager@dri.ie","Organisation","Manager","en","om")
     group_id = UserGroup::Group.find_by_name("cm").id
-    add_and_approve_membership(UserGroup::User.find_by_email("admin@dri.ie"),group_id)
+    add_and_approve_membership(UserGroup::User.find_by_email("orgmanager@dri.ie"),group_id)
 end
 
 def groups()
