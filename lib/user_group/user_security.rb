@@ -48,6 +48,11 @@ module UserGroup
       return true if !group.nil? && self.member?(group.id)
     end
 
+    def is_om?
+      group = Group.find_by_name(SETTING_GROUP_OM)
+      return true if !group.nil && self.member?(group.id)
+    end
+
     def is_cm?
       group = Group.find_by_name(SETTING_GROUP_CM)
       return true if !group.nil? && self.member?(group.id)
