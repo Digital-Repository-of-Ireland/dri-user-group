@@ -148,6 +148,7 @@ en:
           unhappy: Unhappy?
         index:
           all_users: "All Users"
+          report: "Report"
         new:
           signup: "Sign Up"
         photo:
