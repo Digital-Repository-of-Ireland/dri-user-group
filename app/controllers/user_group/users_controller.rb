@@ -8,8 +8,15 @@ module UserGroup
     before_filter :can_view_profile, only: [:show]
 
     def index
+      # default to index view
+      @view = params[:view].present? ? params[:view] : 'index'
+
       if signed_in and current_user.is_admin?
-        @users = User.order(SETTING_ORDER_USER).page(params[:page])
+        if @view == "report"
+          @audit = PaperTrail::Version.order('created_at ASC').all
+        else
+          @users = User.order(SETTING_ORDER_USER).page(params[:page])
+        end
       else
         #Must be logged in so show all users that are public/registered
         @users = User.where(:view_level => SETTING_PROFILE_INDEX_VIEW_LEVELS).order(SETTING_ORDER_USER).page(params[:page])
