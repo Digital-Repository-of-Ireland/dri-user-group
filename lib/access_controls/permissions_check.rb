@@ -33,9 +33,6 @@ module UserGroup
         if !current_ability.get_permission_method(item,"is_published?") && cannot?(:edit, item)
           raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document, which is in draft mode.", :edit, item)
         end
-      when "show_master"
-        #Embargo check?
-        raise Hydra::AccessDenied.new("This item is not available. You do not have sufficient access privileges to view the master file(s).", :read_master, item) unless can? :read_master, item
       when "manage_collection"
         #Should I change to manager? Only time this can happen is malicious or command line?
         raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, item) unless can? :edit, item
