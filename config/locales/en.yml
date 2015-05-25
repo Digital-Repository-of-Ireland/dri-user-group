@@ -8,6 +8,8 @@ en:
       errors:
         admin: "You must be an admin"
         permission: "You do not have permission"
+        special_group: "Cannot manage special groups"
+        manage_permission: "You do not have manage permission"
     groups:
       created: "Group created"
       deleted: "Group has been deleted"
@@ -96,6 +98,7 @@ en:
         email: Email
         first_name: "First Name"
         group_membership: "Group Membership"
+        manage_read_group: "Manage Read Group for collection %{collection_id} - %{collection_name}"
         groups: Groups
         join_date: "Join Date"
         locale: "Preferred Language"

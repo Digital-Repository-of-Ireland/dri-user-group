@@ -3,7 +3,7 @@ require_dependency "user_group/application_controller"
 module UserGroup
   class GroupsController < ApplicationController
     before_filter :authenticate_user!
-    before_filter :admin_users, except: [:index]
+    before_filter :admin_users, except: [:index, :manage]
 
     def index
       @groups = Group.order(SETTING_ORDER_GROUP).page(params[:page])
@@ -29,6 +29,30 @@ module UserGroup
 
     def edit
       @group = Group.find(params[:id])
+    end
+
+    def manage
+      @group = Group.find(params[:id])
+
+      # Cannot manage special groups
+      if @group.reader_group.nil? || @group.reader_group.eql?(false)
+        flash[:error] = I18n.t("user_groups.application.errors.special_groups")
+        redirect_to main_app.root_url
+      end
+
+      # Find the read access group for the group's collection
+      result = ActiveFedora::SolrService.query("#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:#{@group.name}", :fl => "id, #{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}, #{Solrizer.solr_name('manager_access_inherit', :stored_searchable, type: :symbol)}, #{Solrizer.solr_name('title', :stored_searchable, type: :string)}")
+
+      if result.count > 1
+        flash[:error] = I18n.t("user_groups.application.errors.group_error")
+        redirect_to main_app.root_url
+      end
+
+      @collection = SolrDocument.new(result.first)
+      unless @collection["#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}"].include?(current_user.email)
+        flash[:error] = I18n.t("user_groups.application.errors.manage_permission")
+        redirect_to main_app.root_url
+      end
     end
 
     def update

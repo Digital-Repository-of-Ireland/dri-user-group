@@ -1,0 +1,19 @@
+<% memberships = object.full_memberships.page(params[:page]) %>
+<%= paginate memberships %>
+<% for membership in memberships %>
+    <%= form_for(membership, url: remove_read_membership_path, html: {:method => :delete}) do |f| %>
+        <%= render 'user_group/shared/error_messages', object: f.object %>
+        <%= f.hidden_field :group_id %>
+        <%= f.hidden_field :user_id %>
+        <% if object.is_a?(UserGroup::User) %>
+            <% group = UserGroup::Group.find_by_id(membership.group_id) %>
+            <%= f.submit (t :'user_groups.views.partials.leave_group.leave') + group.name.capitalize unless group.nil? %>
+        <% elsif object.is_a?(UserGroup::Group) %>
+            <% user = UserGroup::User.find_by_id(membership.user_id) %>
+            <%= user.full_name + " (" + user.email + ")" unless user.nil? %>
+            <%= f.submit (t :'user_groups.views.shared.remove') %>
+        <% end %>
+    <% end %>
+<% end %>
+
+

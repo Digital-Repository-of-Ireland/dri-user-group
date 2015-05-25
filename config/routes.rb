@@ -23,12 +23,16 @@ UserGroup::Engine.routes.draw do
   resources :groups do
     member do
         put :lock
+        get :manage
     end
+
   end
 
   resources :memberships, only: [:create, :destroy] do
     member do
         put :approve
+        put :approve_read
+        delete :remove_read
     end
     collection do
         post :pending
