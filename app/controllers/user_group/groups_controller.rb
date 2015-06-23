@@ -41,7 +41,7 @@ module UserGroup
       end
 
       # Find the read access group for the group's collection
-      result = ActiveFedora::SolrService.query("#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:#{@group.name}", :fl => "id, #{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}, #{Solrizer.solr_name('manager_access_inherit', :stored_searchable, type: :symbol)}, #{Solrizer.solr_name('title', :stored_searchable, type: :string)}")
+      result = ActiveFedora::SolrService.query("#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:#{@group.name}")
 
       if result.count > 1
         flash[:error] = I18n.t("user_groups.application.errors.group_error")
@@ -49,7 +49,7 @@ module UserGroup
       end
 
       @collection = SolrDocument.new(result.first)
-      unless @collection["#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}"].include?(current_user.email)
+      unless can? :manage_collection, @collection
         flash[:error] = I18n.t("user_groups.application.errors.manage_permission")
         redirect_to main_app.root_url
       end

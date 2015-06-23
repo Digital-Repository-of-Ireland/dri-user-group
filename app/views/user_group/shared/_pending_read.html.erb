@@ -13,7 +13,7 @@
         <%= identifier %>
         <br />
         <div class="inline">
-            <% if (current_user.is_admin? || @collection["#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}"].include?(current_user.email)) && !membership.id.nil? %>
+            <% if (current_user.is_admin? || (can? :manage_collection, @collection)) && !membership.id.nil? %>
                 <%= button_to (t :'user_groups.views.partials.pending.approve'), approve_read_membership_path(membership), method: :put %>
             <% end %>
 

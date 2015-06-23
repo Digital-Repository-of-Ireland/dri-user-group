@@ -52,16 +52,22 @@ module UserGroup
         redirect_to main_app.root_url
       end
 
-      collection_id = group.name.gsub(/_/, ":")
-      collection = ActiveFedora::Base.find(collection_id,{:cast => true})
-      if collection.manager_users.include?(current_user.email)
+      result = ActiveFedora::SolrService.query("#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:#{group.name}")
+
+      if result.count > 1
+        flash[:error] = I18n.t("user_groups.application.errors.group_error")
+        redirect_to main_app.root_url
+      end
+
+      collection = SolrDocument.new(result.first)
+      if can? :manage_collection, collection
         if(approve_membership(membership))
           flash[:success] = I18n.t("user_groups.memberships.approve")
         else
           flash[:error] = I18n.t("user_groups.memberships.errors.approving")
         end
       else
-        flash[:error] = I18n.t("user_groups.memberships.errors.manage_permission")
+        flash[:error] = I18n.t("user_groups.application.errors.manage_permission")
       end
       redirect_to :back
     end
@@ -77,9 +83,15 @@ module UserGroup
         redirect_to main_app.root_url
       end
 
-      collection_id = group.name.gsub(/_/, ":")
-      collection = ActiveFedora::Base.find(collection_id,{:cast => true})
-      if collection.manager_users.include?(current_user.email)
+      result = ActiveFedora::SolrService.query("#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:#{group.name}")
+
+      if result.count > 1
+        flash[:error] = I18n.t("user_groups.application.errors.group_error")
+        redirect_to main_app.root_url
+      end
+
+      collection = SolrDocument.new(result.first)
+      if can? :manage_collection, collection
         action = user.leave_group(group.id) unless group.nil? or group.name==SETTING_GROUP_DEFAULT
         if action.nil?
           flash[:error] = I18n.t("user_groups.memberships.errors.membership")
@@ -89,7 +101,7 @@ module UserGroup
         end
         redirect_to :back
       else
-        flash[:error] = I18n.t("user_groups.memberships.errors.manage_permission")
+        flash[:error] = I18n.t("user_groups.application.errors.manage_permission")
         redirect_to main_app.root_url
       end
     end
