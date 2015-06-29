@@ -12,6 +12,14 @@ module UserGroup
       end
     end
 
+    def collection_mgr_users
+      return unless signed_in
+      unless current_user.is_om? || current_user.is_cm? || current_user.is_admin?
+        flash[:error] = I18n.t("user_groups.application.errors.permission")
+        redirect_to(main_app.root_url)
+      end
+    end
+
     def modifying_current_user? (user_to_modify)
       return false unless current_user.id == user_to_modify.id
       return true

@@ -27,7 +27,7 @@ module UserGroup
       end
 
       #A way of ensuring only certain methods can be called
-      if doc.respond_to? method_name  and ["show_master_file?","is_public?","is_private?","under_embargo?","is_published?"].include? method_name
+      if doc.respond_to? method_name  and ["is_public?","is_private?","under_embargo?","is_published?"].include? method_name
         result = doc.send(method_name)
         return result unless result.nil?
 

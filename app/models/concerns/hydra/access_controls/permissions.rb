@@ -1,121 +1,65 @@
 module Hydra
   module AccessControls
     module Permissions
-    extend ActiveSupport::Concern  
+      extend ActiveSupport::Concern
+      include Hydra::AccessControls::Visibility
 
-    #included do
-    #end
-      ## Updates those permissions that are provided to it. Does not replace any permissions unless they are provided
-      # @example
-      #  obj.permissions= [{:name=>"group1", :access=>"discover", :type=>'group'},
-      #  {:name=>"group2", :access=>"discover", :type=>'group'}]
-      def permissions=(params)
-        perm_hash = {'person' => rightsMetadata.individuals, 'group'=> rightsMetadata.groups}
+      included do
+        has_many :permissions, predicate: ::ACL.accessTo, class_name: 'UserGroup::PermissionOverride', inverse_of: :access_to
+        accepts_nested_attributes_for :permissions, allow_destroy: true
+        alias_method :permissions_attributes_without_uniqueness=, :permissions_attributes=
+        alias_method :permissions_attributes=, :permissions_attributes_with_uniqueness=
+      end
 
-        params.each do |row|
-          if row[:type] == 'user' || row[:type] == 'person'
-            perm_hash['person'][row[:name]] = row[:access]
-          elsif row[:type] == 'group'
-            perm_hash['group'][row[:name]] = row[:access]
-          else
-            raise ArgumentError, "Permission type must be 'user', 'person' (alias for 'user'), or 'group'"
+      def to_solr(solr_doc = {}, opts = {})
+        super.tap do |doc|
+          [:discover, :read, :edit, :manager].each do |access|
+            vals = send("#{access}_groups")
+            doc[Hydra.config.permissions[access].group] = vals unless vals.empty?
+            vals = send("#{access}_users")
+            doc[Hydra.config.permissions[access].individual] = vals unless vals.empty?
           end
         end
-        
-        rightsMetadata.update_permissions(perm_hash)
       end
 
+      # When chaging a permission for an object/user, ensure an update is done, not a duplicate
+      def permissions_attributes_with_uniqueness=(attributes_collection)
+        if attributes_collection.is_a? Hash
+          keys = attributes_collection.keys
+          attributes_collection = if keys.include?('id') || keys.include?(:id)
+            Array(attributes_collection)
+          else
+            attributes_collection.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes }
+          end
+        end
 
-      ## Returns a list with all the permissions on the object.
-      # @example
-      #  [{:name=>"group1", :access=>"discover", :type=>'group'},
-      #  {:name=>"group2", :access=>"discover", :type=>'group'},
-      #  {:name=>"user2", :access=>"read", :type=>'user'},
-      #  {:name=>"user1", :access=>"edit", :type=>'user'},
-      #  {:name=>"user3", :access=>"read", :type=>'user'}]
-      def permissions
-        (rightsMetadata.groups.map {|x| {:type=>'group', :access=>x[1], :name=>x[0] }} + 
-          rightsMetadata.individuals.map {|x| {:type=>'user', :access=>x[1], :name=>x[0]}})
-      end
+        attributes_collection.each do |prop|
+          existing = case prop[:type]
+          when 'group'
+            search_by_type(:group)
+          when 'person'
+            search_by_type(:person)
+          end
 
-      #383 Additions (Added private_metadata, show master_file and manager_users/manager_groups methods)
-      def master_file
-        rightsMetadata.show_master_file?
-      end
-      
-      def master_file=(is_allowed)
-        is_allowed = "-1" if is_allowed.nil?
-        rightsMetadata.master_file=is_allowed.to_s
-      end
+          next unless existing
+          selected = existing.find { |perm| perm.agent_name == prop[:name] }
+          prop['id'] = selected.id if selected
+        end
 
-      def private_metadata
-        rightsMetadata.private_metadata?
-      end
-
-      def private_metadata=(is_private)
-        is_private = "-1" if is_private.nil?
-        rightsMetadata.private_metadata=is_private.to_s
+        self.permissions_attributes_without_uniqueness=attributes_collection
       end
 
-      #Not used to check if under embargo
-      def embargo
-        rightsMetadata.embargo_release_date
-      end
-
-      def embargo=(release_date)
-        rightsMetadata.embargo_release_date=release_date
-      end
-
-      def manager_users
-        rightsMetadata.individuals.map {|k, v| k if v == 'manager'}.compact
-      end
-
-      def manager_users=(users)
-        set_manager_users(users,manager_users)
-      end
-     
-      def manager_users_string=(users)
-        self.manager_users=users.split(/[\s,]+/)
-      end
-
-      def manager_users_string
-        self.manager_users.join(', ')
-      end
-      
-      def set_manager_users(users, eligible_users)
-        set_entities(:manager, :person, users, eligible_users)
-      end
-
-      def manager_groups
-        rightsMetadata.groups.map {|k, v| k if v == 'manager'}.compact
-      end
-
-      def manager_groups=(groups)
-        set_manager_groups(groups,manager_groups)
-      end
-     
-      def manager_groups_string=(groups)
-        self.manager_groups=groups.split(/[\s,]+/)
-      end
-
-      def manager_groups_string
-        self.manager_groups.join(', ')
-      end
-      
-      def set_manager_groups(groups, eligible_groups)
-        set_entities(:manager, :group, groups, eligible_groups)
-      end
 
       # Return a list of groups that have discover permission
       def discover_groups
-        rightsMetadata.groups.map {|k, v| k if v == 'discover'}.compact
+        search_by_type_and_mode(:group, Hydra::ACL.Discover).map { |p| p.agent_name }
       end
 
       # Grant discover permissions to the groups specified. Revokes discover permission for all other groups.
       # @param[Array] groups a list of group names
       # @example
       #  r.discover_groups= ['one', 'two', 'three']
-      #  r.discover_groups 
+      #  r.discover_groups
       #  => ['one', 'two', 'three']
       #
       def discover_groups=(groups)
@@ -126,7 +70,7 @@ module Hydra
       # @param[String] groups a list of group names
       # @example
       #  r.discover_groups_string= 'one, two, three'
-      #  r.discover_groups 
+      #  r.discover_groups
       #  => ['one', 'two', 'three']
       #
       def discover_groups_string=(groups)
@@ -141,13 +85,13 @@ module Hydra
       # Grant discover permissions to the groups specified. Revokes discover permission for
       # any of the eligible_groups that are not in groups.
       # This may be used when different users are responsible for setting different
-      # groups.  Supply the groups the current user is responsible for as the 
+      # groups.  Supply the groups the current user is responsible for as the
       # 'eligible_groups'
       # @param[Array] groups a list of groups
-      # @param[Array] eligible_groups the groups that are eligible to have their discover permssion revoked. 
+      # @param[Array] eligible_groups the groups that are eligible to have their discover permssion revoked.
       # @example
       #  r.discover_groups = ['one', 'two', 'three']
-      #  r.discover_groups 
+      #  r.discover_groups
       #  => ['one', 'two', 'three']
       #  r.set_discover_groups(['one'], ['three'])
       #  r.discover_groups
@@ -158,14 +102,14 @@ module Hydra
       end
 
       def discover_users
-        rightsMetadata.individuals.map {|k, v| k if v == 'discover'}.compact
+        search_by_type_and_mode(:person, Hydra::ACL.Discover).map { |p| p.agent_name }
       end
 
       # Grant discover permissions to the users specified. Revokes discover permission for all other users.
       # @param[Array] users a list of usernames
       # @example
       #  r.discover_users= ['one', 'two', 'three']
-      #  r.discover_users 
+      #  r.discover_users
       #  => ['one', 'two', 'three']
       #
       def discover_users=(users)
@@ -176,7 +120,7 @@ module Hydra
       # @param[String] users a list of usernames
       # @example
       #  r.discover_users_string= 'one, two, three'
-      #  r.discover_users 
+      #  r.discover_users
       #  => ['one', 'two', 'three']
       #
       def discover_users_string=(users)
@@ -191,13 +135,13 @@ module Hydra
       # Grant discover permissions to the users specified. Revokes discover permission for
       # any of the eligible_users that are not in users.
       # This may be used when different users are responsible for setting different
-      # users.  Supply the users the current user is responsible for as the 
+      # users.  Supply the users the current user is responsible for as the
       # 'eligible_users'
       # @param[Array] users a list of users
-      # @param[Array] eligible_users the users that are eligible to have their discover permssion revoked. 
+      # @param[Array] eligible_users the users that are eligible to have their discover permssion revoked.
       # @example
       #  r.discover_users = ['one', 'two', 'three']
-      #  r.discover_users 
+      #  r.discover_users
       #  => ['one', 'two', 'three']
       #  r.set_discover_users(['one'], ['three'])
       #  r.discover_users
@@ -209,14 +153,14 @@ module Hydra
 
       # Return a list of groups that have discover permission
       def read_groups
-        rightsMetadata.groups.map {|k, v| k if v == 'read'}.compact
+        search_by_type_and_mode(:group, ::ACL.Read).map { |p| p.agent_name }
       end
 
       # Grant read permissions to the groups specified. Revokes read permission for all other groups.
       # @param[Array] groups a list of group names
       # @example
       #  r.read_groups= ['one', 'two', 'three']
-      #  r.read_groups 
+      #  r.read_groups
       #  => ['one', 'two', 'three']
       #
       def read_groups=(groups)
@@ -227,7 +171,7 @@ module Hydra
       # @param[String] groups a list of group names
       # @example
       #  r.read_groups_string= 'one, two, three'
-      #  r.read_groups 
+      #  r.read_groups
       #  => ['one', 'two', 'three']
       #
       def read_groups_string=(groups)
@@ -242,13 +186,13 @@ module Hydra
       # Grant read permissions to the groups specified. Revokes read permission for
       # any of the eligible_groups that are not in groups.
       # This may be used when different users are responsible for setting different
-      # groups.  Supply the groups the current user is responsible for as the 
+      # groups.  Supply the groups the current user is responsible for as the
       # 'eligible_groups'
       # @param[Array] groups a list of groups
-      # @param[Array] eligible_groups the groups that are eligible to have their read permssion revoked. 
+      # @param[Array] eligible_groups the groups that are eligible to have their read permssion revoked.
       # @example
       #  r.read_groups = ['one', 'two', 'three']
-      #  r.read_groups 
+      #  r.read_groups
       #  => ['one', 'two', 'three']
       #  r.set_read_groups(['one'], ['three'])
       #  r.read_groups
@@ -259,14 +203,14 @@ module Hydra
       end
 
       def read_users
-        rightsMetadata.individuals.map {|k, v| k if v == 'read'}.compact
+        search_by_type_and_mode(:person, ::ACL.Read).map { |p| p.agent_name }
       end
 
       # Grant read permissions to the users specified. Revokes read permission for all other users.
       # @param[Array] users a list of usernames
       # @example
       #  r.read_users= ['one', 'two', 'three']
-      #  r.read_users 
+      #  r.read_users
       #  => ['one', 'two', 'three']
       #
       def read_users=(users)
@@ -277,7 +221,7 @@ module Hydra
       # @param[String] users a list of usernames
       # @example
       #  r.read_users_string= 'one, two, three'
-      #  r.read_users 
+      #  r.read_users
       #  => ['one', 'two', 'three']
       #
       def read_users_string=(users)
@@ -292,13 +236,13 @@ module Hydra
       # Grant read permissions to the users specified. Revokes read permission for
       # any of the eligible_users that are not in users.
       # This may be used when different users are responsible for setting different
-      # users.  Supply the users the current user is responsible for as the 
+      # users.  Supply the users the current user is responsible for as the
       # 'eligible_users'
       # @param[Array] users a list of users
-      # @param[Array] eligible_users the users that are eligible to have their read permssion revoked. 
+      # @param[Array] eligible_users the users that are eligible to have their read permssion revoked.
       # @example
       #  r.read_users = ['one', 'two', 'three']
-      #  r.read_users 
+      #  r.read_users
       #  => ['one', 'two', 'three']
       #  r.set_read_users(['one'], ['three'])
       #  r.read_users
@@ -311,14 +255,14 @@ module Hydra
 
       # Return a list of groups that have edit permission
       def edit_groups
-        rightsMetadata.groups.map {|k, v| k if v == 'edit'}.compact
+        search_by_type_and_mode(:group, ::ACL.Write).map { |p| p.agent_name }
       end
 
       # Grant edit permissions to the groups specified. Revokes edit permission for all other groups.
       # @param[Array] groups a list of group names
       # @example
       #  r.edit_groups= ['one', 'two', 'three']
-      #  r.edit_groups 
+      #  r.edit_groups
       #  => ['one', 'two', 'three']
       #
       def edit_groups=(groups)
@@ -329,7 +273,7 @@ module Hydra
       # @param[String] groups a list of group names
       # @example
       #  r.edit_groups_string= 'one, two, three'
-      #  r.edit_groups 
+      #  r.edit_groups
       #  => ['one', 'two', 'three']
       #
       def edit_groups_string=(groups)
@@ -344,13 +288,13 @@ module Hydra
       # Grant edit permissions to the groups specified. Revokes edit permission for
       # any of the eligible_groups that are not in groups.
       # This may be used when different users are responsible for setting different
-      # groups.  Supply the groups the current user is responsible for as the 
+      # groups.  Supply the groups the current user is responsible for as the
       # 'eligible_groups'
       # @param[Array] groups a list of groups
-      # @param[Array] eligible_groups the groups that are eligible to have their edit permssion revoked. 
+      # @param[Array] eligible_groups the groups that are eligible to have their edit permssion revoked.
       # @example
       #  r.edit_groups = ['one', 'two', 'three']
-      #  r.edit_groups 
+      #  r.edit_groups
       #  => ['one', 'two', 'three']
       #  r.set_edit_groups(['one'], ['three'])
       #  r.edit_groups
@@ -361,23 +305,14 @@ module Hydra
       end
 
       def edit_users
-        rightsMetadata.individuals.map {|k, v| k if v == 'edit'}.compact
-      end
-
-      #383 Additions (Added edit_users_string)
-      def edit_users_string=(users)
-        self.edit_users=users.split(/[\s,]+/)
-      end
-
-      def edit_users_string
-        self.edit_users.join(', ')
+        search_by_type_and_mode(:person, ::ACL.Write).map { |p| p.agent_name }
       end
 
       # Grant edit permissions to the groups specified. Revokes edit permission for all other groups.
       # @param[Array] users a list of usernames
       # @example
       #  r.edit_users= ['one', 'two', 'three']
-      #  r.edit_users 
+      #  r.edit_users
       #  => ['one', 'two', 'three']
       #
       def edit_users=(users)
@@ -387,13 +322,13 @@ module Hydra
       # Grant edit permissions to the users specified. Revokes edit permission for
       # any of the eligible_users that are not in users.
       # This may be used when different users are responsible for setting different
-      # users.  Supply the users the current user is responsible for as the 
+      # users.  Supply the users the current user is responsible for as the
       # 'eligible_users'
       # @param[Array] users a list of users
-      # @param[Array] eligible_users the users that are eligible to have their edit permssion revoked. 
+      # @param[Array] eligible_users the users that are eligible to have their edit permssion revoked.
       # @example
       #  r.edit_users = ['one', 'two', 'three']
-      #  r.edit_users 
+      #  r.edit_users
       #  => ['one', 'two', 'three']
       #  r.set_edit_users(['one'], ['three'])
       #  r.edit_users
@@ -403,37 +338,190 @@ module Hydra
         set_entities(:edit, :person, users, eligible_users)
       end
 
+      def edit_users_string=(users)
+        self.edit_users=users.split(/[\s,]+/)
+      end
 
-      private 
+      # Display the groups a comma delimeted string
+      def edit_users_string
+        self.edit_users.join(', ')
+      end
 
-      # @param  permission either :discover, :read or :edit
-      # @param  type either :person or :group
-      # @param  values  Values to set
-      # @param  changeable Values we are allowed to change
+      # Return a list of groups that have manager permission
+      def manager_groups
+        search_by_type_and_mode(:group, ::ACL.Control).map { |p| p.agent_name }
+      end
+
+      # Grant edit permissions to the groups specified. Revokes edit permission for all other groups.
+      # @param[Array] groups a list of group names
+      # @example
+      #  r.manager_groups= ['one', 'two', 'three']
+      #  r.manager_groups
+      #  => ['one', 'two', 'three']
+      #
+      def manager_groups=(groups)
+        set_manager_groups(groups, manager_groups)
+      end
+
+      # Grant manager permissions to the groups specified. Revokes edit permission for all other groups.
+      # @param[String] groups a list of group names
+      # @example
+      #  r.manager_groups_string= 'one, two, three'
+      #  r.manager_groups
+      #  => ['one', 'two', 'three']
+      #
+      def manager_groups_string=(groups)
+        self.manager_groups=groups.split(/[\s,]+/)
+      end
+
+      # Display the groups a comma delimeted string
+      def manager_groups_string
+        self.manager_groups.join(', ')
+      end
+
+      # Grant manager permissions to the groups specified. Revokes manager permission for
+      # any of the eligible_groups that are not in groups.
+      # This may be used when different users are responsible for setting different
+      # groups.  Supply the groups the current user is responsible for as the
+      # 'eligible_groups'
+      # @param[Array] groups a list of groups
+      # @param[Array] eligible_groups the groups that are eligible to have their edit permssion revoked.
+      # @example
+      #  r.manager_groups = ['one', 'two', 'three']
+      #  r.manager_groups
+      #  => ['one', 'two', 'three']
+      #  r.set_manager_groups(['one'], ['three'])
+      #  r.manager_groups
+      #  => ['one', 'two']  ## 'two' was not eligible to be removed
+      #
+      def set_manager_groups(groups, eligible_groups)
+        set_entities(:manager, :group, groups, eligible_groups)
+      end
+
+      def manager_users
+        search_by_type_and_mode(:person, ::ACL.Control).map { |p| p.agent_name }
+      end
+
+      # Grant manager permissions to the groups specified. Revokes manager permission for all other groups.
+      # @param[Array] users a list of usernames
+      # @example
+      #  r.manager_users= ['one', 'two', 'three']
+      #  r.manager_users
+      #  => ['one', 'two', 'three']
+      #
+      def manager_users=(users)
+        set_manager_users(users, manager_users)
+      end
+
+      # Grant manager permissions to the users specified. Revokes manager permission for
+      # any of the eligible_users that are not in users.
+      # This may be used when different users are responsible for setting different
+      # users.  Supply the users the current user is responsible for as the
+      # 'eligible_users'
+      # @param[Array] users a list of users
+      # @param[Array] eligible_users the users that are eligible to have their edit permssion revoked.
+      # @example
+      #  r.manager_users = ['one', 'two', 'three']
+      #  r.manager_users
+      #  => ['one', 'two', 'three']
+      #  r.set_manager_users(['one'], ['three'])
+      #  r.manager_users
+      #  => ['one', 'two']  ## 'two' was not eligible to be removed
+      #
+      def set_manager_users(users, eligible_users)
+        set_entities(:manager, :person, users, eligible_users)
+      end
+
+      def manager_users_string=(users)
+        self.manager_users=users.split(/[\s,]+/)
+      end
+
+      # Display the groups a comma delimeted string
+      def manager_users_string
+        self.manager_users.join(', ')
+      end
+
+      protected
+
+      def has_destroy_flag?(hash)
+        ["1", "true"].include?(hash['_destroy'].to_s)
+      end
+
+      private
+
+      # @param [Symbol] permission either :discover, :read or :edit
+      # @param [Symbol] type either :person or :group
+      # @param [Array<String>] values Values to set
+      # @param [Array<String>] changeable Values we are allowed to change
       def set_entities(permission, type, values, changeable)
-        g = preserved(type, permission)
         (changeable - values).each do |entity|
-          #Strip permissions from users not provided
-          g[entity] = 'none'
+          for_destroy = search_by_type_and_mode(type, permission_to_uri(permission)).select { |p| p.agent_name == entity }
+          permissions.delete(for_destroy)
         end
-        values.each { |name| g[name] = permission.to_s}
-        rightsMetadata.update_permissions(type.to_s=>g)
+
+        values.each do |agent_name|
+          exists = search_by_type_and_mode(type, permission_to_uri(permission)).select { |p| p.agent_name == agent_name }
+          permissions.build(name: agent_name, access: permission.to_s, type: type ) unless exists.present?
+        end
       end
 
-      ## Get those permissions we don't want to change
-      #383 Modified (Added manager case)
-      def preserved(type, permission)
-        case permission
-        when :edit
-          g = {}
-        when :read
-          Hash[rightsMetadata.quick_search_by_type(type).select {|k, v| v == 'edit'}]
-        when :discover
-          Hash[rightsMetadata.quick_search_by_type(type).select {|k, v| v == 'discover'}]
-        when :manager
-          Hash[rightsMetadata.quick_search_by_type(type).select {|k, v| v == 'manager'}]
+      def permission_to_uri(permission)
+        case permission.to_s
+        when 'read'
+          ::ACL.Read
+        when 'edit'
+          ::ACL.Write
+        when 'discover'
+          Hydra::ACL.Discover
+        when 'manager'
+          ::ACL.Control
+        else
+          raise "Invalid permission #{permission.inspect}"
         end
       end
-  end
+
+      # @param [Symbol] type (either :group or :person)
+      # @return [Array<Permission>]
+      def search_by_type(type)
+        case type
+        when :group
+          permissions.to_a.select { |p| group_agent?(p.agent) }
+        when :person
+          permissions.to_a.select { |p| person_agent?(p.agent) }
+        end
+      end
+
+      # @param [Symbol] type either :group or :person
+      # @param [::RDF::URI] mode One of the permissions modes, e.g. ACL.Write, ACL.Read, etc.
+      # @return [Array<Permission>]
+      def search_by_type_and_mode(type, mode)
+        case type
+        when :group
+          permissions.to_a.select { |p| group_agent?(p.agent) && p.mode.first.rdf_subject == mode }
+        when :person
+          permissions.to_a.select { |p| person_agent?(p.agent) && p.mode.first.rdf_subject == mode }
+        end
+      end
+
+      def person_permissions
+        search_by_type(:person)
+      end
+
+      def group_permissions
+        search_by_type(:group)
+      end
+
+      def group_agent?(agent)
+        raise "no agent" unless agent.present?
+        agent.first.rdf_subject.to_s.start_with?(UserGroup::GROUP_AGENT_URL_PREFIX)
+
+      end
+
+      def person_agent?(agent)
+        raise "no agent" unless agent.present?
+        agent.first.rdf_subject.to_s.start_with?(UserGroup::PERSON_AGENT_URL_PREFIX)
+      end
+
+    end
   end
 end

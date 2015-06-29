@@ -40,7 +40,7 @@
         <%= @user.authentication_token %>
 
         <p><%= t :'user_groups.views.users.show.token_sign_in' %><br />
-        <%= link_to request.env["HTTP_HOST"] + "#{root_path(:auth_token => @user.authentication_token)}", root_path(:auth_token => @user.authentication_token)  %></p>
+        <%= link_to request.env["HTTP_HOST"] + "#{root_path(:user_token => @user.authentication_token, :user_email => @user.email)}", root_path(:user_token => @user.authentication_token, :user_email => @user.email)  %></p>
 
         <% if SETTING_PROFILE_TOKEN_EXPIRY_DAYS == 0 %>
             <% expiry_date = t :'user_groups.views.users.show.never' %>
