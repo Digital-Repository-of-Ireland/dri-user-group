@@ -52,6 +52,8 @@ module UserGroup
         redirect_to main_app.root_url
       end
 
+      user = User.find_by_id(membership.user_id)
+
       result = ActiveFedora::SolrService.query("#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:#{group.name}")
 
       if result.count > 1
@@ -63,6 +65,7 @@ module UserGroup
       if can? :manage_collection, collection
         if(approve_membership(membership))
           flash[:success] = I18n.t("user_groups.memberships.approve")
+          AuthMailer.approved_mail(user, group, collection[Solrizer.solr_name('title', :stored_searchable, type: :string)].first).deliver
         else
           flash[:error] = I18n.t("user_groups.memberships.errors.approving")
         end
@@ -119,15 +122,26 @@ module UserGroup
     #Similar to create
     def pending
       @user = get_user(params[:membership][:user_id])
-      group_id = get_group_id(params[:membership][:group_id])
+      group = get_group(params[:membership][:group_id])
 
       if @user.nil?
         flash[:error] = I18n.t("user_groups.shared.errors.user")
-      elsif group_id.nil?
+      elsif group.id.nil?
         flash[:error] = I18n.t("user_groups.memberships.errors.group")
       else
-        action = @user.join_group(group_id)
+        action = @user.join_group(group.id)
         render 'groups/index' and return if action.errors.count >0
+
+        # inform managers for reader group requests
+        if group.reader_group.present? && group.reader_group.eql?(true)
+          result = ActiveFedora::SolrService.query("id:#{group.name}")
+          doc = SolrDocument.new(result.pop) if result.count > 0
+          managers = doc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
+          if managers.present? && managers.count > 0
+            AuthMailer.pending_mail(managers, @user.email, user_group.manage_group_url(group)).deliver
+          end
+        end
+
         flash[:success] = I18n.t("user_groups.memberships.pending")
       end
       redirect_to :back
@@ -154,6 +168,10 @@ module UserGroup
 
     def get_group_id(group_id_or_name)
       return not_positive_integer?(group_id_or_name) ? get_group_id_from_group_name(group_id_or_name) : group_id_or_name
+    end
+
+    def get_group(group_id_or_name)
+      return group = Group.find(not_positive_integer?(group_id_or_name) ? get_group_id_from_group_name(group_id_or_name) : group_id_or_name)
     end
 
     def get_group_id_from_group_name(group_name)

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Pending read requests</h1>
+    <p>
+      A user with the email adddress <strong><%= @user %></strong> has requested read access to your collection.
+    </p>
+    <p>
+      To manage all read requests, just follow this link: <%= link_to @url, @url %>.
+    </p>
+  </body>
+</html>
