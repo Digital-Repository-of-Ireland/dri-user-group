@@ -166,3 +166,12 @@ ga:
           total_sign_in: "Líon iomlán sínithe isteach: "
         sign_in:
           remember_me: "Cuimhnigh orm"
+    mailers:
+      pending:
+        subject: "Pending read requests"
+        header: "Pending read requests"
+        body: "<p>A user with the email adddress <strong>%{user}</strong> has requested read access to your collection.</p><p>To manage all read requests, just follow this link: %{link}.</p>"
+      approved:
+        subject: "Read request approved"
+        header: "Read request approved"
+        body: "<p>Dear %{user},</p><p>Your request to access the assets in the collection %{link} has been approved.</p>"

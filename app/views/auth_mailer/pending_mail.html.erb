@@ -4,12 +4,7 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Pending read requests</h1>
-    <p>
-      A user with the email adddress <strong><%= @user %></strong> has requested read access to your collection.
-    </p>
-    <p>
-      To manage all read requests, just follow this link: <%= link_to @url, @url %>.
-    </p>
+    <h1><%= t('user_groups.mailers.pending.header') %></h1>
+    <%= t('user_groups.mailers.pending.body', :user => @user, :link => link_to(@url, @url)).html_safe %>
   </body>
 </html>

@@ -6,7 +6,7 @@ class AuthMailer < ActionMailer::Base
       @user = user
       @url = url
       managers.each do |email|
-        mail(to: email, subject: 'Pending read requests')
+        mail(to: email, subject: t('user_groups.mailers.pending.subject'))
       end
     end
   end
@@ -15,7 +15,7 @@ class AuthMailer < ActionMailer::Base
     @user = user
     @group = group
     @collection = collection
-    mail(to: @user.email, subject: 'Read request Approved')
+    mail(to: @user.email, subject: t('user_groups.mailers.approved.subject'))
   end
 
 end
