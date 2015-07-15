@@ -1,5 +1,5 @@
 class AuthMailer < ActionMailer::Base
-  default from: "no-reply@dri.ie"
+  default from: Devise.mailer_sender
 
   def pending_mail(managers, user, url)
     if !managers.nil? && !managers.empty?
