@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1><%= t('user_groups.mailers.pending.header') %></h1>
+    <%= t('user_groups.mailers.pending.body', :user => @user, :link => link_to(@url, @url)).html_safe %>
+  </body>
+</html>
