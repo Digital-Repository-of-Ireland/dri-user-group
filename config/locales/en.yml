@@ -108,7 +108,7 @@ en:
         pending: Pending
         private: Private
         public: Public
-        report: Report
+        user_report: "User Report"
         register: Register
         registered: "Logged in users"
         remove: Remove
