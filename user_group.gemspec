@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
   s.require_path = 'lib'
 
-  s.add_dependency "rails", "~> 4.1.0"
+  s.add_dependency "rails"
   s.add_dependency "devise"
   s.add_dependency "devise-i18n-views"
   s.add_dependency "devise-guests", "~> 0.3"
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "fastimage"
   s.add_dependency "omniauth"
   s.add_dependency "omniauth-shibboleth"
-  s.add_dependency "paper_trail", "~> 3.0.6"
+  s.add_dependency "paper_trail"
 
   s.add_development_dependency('simplecov')
   s.add_development_dependency('simplecov-rcov')
