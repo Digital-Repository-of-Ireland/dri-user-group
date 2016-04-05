@@ -2,11 +2,13 @@
 
 <p>Welcome to the admin home<p>
 
-<%= link_to (t :'user_groups.views.shared.users'), users_path %>
-<%= link_to (t :'user_groups.views.shared.groups'), groups_path %>
-<%= link_to (t :'user_groups.views.shared.user_report'), users_path(:view => 'report') %>
-<br />
-<%= link_to (t :'user_groups.views.shared.add_user'), new_user_path %>
-<%= link_to (t :'user_groups.views.shared.add_group'), new_group_path %>
+<ul class="list-unstyled">
+  <li><%= link_to (t :'user_groups.views.shared.users'), users_path %></li>
+  <li><%= link_to (t :'user_groups.views.shared.groups'), groups_path %></li>
+  <li><%= link_to (t :'user_groups.views.shared.user_report'), users_path(:view => 'report') %></li>
+  <br />
+  <li><%= link_to (t :'user_groups.views.shared.add_user'), new_user_path %></li>
+  <li><%= link_to (t :'user_groups.views.shared.add_group'), new_group_path %></li>
+</ul>
 
 <%#= link_to "Data Logging", "#" %>
