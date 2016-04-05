@@ -137,6 +137,17 @@ module UserGroup
           result = ActiveFedora::SolrService.query("id:#{group.name}")
           doc = SolrDocument.new(result.pop) if result.count > 0
           managers = doc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
+
+          # if no manager set for this collection it could be inherited, iterate up the tree
+          if managers.nil?
+            doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].reverse_each do |ancestor|
+              result = ActiveFedora::SolrService.query("id:#{ancestor}")
+              ancestordoc = SolrDocument.new(result.pop) if result.count > 0
+              managers = ancestordoc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
+              break if managers.present? && managers.count > 0
+            end
+          end
+
           if managers.present? && managers.count > 0
             AuthMailer.pending_mail(managers, @user.email, user_group.manage_group_url(group)).deliver
           end
