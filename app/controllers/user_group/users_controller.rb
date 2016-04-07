@@ -2,6 +2,7 @@ require_dependency "user_group/application_controller"
 
 module UserGroup
   class UsersController < ApplicationController
+    before_action :set_initials, only: [:index]
     before_filter :authenticate_user!, except: [:new, :create, :show]
     #:can_modify (through can_modify_base) also sets @user
     before_filter :can_modify, only: [:edit, :update, :destroy, :create_token, :destroy_token]
@@ -15,7 +16,11 @@ module UserGroup
         if @view == "report"
           @audit = PaperTrail::Version.order('created_at ASC').all
         else
-          @users = User.order(SETTING_ORDER_USER).page(params[:page])
+          if params[:user_letter]
+            @users = User.by_letter(params[:user_letter]).order(SETTING_ORDER_USER).page(params[:page])
+          else
+            @users = User.order(SETTING_ORDER_USER).page(params[:page])
+          end
         end
       else
         #Must be logged in so show all users that are public/registered
@@ -167,6 +172,10 @@ module UserGroup
       end
 
       @user = user_to_view
+    end
+
+    def set_initials
+      @first_letters = User.select("DISTINCT LOWER(SUBSTR(user_group_users.second_name, 1, 1)) AS name").order("name").collect{|fl| "#{fl.name}"}
     end
   end
 end

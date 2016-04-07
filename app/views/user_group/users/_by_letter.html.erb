@@ -1,0 +1,4 @@
+<% @first_letters.each do |lt|%>
+  <%= link_to(lt, users_url+"?user_letter="+lt) %>
+<% end %>
+<%= link_to('All', users_url+"?user_letter=" ) %>

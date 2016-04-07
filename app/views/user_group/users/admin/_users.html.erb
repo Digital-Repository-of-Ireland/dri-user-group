@@ -1,6 +1,10 @@
 <%= link_to (t :'user_groups.views.shared.add_user'), new_user_path %>
 <h2> <%= (t :'user_groups.views.users.index.all_users') %> (<%= @users.total_count %>)</h2>
 
+<br />
+<%= render :partial => 'by_letter' %>
+<br />
+
 <%= paginate @users %>
 <br />
 <% for user in @users %>
