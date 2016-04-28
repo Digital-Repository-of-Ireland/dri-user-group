@@ -5,9 +5,8 @@ class AuthMailer < ActionMailer::Base
     if !managers.nil? && !managers.empty?
       @user = user
       @url = url
-      managers.each do |email|
-        mail(to: email, subject: t('user_groups.mailers.pending.subject'))
-      end
+      @managers = managers
+      mail(to: @managers, subject: t('user_groups.mailers.pending.subject'))
     end
   end
 
