@@ -6,11 +6,11 @@ describe UserGroup::MembershipsController do
     @routes = UserGroup::Engine.routes
 
     @login_user = FactoryGirl.create(:admin)
-    @login_user.confirm!
+    @login_user.confirm
     sign_in @login_user
 
     @user = FactoryGirl.create(:user)
-    @user.confirm!
+    @user.confirm
     @group = FactoryGirl.create(:group)
   end
 

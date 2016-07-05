@@ -11,13 +11,13 @@ describe UserGroup::UsersController do
   describe "GET #index" do
     it "populates an array of public users" do
       @login_user = FactoryGirl.create(:user)
-      @login_user.confirm!
+      @login_user.confirm
       sign_in @login_user
       
       user = FactoryGirl.create(:user)
       user.set_view_level("public")
       user.save
-      user.confirm!
+      user.confirm
 
       get :index
       assigns[:users].should_not be_nil
@@ -26,11 +26,11 @@ describe UserGroup::UsersController do
 
     it "should not show private users" do
       @login_user = FactoryGirl.create(:user)
-      @login_user.confirm!
+      @login_user.confirm
       sign_in @login_user
 
       user = FactoryGirl.create(:user)
-      user.confirm!
+      user.confirm
 
       get :index
       assigns[:users].should be_empty
@@ -38,15 +38,15 @@ describe UserGroup::UsersController do
 
     it "should show all users to admin" do
       @login_user = FactoryGirl.create(:admin)
-      @login_user.confirm!
+      @login_user.confirm
       sign_in @login_user
 
       private_user = FactoryGirl.create(:user)
-      private_user.confirm!
+      private_user.confirm
       public_user = FactoryGirl.create(:user)
       public_user.set_view_level("public")
       public_user.save
-      public_user.confirm!
+      public_user.confirm
 
       get :index
       assigns[:users].should_not be_nil
@@ -66,7 +66,7 @@ describe UserGroup::UsersController do
   describe "GET #show" do 
     it "renders the #show view" do 
       @login_user = FactoryGirl.create(:user)
-      @login_user.confirm!
+      @login_user.confirm
       sign_in @login_user   
    
       get :show, id: @login_user 
@@ -105,7 +105,7 @@ describe UserGroup::UsersController do
   describe 'PUT update' do 
     before :each do 
       @user = FactoryGirl.create(:user) 
-      @user.confirm!
+      @user.confirm
       sign_in @user
     end 
 
@@ -151,13 +151,13 @@ describe UserGroup::UsersController do
   describe 'DELETE destroy' do 
     before :each do 
       @admin = FactoryGirl.create(:admin) 
-      @admin.confirm!
+      @admin.confirm
       sign_in @admin
     end 
   
    it "deletes the user" do
      @user = FactoryGirl.create(:user)
-     @user.confirm!
+     @user.confirm
      expect{ 
        delete :destroy, id: @user 
      }.to change(UserGroup::User,:count).by(-1) 
@@ -167,7 +167,7 @@ describe UserGroup::UsersController do
   describe 'tokens' do
     before :each do
       @user = FactoryGirl.create(:user)
-      @user.confirm!
+      @user.confirm
       sign_in @user
     end
 

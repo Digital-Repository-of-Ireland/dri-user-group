@@ -6,7 +6,7 @@ describe UserGroup::GroupsController do
     @routes = UserGroup::Engine.routes
 
     @login_user = FactoryGirl.create(:admin)
-    @login_user.confirm!
+    @login_user.confirm
     sign_in @login_user
   end
 
