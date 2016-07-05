@@ -53,6 +53,9 @@ module UserGroup
         flash[:error] = I18n.t("user_groups.application.errors.manage_permission")
         redirect_to main_app.root_url
       end
+      
+      @pending_memberships = @group.pending_memberships.page(params[:page])
+      @memberships = @group.full_memberships.page(params[:page])
     end
 
     def update

@@ -33,6 +33,7 @@ UserGroup::Engine.routes.draw do
         put :approve
         put :approve_read
         delete :remove_read
+        get :view_read_request
     end
     collection do
         post :pending

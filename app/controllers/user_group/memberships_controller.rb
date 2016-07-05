@@ -1,4 +1,5 @@
 require_dependency "user_group/application_controller"
+require 'json'
 
 module UserGroup
   class MembershipsController < ApplicationController
@@ -6,7 +7,7 @@ module UserGroup
     before_filter :admin_users, only: [:create, :approve]
     #:can_modify (through can_modify_base) also sets @user (found by id ONLY)
     before_filter :can_modify, only: [:destroy]
-    before_filter :collection_mgr_users, only: [:approve_read, :remove_read]
+    before_filter :collection_mgr_users, only: [:approve_read, :remove_read, :view_read_request]
     #remote true sends requests in js
     respond_to :html, :js
 
@@ -76,11 +77,10 @@ module UserGroup
     end
 
     def remove_read
-      group_id_or_name = params[:membership][:group_id]
-      group = not_positive_integer?(group_id_or_name) ? Group.find_by_name(group_id_or_name.downcase) : Group.find_by_id(group_id_or_name)
-      user_id_or_email = params[:membership][:user_id]
-      user = not_positive_integer?(user_id_or_email) ? User.find_by_id(user_id_or_email.downcase) : User.find_by_id(user_id_or_email)
-
+      membership = Membership.find_by_id(params[:id])
+      group = Group.find_by_id(membership.group_id)
+      user = User.find_by_id(membership.user_id)
+      
       if group.reader_group.nil? || group.reader_group.eql?(false)
         flash[:error] = I18n.t("user_groups.application.errors.special_groups")
         redirect_to main_app.root_url
@@ -100,12 +100,28 @@ module UserGroup
           flash[:error] = I18n.t("user_groups.memberships.errors.membership")
         else
           render 'users/edit' and return if action.errors.count >0
-          flash[:success] = I18n.t("user_groups.memberships.leave")
+          if membership.approved?
+            flash[:success] = I18n.t("user_groups.memberships.read_access_removed")
+            AuthMailer.removed_mail(user, group,
+              collection[Solrizer.solr_name('title', :stored_searchable, type: :string)].first).deliver
+          else
+            flash[:success] = I18n.t("user_groups.memberships.read_access_rejected")
+            AuthMailer.rejected_mail(user, group,
+              collection[Solrizer.solr_name('title', :stored_searchable, type: :string)].first).deliver
+          end
         end
         redirect_to :back
       else
         flash[:error] = I18n.t("user_groups.application.errors.manage_permission")
         redirect_to main_app.root_url
+      end
+    end
+
+    def view_read_request
+      @membership = Membership.find_by_id(params[:id])
+      
+      respond_to do |format|
+        format.js
       end
     end
 
@@ -132,8 +148,10 @@ module UserGroup
         action = @user.join_group(group.id)
         render 'groups/index' and return if action.errors.count >0
 
+        store_request_form(group.id)
+
         # inform managers for reader group requests
-        if group.reader_group.present? && group.reader_group.eql?(true)
+        if group.reader_group.present? && group.reader_group
           result = ActiveFedora::SolrService.query("id:#{group.name}")
           doc = SolrDocument.new(result.pop) if result.count > 0
           managers = doc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
@@ -153,8 +171,9 @@ module UserGroup
           end
         end
 
-        flash[:success] = I18n.t("user_groups.memberships.pending")
+        flash[:success] = I18n.t('user_groups.views.partials.request_form.submitted')
       end
+
       redirect_to :back
     end
 
@@ -192,6 +211,43 @@ module UserGroup
 
     def not_positive_integer?(string)
       return true unless string =~ /^[0-9]+$/
+    end
+
+    def store_request_form(group_id)
+      membership = @user.memberships.find_by_group_id(group_id)
+
+      membership.request_form[:name] = params[:name] if params[:name].present?
+      membership.request_form[:organisation] = params[:organisation] if params[:organisation].present?
+      membership.request_form[:position] = params[:position] if params[:position].present?
+
+      if params[:use].present?
+        use = {}
+        case params[:use]
+        when 'academic'
+          use[:academic] = {}
+          use[:academic][:project] = params[:academic_project] if params[:academic_project].present?
+          use[:academic][:funder] = params[:academic_funder] if params[:academic_funder].present?
+          use[:academic][:investigator] = params[:academic_investigators] if params[:academic_investigators].present?
+        when 'research'
+          use[:research] = {}
+          use[:research][:description] = params[:research_description] if params[:research_description].present?
+        when 'education'
+          use[:education] = {}
+          use[:education][:role] = params[:teaching_role] if params[:teaching_role].present?
+          use[:education][:module] = params[:teaching_module] if params[:teaching_module].present?
+          use[:education][:dates] = params[:teaching_dates] if params[:teaching_dates].present?
+        when 'commercial'
+          use[:commercial] = {}
+          use[:commercial][:description] = params[:commercial_description] if params[:commercial_description].present?
+        when 'other'
+          use[:other] = {}
+          use[:other][:description] = params[:other_description] if params[:other_description].present?
+        end
+
+        membership.request_form[:use] = use.to_json
+      end
+
+      membership.save
     end
   end
 end

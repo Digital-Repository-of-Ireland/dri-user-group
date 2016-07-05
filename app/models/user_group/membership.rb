@@ -7,6 +7,8 @@ module UserGroup
     validates :group, presence: true
     validates :user, presence: true
 
+    store :request_form, accessors: [ :name, :organisation, :position, :use ], coder: JSON
+
     #http://thetenelements.blogspot.ie/2011/08/undefined-method-text-for-nilnilclass.html
     validates :group_id, uniqueness: {scope: :user_id}
 
