@@ -8,7 +8,7 @@ end
 def add_regular_user(email,first_name,second_name,locale)
     raise "No default password set" unless Settings.dri.password.present?
     user = UserGroup::User.where(:email => email).first_or_create(:password => Settings.dri.password, :password_confirmation => Settings.dri.password, :locale => locale, :first_name => first_name, :second_name => second_name)
-    user.confirm!
+    user.confirm
     registered_group_id = UserGroup::Group.find_by_name("registered").id
     add_and_approve_membership(user,registered_group_id)
     return user
