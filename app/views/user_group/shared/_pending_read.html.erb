@@ -13,8 +13,10 @@
   <%= "#{identifier} #{membership.created_at}" %>
   <div class="btn-group inline">
     <% if (current_user.is_admin? || (can? :manage_collection, @collection)) && !membership.id.nil? %>
-      <%= link_to (t :'user_groups.views.partials.pending.view'), view_read_request_membership_path(membership.id, format: 'js'),
-            id: "request_form", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_request_form_modal_id' %>
+      <% unless membership.request_form.nil? %>
+        <%= link_to (t :'user_groups.views.partials.pending.view'), view_read_request_membership_path(membership.id, format: 'js'),
+              id: "request_form", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_request_form_modal_id' %>
+      <% end %>
       <%= link_to (t :'user_groups.views.partials.pending.approve'), 
           approve_read_membership_path(membership), method: :put %>
     <% end %>
