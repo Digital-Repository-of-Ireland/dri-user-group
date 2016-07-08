@@ -18,10 +18,10 @@
               id: "request_form", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_request_form_modal_id' %>
       <% end %>
       <%= link_to (t :'user_groups.views.partials.pending.approve'), 
-          approve_read_membership_path(membership), method: :put %>
+          approve_membership_path(membership), method: :put %>
     <% end %>
      <%= link_to (t :'user_groups.views.partials.pending.reject'), 
-          remove_read_membership_path(membership), method: :delete %>
+          membership_path(membership), method: :delete %>
   </div>
 
  <br/>
