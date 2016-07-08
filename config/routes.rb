@@ -31,7 +31,12 @@ UserGroup::Engine.routes.draw do
   resources :memberships, only: [:create, :destroy] do
     member do
         put :approve
-        get :request, to: 'memberships#view_read_request', as: 'view_read_request'
+        put :approve_read
+        delete :remove_read
+        get :view_read_request
+    end
+    collection do
+        post :pending
     end
   end
 

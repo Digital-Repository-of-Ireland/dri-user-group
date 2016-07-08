@@ -11,7 +11,7 @@
         <%= membership.updated_at %>
 
         <%= link_to (t :'user_groups.views.partials.approved.remove'), 
-          membership_path(membership), method: :delete %>
+          remove_read_membership_path(membership), method: :delete %>
     <% end %>
     
     <br/>

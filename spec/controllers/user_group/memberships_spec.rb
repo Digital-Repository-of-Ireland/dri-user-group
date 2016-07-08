@@ -78,87 +78,11 @@ describe UserGroup::MembershipsController do
       expect(@user.member?(@group.id)).to be_falsey
       expect(@user.pending_member?(@group.id)).not_to be true
 
-      post :create, { "membership_type" => 'pending', "membership" => { "user_id" => @user.id, "group_id" => @group.id } }
+      post :pending, { "membership" => { "user_id" => @user.id, "group_id" => @group.id } }
 
       @user.reload
       expect(@user.pending_member?(@group.id)).to be true
       end
-  end
-
-  describe 'Approve pending' do
-    let(:solr_document) { Class.new {
-        def initialize(args)
-        end
-
-        def [](key)
-          []
-        end
-      } 
-    }
-
-    it "approves a pending membership" do
-      @request.env['HTTP_REFERER'] = "/groups/#{@group.id}"
-
-      @group.reader_group = true
-      @group.save
-
-      expect(@user.member?(@group.id)).to be_falsey
-      expect(@user.pending_member?(@group.id)).not_to be true
-
-      allow(ActiveFedora::SolrService).to receive(:query).and_return([{}])
-      stub_const("SolrDocument", solr_document)
-      post :create, { "membership_type" => 'pending', "membership" => { "user_id" => @user.id, "group_id" => @group.id } }
-
-      expect(@user.pending_member?(@group.id)).to be true
-
-      membership = UserGroup::Membership.find_by(group_id: @group.id, user_id: @user.id)
-      
-      allow_any_instance_of(UserGroup::MembershipsController).to receive(:can?).and_return(true)
-      expect(AuthMailer).to receive(:approved_mail).and_return(AuthMailer)
-      expect(AuthMailer).to receive(:deliver)
-      
-      put :approve, id: membership
-
-      membership.reload
-      expect(membership.approved?).to be true
-    end
-  end
- 
-  describe 'Remove read' do
-    let(:solr_document) { Class.new {
-        def initialize(args)
-        end
-
-        def [](key)
-          []
-        end
-      } 
-    }
-
-    it "deletes a read membership" do
-      @request.env['HTTP_REFERER'] = "/groups/#{@group.id}"
- 
-      @group.reader_group = true
-      @group.save
-
-      @membership = @login_user.join_group(@group.id)
-      @membership.approve_membership(@login_user.id)
-      @membership.save
-
-      @login_user.reload   
-      expect(@login_user.member?(@group.id)).to be true
-
-      allow(ActiveFedora::SolrService).to receive(:query).and_return([{}])
-      stub_const("SolrDocument", solr_document)
-      allow_any_instance_of(UserGroup::MembershipsController).to receive(:can?).and_return(true)
-      expect(AuthMailer).to receive(:removed_mail).and_return(AuthMailer)
-      expect(AuthMailer).to receive(:deliver)
-
-      delete :destroy, {id: @group, "membership" => { "user_id" => @login_user.id, "group_id" => @group.id } } 
-
-      @login_user.reload
-      expect(@login_user.member?(@group.id)).to be_falsey   
-    end
   end
 
 end

@@ -17,7 +17,6 @@ gem "json"
 # your gem to rubygems.org.
 
 group :development, :test do
-  gem 'active-fedora'
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-bundler'
