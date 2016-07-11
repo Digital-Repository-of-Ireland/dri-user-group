@@ -23,7 +23,6 @@ UserGroup::Engine.routes.draw do
   resources :groups do
     member do
         put :lock
-        get :manage
     end
 
   end
@@ -31,12 +30,6 @@ UserGroup::Engine.routes.draw do
   resources :memberships, only: [:create, :destroy] do
     member do
         put :approve
-        put :approve_read
-        delete :remove_read
-        get :view_read_request
-    end
-    collection do
-        post :pending
     end
   end
 

@@ -70,19 +70,6 @@ describe UserGroup::MembershipsController do
       @membership.reload
       expect(@membership.approved?).to be true
     end
-  end 
-
-  describe 'POST pending' do
-    it "creates a new pending membership" do
-      @request.env['HTTP_REFERER'] = "/groups/#{@group.id}"
-      expect(@user.member?(@group.id)).to be_falsey
-      expect(@user.pending_member?(@group.id)).not_to be true
-
-      post :pending, { "membership" => { "user_id" => @user.id, "group_id" => @group.id } }
-
-      @user.reload
-      expect(@user.pending_member?(@group.id)).to be true
-      end
   end
 
 end
