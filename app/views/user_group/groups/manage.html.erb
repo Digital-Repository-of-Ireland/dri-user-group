@@ -1,6 +1,0 @@
-<h3><%= (t :'user_groups.views.shared.manage_read_group', :collection_id => @collection.id, :collection_name => @collection['title_tesim'].first) %></h3>
-<% #Rendering the other way does odd things %>
-<h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.remove') %></h4>
-<%= render partial: 'user_group/shared/remove_read', locals: {object: @group} %>
-<h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.pending') %></h4>
-<%= render partial: 'user_group/shared/pending_read', locals: {object: @group} %>

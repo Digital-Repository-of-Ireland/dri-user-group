@@ -80,8 +80,24 @@ en:
           user: "User ID or Email"
         leave_group:
           leave: "Leave: "
-        pending:
-          approve: Approve
+        request_form:
+          name: "Your name"
+          organisation: "Your organisation (if applicable)"
+          position: "Your position in this organisation (if applicable)"
+          use: "Proposed use of this object/collection (select one of the below options)"
+          academic_research: "Academic research"
+          project_name: "Name of project"
+          funder: "Funder if appropriate"
+          investigators: "Other investigators (if appropriate). If you are a student provide name of your academic supervisor"
+          research: "Other research"
+          research_description: "Please provide a brief description of this research"
+          education: "Teaching and learning"
+          teaching_role: "Are you a teacher or a learner on this module?"
+          teaching_module: "Name of module (include module reference number if applicable)"
+          teaching_dates: "Start and end dates of module"
+          commercial: "Commercial use"
+          description: "Please provide a brief description"
+          other: "Other use"
       shared:
         about_me: "About Me"
         add: Add
@@ -98,20 +114,20 @@ en:
         email: Email
         first_name: "First Name"
         group_membership: "Group Membership"
-        manage_read_group: "Manage Read Group for collection %{collection_id} - %{collection_name}"
+        manage_read_group: "Manage read group for collection - %{collection_name}"
         groups: Groups
         join_date: "Join Date"
         locale: "Preferred Language"
         name: Name
         password: Password
         password_confirm: "Confirm Password"
-        pending: Pending
+        pending: "Pending Request"
         private: Private
         public: Public
         user_report: "User Report"
         register: Register
         registered: "Logged in users"
-        remove: Remove
+        remove: Approved
         second_name: "Second Name"
         sign_in: "Sign in"
         token: "Token Authentication Key"
@@ -178,6 +194,12 @@ en:
         header: "Pending read requests"
         body: "<p>A user with the email adddress <strong>%{user}</strong> has requested read access to your collection.</p><p>To manage all read requests, just follow this link: %{link}.</p>"
       approved:
-        subject: "Read request approved"
+        subject: "Request for access to restricted digital content in the DRI approved"
         header: "Read request approved"
-        body: "<p>Dear %{user},</p><p>Your request to access the assets in the collection %{link} has been approved.</p>"
+        body: "<p>Dear %{user},</p><p>Your recent request for access to restricted content in the %{link} collection has been approved.</p><p>Please log in to the Digital Repository of Ireland to access this collection/object. If you have any queries about this access request please contact the depositing organisation for this object/collection.</p>"
+      rejected:
+        subject: "Request for access to restricted digital content in the DRI unsuccessful"
+        body: "<p>Dear %{user},</p><p>Your recent request for access to restricted content in the %{link} collection has not been approved.</p><p>If you have any queries about this access request please contact the depositing organisation for this object/collection.</p>"
+      removed:
+        subject: "Access to restricted digital content in the DRI no longer valid"
+        body: "<p>Dear %{user},</p><p>Your access to restricted content in the %{link} collection is no longer valid.</p><p>If you have any queries about this change in access please contact the depositing organisation for this collection.</p>"

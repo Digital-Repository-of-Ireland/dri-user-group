@@ -2,6 +2,7 @@ class AuthMailer < ActionMailer::Base
   default from: Devise.mailer_sender
 
   def pending_mail(managers, user, url)
+    Rails.logger.debug("[AUTH MAILER] sending mail to #{managers}")
     if !managers.nil? && !managers.empty?
       @user = user
       @url = url
@@ -15,6 +16,20 @@ class AuthMailer < ActionMailer::Base
     @group = group
     @collection = collection
     mail(to: @user.email, subject: t('user_groups.mailers.approved.subject'))
+  end
+
+  def rejected_mail(user, group, collection)
+    @user = user
+    @group = group
+    @collection = collection
+    mail(to: @user.email, subject: t('user_groups.mailers.rejected.subject'))
+  end
+
+  def removed_mail(user, group, collection)
+    @user = user
+    @group = group
+    @collection = collection
+    mail(to: @user.email, subject: t('user_groups.mailers.removed.subject'))
   end
 
 end
