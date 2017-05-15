@@ -33,4 +33,5 @@ UserGroup::Engine.routes.draw do
     end
   end
 
+  get 'profile', to: 'users#profile_redirect', as: :profile
 end
