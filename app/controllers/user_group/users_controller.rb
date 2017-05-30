@@ -18,6 +18,8 @@ module UserGroup
         else
           if params[:user_letter]
             @users = User.by_letter(params[:user_letter]).order(SETTING_ORDER_USER).page(params[:page])
+          elsif params[:search]
+            @users = User.search(params[:search]).order(SETTING_ORDER_USER).page(params[:page])
           else
             @users = User.order(SETTING_ORDER_USER).page(params[:page])
           end

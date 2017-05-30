@@ -5,13 +5,14 @@ module UserGroup
     include UserGroup::UserOptions
 
     scope :by_letter, ->(initial) { where("second_name LIKE \'#{initial}%\'").order(:second_name) }
+    scope :search, ->(search) { where("email LIKE :search OR first_name LIKE :search OR second_name LIKE :search", { search: "%#{search}%" }) }
 
     def self.create_for_shibboleth(access_token)
       u = UserGroup::User.new
       u.apply_omniauth(access_token)
       u.skip_confirmation!
       u
-    end
+    end 
 
   end
 end
