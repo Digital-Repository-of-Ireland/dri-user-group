@@ -4,7 +4,7 @@ module UserGroup
   PERSON_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/person'.freeze
   class PermissionOverride < Hydra::AccessControls::AccessControlList
     def initialize(args)
-      super()
+      super
       build_agent(args[:name], args[:type].to_s)
       build_access(args[:access])
     end
