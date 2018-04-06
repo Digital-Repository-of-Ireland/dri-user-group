@@ -1,6 +1,6 @@
 require 'devise'
 require 'kaminari'
-require 'gravatar-ultimate'
+require 'rb-gravatar'
 require 'fastimage'
 require 'omniauth'
 require 'omniauth-shibboleth'
