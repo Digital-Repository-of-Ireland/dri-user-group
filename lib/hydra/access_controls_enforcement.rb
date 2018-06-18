@@ -69,16 +69,16 @@ module Hydra::AccessControlsEnforcement
     apply_gated_discovery(solr_parameters, user_parameters)
   end
 
-  def add_access_controls_to_solr_params_no_pub(solr_parameters, user_parameters)
-    apply_gated_discovery_no_pub(solr_parameters, user_parameters)
+  def add_workspace_access_controls_to_solr_params(solr_parameters, user_parameters)
+    apply_workspace_gated_discovery(solr_parameters, user_parameters)
   end
 
-  def apply_gated_discovery_no_pub(solr_parameters, user_parameters)
+  def apply_workspace_gated_discovery(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
+    return if (current_user && current_user.is_admin?)
 
-    # Or any models that the user can edit or manage
-    solr_parameters[:fq] << "(" + manager_and_edit_filter +
-                            ")" unless (current_user && current_user.is_admin?)
+    # any obejcts that the user can edit or manage
+    solr_parameters[:fq] << "(" + manager_or_edit_filter + ")" 
   end
 
   # Which permission levels (logical OR) will grant you the ability to discover documents in a search.
@@ -107,11 +107,7 @@ module Hydra::AccessControlsEnforcement
               " AND " + ActiveFedora::SolrQueryBuilder.solr_name("status", :symbol) + ":published)"
 
     filter_published = ancestor_objects + " OR " + objects
-
-    # Or any models that the user can edit or manage
-    solr_parameters[:fq] << "(" + filter_published +
-                   ") OR (" + manager_and_edit_filter +
-                   ")" unless (current_user && current_user.is_admin?)
+    solr_parameters[:fq] << "(#{filter_published})"
     
     Rails.logger.debug("Solr parameters: #{ solr_parameters.inspect }")
   end
@@ -148,10 +144,10 @@ module Hydra::AccessControlsEnforcement
   end
 
   def published_or_permitted_filter
-    published_filter + " OR " + manager_and_edit_filter
+    published_filter + " OR " + manager_or_edit_filter
   end
 
-  def manager_and_edit_filter
+  def manager_or_edit_filter
     generate_permission_filters(["manager","edit"]).join(" OR ")
   end
 
@@ -176,10 +172,7 @@ module Hydra::AccessControlsEnforcement
       elsif type == "discover"
         
       else
-         permission_query = ""#{}"((" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "true") + " AND " +
-                            #{}"_query_:\"{!join from=id to=ancestor_id_sim}" + permission_query + "\" ) OR " +
-                            #{}"(" + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_inherit", Hydra::Datastream::RightsMetadata.indexer), "false") + " AND " +
-                            #{}"("+permission_query+")))"
+         permission_query = ""
       end
 
        filters << permission_query
