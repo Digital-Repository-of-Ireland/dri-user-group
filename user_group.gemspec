@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "devise-i18n-views"
   s.add_dependency "devise-guests", "~> 0.3"
   s.add_dependency "kaminari"
-  s.add_dependency "gravatar-ultimate"
+  s.add_dependency "rb-gravatar"
   s.add_dependency "fastimage"
   s.add_dependency "omniauth"
   s.add_dependency "omniauth-shibboleth"

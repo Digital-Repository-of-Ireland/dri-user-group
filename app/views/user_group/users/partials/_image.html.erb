@@ -6,7 +6,7 @@
 %>
 <% unless user.image_link.nil? or user.image_link.blank? %>
     <% if user.image_link == SETTING_PROFILE_GRAVATAR_ID %>
-        <% url = Gravatar.new(user.email).image_url %>
+        <% url = Gravatar.src(user.email) %>
     <% elsif user.image_link.include?("http") || user.image_link.include?("www") %>
         <% url = user.image_link %>
     <% else %>
