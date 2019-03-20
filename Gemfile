@@ -8,7 +8,7 @@ gemspec
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
 
-gem "sqlite3"
+gem "sqlite3", '~> 1.3', '< 1.4'
 gem "json"
 
 # Declare any dependencies that are still in development here instead of in

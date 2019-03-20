@@ -12,7 +12,7 @@ module UserGroup
       @current_user = user || Hydra::Ability.user_class.new # guest user (not logged in)
       @user = @current_user # just in case someone was using this in an override. Just don't.
       @session = session
-      @cache = Hydra::PermissionsCache.new
+      @cache = Blacklight::AccessControls::PermissionsCache.new
       #Default: Giving same level as edit
       alias_action :edit, :update, :destroy, :to => :manage_collection
       hydra_default_permissions()
