@@ -65,20 +65,20 @@ module Hydra::AccessControlsEnforcement
   #   class CatalogController < ApplicationController
   #     CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
   #   end
-  def add_access_controls_to_solr_params(solr_parameters, user_parameters)
-    apply_gated_discovery(solr_parameters, user_parameters)
+  def add_access_controls_to_solr_params(solr_parameters)
+    apply_gated_discovery(solr_parameters)
   end
 
-  def add_workspace_access_controls_to_solr_params(solr_parameters, user_parameters)
-    apply_workspace_gated_discovery(solr_parameters, user_parameters)
+  def add_workspace_access_controls_to_solr_params(solr_parameters)
+    apply_workspace_gated_discovery(solr_parameters)
   end
 
-  def apply_workspace_gated_discovery(solr_parameters, user_parameters)
+  def apply_workspace_gated_discovery(solr_parameters)
     solr_parameters[:fq] ||= []
-    return if (current_user && current_user.is_admin?)
+    #return if (ability.current_user && ability.current_user.is_admin?)
 
-    # any obejcts that the user can edit or manage
-    solr_parameters[:fq] << "(" + manager_or_edit_filter + ")" 
+    # any objects that the user can edit or manage
+    solr_parameters[:fq] << "(" + manager_or_edit_filter + ")"
   end
 
   # Which permission levels (logical OR) will grant you the ability to discover documents in a search.
@@ -94,21 +94,21 @@ module Hydra::AccessControlsEnforcement
 
   # Controller before filter that sets up access-controlled lucene query in order to provide gated discovery behavior
   # @param solr_parameters the current solr parameters
-  def apply_gated_discovery(solr_parameters, user_parameters)
+  def apply_gated_discovery(solr_parameters)
     solr_parameters[:fq] ||= []
 
     # Filter for published objects that do not have ancestors that have set their status to not published
-    ancestor_objects = "(" + ActiveFedora::SolrQueryBuilder.solr_name("isGovernedBy", :symbol) + ":[* TO *]" +
-           " AND (" + ActiveFedora::SolrQueryBuilder.solr_name("status", :symbol) + ":published" +
-           " -_query_:\"{!join from=id to=ancestor_id_sim} -" + ActiveFedora::SolrQueryBuilder.solr_name("status", :symbol) + ":published\"))"
+    ancestor_objects = "(" + ActiveFedora.index_field_mapper.solr_name("isGovernedBy", :symbol) + ":[* TO *]" +
+           " AND (" + ActiveFedora.index_field_mapper.solr_name("status", :symbol) + ":published" +
+           " -_query_:\"{!join from=id to=ancestor_id_sim} -" + ActiveFedora.index_field_mapper.solr_name("status", :symbol) + ":published\"))"
 
     # Filter for published objects
-    objects = "(-" + ActiveFedora::SolrQueryBuilder.solr_name("isGovernedBy", :symbol) + ":[* TO *]" +
-              " AND " + ActiveFedora::SolrQueryBuilder.solr_name("status", :symbol) + ":published)"
+    objects = "(-" + ActiveFedora.index_field_mapper.solr_name("isGovernedBy", :symbol) + ":[* TO *]" +
+              " AND " + ActiveFedora.index_field_mapper.solr_name("status", :symbol) + ":published)"
 
     filter_published = ancestor_objects + " OR " + objects
     solr_parameters[:fq] << "(#{filter_published})"
-    
+
     Rails.logger.debug("Solr parameters: #{ solr_parameters.inspect }")
   end
 
@@ -140,7 +140,7 @@ module Hydra::AccessControlsEnforcement
   end
 
   def published_filter
-    ActiveFedora::SolrQueryBuilder.solr_name("status", :symbol) + ":published"
+    ActiveFedora.index_field_mapper.solr_name("status", :symbol) + ":published"
   end
 
   def published_or_permitted_filter
@@ -170,7 +170,7 @@ module Hydra::AccessControlsEnforcement
         permission_query = "_query_:\"{!join from=id to=ancestor_id_sim}" + permission_query + "\" OR " +
                            "("+permission_query+")"
       elsif type == "discover"
-        
+
       else
          permission_query = ""
       end
