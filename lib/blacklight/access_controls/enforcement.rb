@@ -24,9 +24,6 @@ module Blacklight
         alias_method :add_access_controls_to_solr_params, :apply_gated_discovery
 
         self.solr_access_filters_logic = %i[apply_group_permissions apply_user_permissions]
-
-        # Apply appropriate access controls to all solr queries
-        self.default_processor_chain += [:add_access_controls_to_solr_params] if respond_to?(:default_processor_chain)
       end
 
       delegate :current_ability, to: :scope
