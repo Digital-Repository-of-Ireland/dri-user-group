@@ -8,5 +8,5 @@ module UserGroup
 #
 #  VERSION  = "0.0.#{increment}"
 
-  VERSION = "1.2.3"
+  VERSION = "1.3.0"
 end
