@@ -80,6 +80,8 @@ en:
           user: "User ID or Email"
         leave_group:
           leave: "Leave: "
+        pending:
+          approve: Approve request
         request_form:
           name: "Your name"
           organisation: "Your organisation (if applicable)"
