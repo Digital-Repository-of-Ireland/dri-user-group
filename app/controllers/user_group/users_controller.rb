@@ -12,22 +12,23 @@ module UserGroup
       # default to index view
       @view = params[:view].present? ? params[:view] : 'index'
 
-      if signed_in and current_user.is_admin?
+      if signed_in && current_user.is_admin?
         if @view == "report"
           @audit = PaperTrail::Version.order('created_at ASC').all
         else
           if params[:user_letter]
-            @users = User.by_letter(params[:user_letter]).order(SETTING_ORDER_USER).page(params[:page])
+            @users = User.by_letter(params[:user_letter]).order(SETTING_ORDER_USER).page(params[:page]).per(params[:per_page])
           elsif params[:search]
-            @users = User.search(params[:search]).order(SETTING_ORDER_USER).page(params[:page])
+            @users = User.search(params[:search]).order(SETTING_ORDER_USER).page(params[:page]).per(params[:per_page])
           else
-            @users = User.order(SETTING_ORDER_USER).page(params[:page])
+            @users = User.order(SETTING_ORDER_USER).page(params[:page]).per(params[:per_page])
           end
         end
       else
         #Must be logged in so show all users that are public/registered
-        @users = User.where(:view_level => SETTING_PROFILE_INDEX_VIEW_LEVELS).order(SETTING_ORDER_USER).page(params[:page])
+        @users = User.where(view_level: SETTING_PROFILE_INDEX_VIEW_LEVELS).order(SETTING_ORDER_USER).page(params[:page])
       end
+
       @users
     end
 
@@ -36,10 +37,7 @@ module UserGroup
 
     def new
       @user = User.new
-      
-      if session[:omniauth]
-        @user.apply_omniauth(session[:omniauth])
-      end
+      @user.apply_omniauth(session[:omniauth]) if session[:omniauth]
     end
 
     def create
@@ -117,7 +115,6 @@ module UserGroup
         redirect_to main_app.new_user_session_url
       else
         redirect_to users_url
-
         flash[:success] = I18n.t("user_groups.users.deleted")
       end
     end
@@ -145,7 +142,7 @@ module UserGroup
       if current_user
         redirect_to current_user
       else
-        redirect_to new_user_session_path 
+        redirect_to new_user_session_path
       end
     end
 
