@@ -8,7 +8,7 @@ gemspec
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
 
-gem "sqlite3", '~> 1.3', '< 1.4'
+gem "sqlite3"
 gem "json"
 
 # Declare any dependencies that are still in development here instead of in
@@ -20,15 +20,16 @@ group :development, :test do
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-bundler'
-  gem 'rb-inotify', :require => false
-  gem 'rb-fsevent', :require => false
-  gem 'rb-fchange', :require => false
+  gem 'rb-inotify', require: false
+  gem 'rb-fsevent', require: false
+  gem 'rb-fchange', require: false
   gem 'rspec-rails'
   gem 'mocha'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'database_cleaner'
   gem 'faker'
   gem 'ci_reporter_rspec'
   gem 'rspec-legacy_formatters'
-  gem 'paper_trail', '~> 3.0.6'
+  gem 'rails-controller-testing'
+  gem 'paper_trail' 
 end

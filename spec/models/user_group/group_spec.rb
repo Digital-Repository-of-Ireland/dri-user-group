@@ -3,7 +3,7 @@ require 'spec_helper'
 describe UserGroup::Group do
 
   before(:each) do
-    @user = FactoryGirl.build(:user)
+    @user = FactoryBot.build(:user)
     @user.save
   end
 
@@ -27,7 +27,7 @@ describe UserGroup::Group do
     @group = UserGroup::Group.create(name: "test group", description: "a test group")
     @group.full_memberships.should be_empty
 
-    @membership = @user.join_group(@group.id)    
+    @membership = @user.join_group(@group.id)
     @membership.approved_by = @user.id
     @membership.save
 

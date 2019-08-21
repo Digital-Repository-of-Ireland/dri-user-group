@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe UserGroup::UserOptions do
   before :each do
-    @user = FactoryGirl.build(:user)
+    @user = FactoryBot.build(:user)
   end
 
   describe "#set_locale" do
     before :each do
       @user.locale = ""
     end
-    
+
     it "should reset locale to default" do
       @user.locale.should == ""
       @user.set_locale
@@ -21,7 +21,7 @@ describe UserGroup::UserOptions do
     before :each do
       @user.view_level = 0
     end
-    
+
     it "should set view level to public (1)" do
       @user.view_level.should == 0
       @user.set_view_level("public")
@@ -38,5 +38,5 @@ describe UserGroup::UserOptions do
       @user.get_view_level.should == "registered"
     end
   end
-  
+
 end

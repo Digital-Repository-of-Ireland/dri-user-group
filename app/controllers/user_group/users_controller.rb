@@ -3,10 +3,10 @@ require_dependency "user_group/application_controller"
 module UserGroup
   class UsersController < ApplicationController
     before_action :set_initials, only: [:index]
-    before_filter :authenticate_user!, except: [:new, :create, :show]
+    before_action :authenticate_user!, except: [:new, :create, :show]
     #:can_modify (through can_modify_base) also sets @user
-    before_filter :can_modify, only: [:edit, :update, :destroy, :create_token, :destroy_token]
-    before_filter :can_view_profile, only: [:show]
+    before_action :can_modify, only: [:edit, :update, :destroy, :create_token, :destroy_token]
+    before_action :can_view_profile, only: [:show]
 
     def index
       # default to index view
@@ -97,7 +97,7 @@ module UserGroup
       #Update user
       if @user.update_attributes(user_params)
         flash[:success] = I18n.t("user_groups.shared.updated")
-        (sign_in @user, bypass: true) if modifying_current_user?(@user)
+        bypass_sign_in @user if modifying_current_user?(@user)
         redirect_to @user
       else
         render 'edit'

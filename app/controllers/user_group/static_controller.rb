@@ -2,8 +2,8 @@ require_dependency "user_group/application_controller"
 
 module UserGroup
   class StaticController < ApplicationController
-    before_filter :authenticate_user!
-    before_filter :admin_users, only: [:admin]
+    before_action :authenticate_user!
+    before_action :admin_users, only: [:admin]
 
     def home
     end

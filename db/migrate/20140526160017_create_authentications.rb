@@ -1,4 +1,4 @@
-class CreateAuthentications < ActiveRecord::Migration
+class CreateAuthentications < ActiveRecord::Migration[4.2]
   def up
     create_table :user_group_authentications do |t|
       t.integer :user_id

@@ -23,15 +23,15 @@ require File.expand_path("../../spec/test_app/config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/expectations'
 require 'user_group'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'database_cleaner'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
-
 Dir[Rails.root.join("../../spec/factories/*.rb")].each { |f| require f }
-FactoryGirl.find_definitions
+
+#FactoryBot.find_definitions
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -61,8 +61,8 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
-  config.before(:each, :type => "controller") { @routes = UserGroup::Engine.routes }
-  config.include Devise::TestHelpers, :type => :controller
+  config.before(:each, type: "controller") { @routes = UserGroup::Engine.routes }
+  config.include Devise::Test::ControllerHelpers, type: :controller
 
   config.include Rails.application.routes.url_helpers
 
@@ -80,11 +80,17 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = [:should, :expect]
   end
+
+  config.include FactoryBot::Syntax::Methods
+
+  config.before(:suite) do
+    FactoryBot.find_definitions
+  end
 end
 
-module FactoryGirl
-  def self.find_or_create(handle, by=:email)
-    tmpl = FactoryGirl.build(handle)
-    tmpl.class.send("find_by_#{by}".to_sym, tmpl.send(by)) || FactoryGirl.create(handle)
-  end
+module FactoryBot
+ def self.find_or_create(handle, by=:email)
+   tmpl = FactoryBot.build(handle)
+   tmpl.class.send("find_by_#{by}".to_sym, tmpl.send(by)) || FactoryBot.create(handle)
+ end
 end
