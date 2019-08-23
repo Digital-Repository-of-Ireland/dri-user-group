@@ -56,12 +56,12 @@ module UserGroup
         raise "Can't build agent #{inspect}" unless name && type
         self.agent = case type
                      when "group"
-                       Hydra::AccessControls::Agent.new(::RDF::URI.new("#{GROUP_AGENT_URL_PREFIX}##{name}"))
+                       [Hydra::AccessControls::Agent.new(::RDF::URI.new("#{GROUP_AGENT_URL_PREFIX}##{name}"))]
                      when "person"
-                       Hydra::AccessControls::Agent.new(::RDF::URI.new("#{PERSON_AGENT_URL_PREFIX}##{name}"))
+		       [Hydra::AccessControls::Agent.new(::RDF::URI.new("#{PERSON_AGENT_URL_PREFIX}##{name}"))]
                      when "user"
                        Deprecation.warn PermissionOverride, "Passing \"user\" as the type to Permission is deprecated. Use \"person\" instead. This will be an error in ActiveFedora 9."
-                       Hydra::AccessControls::Agent.new(::RDF::URI.new("#{PERSON_AGENT_URL_PREFIX}##{name}"))
+                       [Hydra::AccessControls::Agent.new(::RDF::URI.new("#{PERSON_AGENT_URL_PREFIX}##{name}"))]
                      else
                        raise ArgumentError, "Unknown agent type #{type.inspect}"
                      end
@@ -71,13 +71,13 @@ module UserGroup
         raise "Can't build access #{inspect}" unless access
         self.mode = case access
                     when "read"
-                      Hydra::AccessControls::Mode.new(::ACL.Read)
+                      [Hydra::AccessControls::Mode.new(::ACL.Read)]
                     when "edit"
-                      Hydra::AccessControls::Mode.new(::ACL.Write)
+                      [Hydra::AccessControls::Mode.new(::ACL.Write)]
                     when "discover"
-                      Hydra::AccessControls::Mode.new(Hydra::ACL.Discover)
+                      [Hydra::AccessControls::Mode.new(Hydra::ACL.Discover)]
                     when "manager"
-                      Hydra::AccessControls::Mode.new(::ACL.Control)
+                      [Hydra::AccessControls::Mode.new(::ACL.Control)]
                     else
                       raise ArgumentError, "Unknown access #{access.inspect}"
                     end
