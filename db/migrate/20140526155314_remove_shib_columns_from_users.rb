@@ -1,4 +1,4 @@
-class RemoveShibColumnsFromUsers < ActiveRecord::Migration
+class RemoveShibColumnsFromUsers < ActiveRecord::Migration[4.2]
   def up
     remove_column :user_group_users, :provider
     remove_column :user_group_users, :uid

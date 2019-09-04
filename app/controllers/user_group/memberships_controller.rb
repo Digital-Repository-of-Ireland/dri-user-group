@@ -3,11 +3,11 @@ require 'json'
 
 module UserGroup
   class MembershipsController < ApplicationController
-    before_filter :authenticate_user!
-    before_filter :admin_users, only: [:create, :approve]
+    before_action :authenticate_user!
+    before_action :admin_users, only: [:create, :approve]
     #:can_modify (through can_modify_base) also sets @user (found by id ONLY)
-    before_filter :can_modify, only: [:destroy]
-    before_filter :collection_mgr_users, only: [:approve_read, :remove_read, :view_read_request]
+    before_action :can_modify, only: [:destroy]
+    before_action :collection_mgr_users, only: [:approve_read, :remove_read, :view_read_request]
     #remote true sends requests in js
     respond_to :html, :js
 
@@ -28,7 +28,7 @@ module UserGroup
           flash[:error] = I18n.t("user_groups.memberships.errors.approving")
         end
       end
-      redirect_to :back
+      redirect_back(fallback_location:"/")
     end
 
     def destroy
@@ -42,7 +42,7 @@ module UserGroup
         render 'users/edit' and return if action.errors.count >0
         flash[:success] = I18n.t("user_groups.memberships.leave")
       end
-      redirect_to :back
+      redirect_back(fallback_location:"/")
     end
 
     def approve
@@ -52,7 +52,7 @@ module UserGroup
       else
         flash[:error] = I18n.t("user_groups.memberships.errors.approving")
       end
-      redirect_to :back
+      redirect_back(fallback_location:"/")
     end
 
     private

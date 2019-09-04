@@ -7,7 +7,7 @@ module UserGroup
 
     included do
       has_many :memberships, dependent: :destroy
-      has_many :groups, -> { uniq }, through: :memberships
+      has_many :groups, -> { distinct }, through: :memberships
       has_many :authentications
 
       #Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.

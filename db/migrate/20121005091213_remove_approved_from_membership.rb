@@ -1,4 +1,4 @@
-class RemoveApprovedFromMembership < ActiveRecord::Migration
+class RemoveApprovedFromMembership < ActiveRecord::Migration[4.2]
   def up
     remove_column :memberships, :approved
   end

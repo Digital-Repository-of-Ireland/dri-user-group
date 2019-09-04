@@ -2,8 +2,8 @@ require_dependency "user_group/application_controller"
 
 module UserGroup
   class GroupsController < ApplicationController
-    before_filter :authenticate_user!
-    before_filter :admin_users, except: [:index, :manage]
+    before_action :authenticate_user!
+    before_action :admin_users, except: [:index, :manage]
 
     def index
       @groups = Group.search(params[:search]).order(SETTING_ORDER_GROUP).page(params[:page])
@@ -30,7 +30,7 @@ module UserGroup
     def edit
       @group = Group.find(params[:id])
     end
-    
+
     def update
       @group = Group.find(params[:id])
       return if is_locked?(@group)
