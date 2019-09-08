@@ -143,7 +143,7 @@ module Blacklight
       end
 
       def escape_value(value)
-        RSolr.solr_escape(value).gsub(/ /, '\ ')
+        ::RSolr.solr_escape(value).gsub(/ /, '\ ')
       end
     end
   end
