@@ -7,6 +7,5 @@ module UserGroup
 #  #hash = output.shift
 #
 #  VERSION  = "0.0.#{increment}"
-
-  VERSION = "1.4.0"
+  VERSION = "1.4.1"
 end
