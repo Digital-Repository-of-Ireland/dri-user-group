@@ -85,7 +85,7 @@ module UserGroup
       if modifying_current_user?(@user) || !current_user.is_admin?
         unless !@user.password_required? || @user.valid_password?(current_password)
           flash[:error] = I18n.t("user_groups.users.wrong_password")
-          redirect_to :back
+          redirect_to edit_user_path(@user)
           return
         end
       end
