@@ -28,6 +28,14 @@ Gem::Specification.new do |s|
   s.add_dependency "omniauth-shibboleth"
   s.add_dependency "paper_trail"
 
-  s.add_development_dependency('simplecov')
-  s.add_development_dependency('simplecov-rcov')
+  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'ci_reporter_rspec'
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'mocha'
+  s.add_development_dependency 'factory_bot_rails'
+  s.add_development_dependency 'database_cleaner'
+  s.add_development_dependency 'faker'
+  s.add_development_dependency 'rails-controller-testing'
 end
+

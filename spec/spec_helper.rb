@@ -3,15 +3,6 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'app', 'models'))
 
 require 'simplecov'
-require 'simplecov-rcov'
-class SimpleCov::Formatter::MergedFormatter
-  def format(result)
-    SimpleCov::Formatter::HTMLFormatter.new.format(result)
-    SimpleCov::Formatter::RcovFormatter.new.format(result)
-  end
-end
-SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
-
 SimpleCov.start do
   add_filter '/spec/'
   add_filter '/config/'
@@ -19,7 +10,7 @@ SimpleCov.start do
 end
 
 ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../spec/test_app/config/environment", __FILE__)
+require File.expand_path("../test_app/config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/expectations'
 require 'user_group'
@@ -29,7 +20,7 @@ require 'database_cleaner'
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
-Dir[Rails.root.join("../../spec/factories/*.rb")].each { |f| require f }
+#Dir[Rails.root.join("../../spec/factories/*.rb")].each { |f| require f }
 
 #FactoryBot.find_definitions
 
@@ -81,16 +72,16 @@ RSpec.configure do |config|
     c.syntax = [:should, :expect]
   end
 
-  config.include FactoryBot::Syntax::Methods
+  #config.include FactoryBot::Syntax::Methods
 
-  config.before(:suite) do
-    FactoryBot.find_definitions
-  end
+  #config.before(:suite) do
+  #  FactoryBot.find_definitions
+  #end
 end
 
-module FactoryBot
- def self.find_or_create(handle, by=:email)
-   tmpl = FactoryBot.build(handle)
-   tmpl.class.send("find_by_#{by}".to_sym, tmpl.send(by)) || FactoryBot.create(handle)
- end
-end
+#module FactoryBot
+# def self.find_or_create(handle, by=:email)
+#   tmpl = FactoryBot.build(handle)
+#   tmpl.class.send("find_by_#{by}".to_sym, tmpl.send(by)) || FactoryBot.create(handle)
+# end
+#end
