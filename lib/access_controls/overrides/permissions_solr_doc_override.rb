@@ -7,27 +7,25 @@ module UserGroup
       end
 
       def parent_id
-        key = ActiveFedora.index_field_mapper.solr_name("isGovernedBy", :stored_searchable, type: :symbol)
+        key = 'isGovernedBy_ssim'
         #Temp line as string manipulation is currently required on the value
         return nil unless self[key].present?
-        return self[key]
+        self[key]
       end
 
       def under_embargo?
-        embargo_key = ActiveFedora.index_field_mapper.solr_name("embargo_release_date")
+        embargo_key = 'embargo_release_date_tesim'
         if self[embargo_key]
           embargo_date = Date.parse(self[embargo_key].split(/T/)[0])
           return embargo_date > Date.parse(Time.now.to_s)
         end
-        return nil
       end
 
       def is_published?
-        key = ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)
+        key = 'status_ssim'
         if self[key].present?
           return self[key].first.downcase == "published"
         end
-        return nil
       end
 
   end

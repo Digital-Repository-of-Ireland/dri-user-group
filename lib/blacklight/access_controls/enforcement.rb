@@ -52,13 +52,13 @@ module Blacklight
         solr_parameters[:fq] ||= []
 
         # Filter for published objects that do not have ancestors that have set their status to not published
-        ancestor_objects = "(" + ActiveFedora.index_field_mapper.solr_name("isGovernedBy", :symbol) + ":[* TO *]" +
-               " AND (" + ActiveFedora.index_field_mapper.solr_name("status", :symbol) + ":published" +
-               " -_query_:\"{!join from=id to=ancestor_id_sim} -" + ActiveFedora.index_field_mapper.solr_name("status", :symbol) + ":published\"))"
+        ancestor_objects = "(isGovernedBy_ssim:[* TO *]" +
+               " AND (status_ssim:published" +
+               " -_query_:\"{!join from=id to=ancestor_id_sim} -status_ssim:published\"))"
 
         # Filter for published objects
-        objects = "(-" + ActiveFedora.index_field_mapper.solr_name("isGovernedBy", :symbol) + ":[* TO *]" +
-                  " AND " + ActiveFedora.index_field_mapper.solr_name("status", :symbol) + ":published)"
+        objects = "(-isGovernedBy_ssim:[* TO *]" +
+                  " AND status_ssim:published)"
 
         filter_published = ancestor_objects + " OR " + objects
         solr_parameters[:fq] << "(#{filter_published})"
@@ -96,7 +96,7 @@ module Blacklight
       end
 
       def published_filter
-        ActiveFedora.index_field_mapper.solr_name("status", :symbol) + ":published"
+        "status_ssim:published"
       end
 
       def generate_permission_filters(permission_types=["discover", "manager", "edit", "read"], ability = current_ability)
@@ -108,10 +108,10 @@ module Blacklight
         string_user_roles = "("+user_roles.join(" OR ")+")"
 
         permission_types.each do |type|
-          permission_query = escape_filter(Hydra.config.permissions[type.to_sym].group, string_user_roles)
+          permission_query = escape_filter(Blacklight::AccessControls.config.permissions[type.to_sym].group, string_user_roles)
 
           if ability.current_user && ability.current_user.user_key.present?
-            permission_query += " OR " + escape_filter(Hydra.config.permissions[type.to_sym].individual, ability.current_user.user_key)
+            permission_query += " OR " + escape_filter(Blacklight::AccessControls.config.permissions[type.to_sym].individual, ability.current_user.user_key)
           end
 
           if type == "manager" || type == "edit"

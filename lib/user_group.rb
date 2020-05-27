@@ -8,5 +8,4 @@ module UserGroup
     autoload :PermissionsCheck, 'access_controls/permissions_check'
     autoload :InheritanceMethods, 'access_controls/inheritance_methods'
     autoload :PermissionsSolrDocOverride, 'access_controls/overrides/permissions_solr_doc_override'
-    autoload :PermissionOverride, 'access_controls/overrides/permission_override'
 end

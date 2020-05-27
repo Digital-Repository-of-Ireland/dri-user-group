@@ -3,19 +3,19 @@ module UserGroup
     extend ActiveSupport::Concern
 
     included do
-
+      include CanCan::Ability
     end
 
     attr_reader :current_user, :session, :cache
 
     def initialize(user, session=nil)
-      @current_user = user || Hydra::Ability.user_class.new # guest user (not logged in)
+      @current_user = user || Blacklight::AccessControls::Ability.user_class.new # guest user (not logged in)
       @user = @current_user # just in case someone was using this in an override. Just don't.
       @session = session
       @cache = Blacklight::AccessControls::PermissionsCache.new
       #Default: Giving same level as edit
       alias_action :edit, :update, :destroy, :to => :manage_collection
-      hydra_default_permissions()
+      default_permissions()
     end
 
     #383 Modified
@@ -33,7 +33,7 @@ module UserGroup
     end
 
 
-    def hydra_default_permissions
+    def default_permissions
       Rails.logger.debug("Usergroups are " + user_groups.inspect)
       self.ability_logic.each do |method|
         send(method)
@@ -67,7 +67,7 @@ module UserGroup
       group_intersection = user_groups & search_groups(pid)
       result = !group_intersection.empty? || search_users(pid).include?(current_user.user_key)
     end
-   
+
     def test_manager(pid)
       Rails.logger.debug("[CANCAN] Checking manager permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
       group_intersection = user_groups & manager_groups(pid)
@@ -132,39 +132,39 @@ module UserGroup
 
     module ClassMethods
       def read_group_field
-        Hydra.config.permissions.read.group
+        Blacklight::AccessControls.config.permissions.read.group
       end
 
       def edit_user_field
-        Hydra.config.permissions.edit.individual
+        Blacklight::AccessControls.config.permissions.edit.individual
       end
 
       def read_user_field
-        Hydra.config.permissions.read.individual
+        Blacklight::AccessControls.config.permissions.read.individual
       end
 
       def edit_group_field
-        Hydra.config.permissions.edit.group
+        Blacklight::AccessControls.config.permissions.edit.group
       end
 
       #383 Addition
       def manager_group_field
-        Hydra.config.permissions.manager.group
+        Blacklight::AccessControls.config.permissions.manager.group
       end
 
       #383 Addition
       def manager_user_field
-        Hydra.config.permissions.manager.individual
+        Blacklight::AccessControls.config.permissions.manager.individual
       end
 
       #383 Addition
       def search_group_field
-        Hydra.config.permissions.discover.group
+        Blacklight::AccessControls.config.permissions.discover.group
       end
 
       #383 Addition
       def search_user_field
-        Hydra.config.permissions.discover.individual
+        Blacklight::AccessControls.config.permissions.discover.individual
       end
     end
 

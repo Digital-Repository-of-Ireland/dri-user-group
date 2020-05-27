@@ -4,6 +4,7 @@ require 'rb-gravatar'
 require 'fastimage'
 require 'omniauth'
 require 'omniauth-shibboleth'
+require 'blacklight-access_controls'
 
 module UserGroup
   class Engine < ::Rails::Engine

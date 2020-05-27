@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency "omniauth"
   s.add_dependency "omniauth-shibboleth"
   s.add_dependency "paper_trail"
+  s.add_dependency "blacklight-access_controls"
 
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'simplecov'

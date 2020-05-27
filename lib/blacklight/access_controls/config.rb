@@ -1,4 +1,4 @@
-module Hydra
+module Blacklight::AccessControls
   class Config
     def initialize
       @permissions = PermissionsConfig.new
