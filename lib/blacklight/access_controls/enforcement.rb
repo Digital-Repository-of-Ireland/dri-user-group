@@ -54,7 +54,7 @@ module Blacklight
         # Filter for published objects that do not have ancestors that have set their status to not published
         ancestor_objects = "(isGovernedBy_ssim:[* TO *]" +
                " AND (status_ssim:published" +
-               " -_query_:\"{!join from=id to=ancestor_id_sim} -status_ssim:published\"))"
+               " -_query_:\"{!join from=id to=ancestor_id_ssim} -status_ssim:published\"))"
 
         # Filter for published objects
         objects = "(-isGovernedBy_ssim:[* TO *]" +
@@ -115,7 +115,7 @@ module Blacklight
           end
 
           if type == "manager" || type == "edit"
-            permission_query = "_query_:\"{!join from=id to=ancestor_id_sim}" + permission_query + "\" OR " +
+            permission_query = "_query_:\"{!join from=id to=ancestor_id_ssim}" + permission_query + "\" OR " +
                                "("+permission_query+")"
           elsif type == "discover"
 
