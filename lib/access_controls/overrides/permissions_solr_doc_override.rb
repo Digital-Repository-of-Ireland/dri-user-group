@@ -22,7 +22,7 @@ module UserGroup
       end
 
       def is_published?
-        key = 'status_ssim'
+        key = 'status_ssi'
         if self[key].present?
           return self[key].first.downcase == "published"
         end

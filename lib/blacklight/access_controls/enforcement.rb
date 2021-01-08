@@ -53,12 +53,12 @@ module Blacklight
 
         # Filter for published objects that do not have ancestors that have set their status to not published
         ancestor_objects = "(isGovernedBy_ssim:[* TO *]" +
-               " AND (status_ssim:published" +
-               " -_query_:\"{!join from=id to=ancestor_id_ssim} -status_ssim:published\"))"
+               " AND (status_ssi:published" +
+               " -_query_:\"{!join from=id to=ancestor_id_ssim} -status_ssi:published\"))"
 
         # Filter for published objects
         objects = "(-isGovernedBy_ssim:[* TO *]" +
-                  " AND status_ssim:published)"
+                  " AND status_ssi:published)"
 
         filter_published = ancestor_objects + " OR " + objects
         solr_parameters[:fq] << "(#{filter_published})"
@@ -96,7 +96,7 @@ module Blacklight
       end
 
       def published_filter
-        "status_ssim:published"
+        "status_ssi:published"
       end
 
       def generate_permission_filters(permission_types=["discover", "manager", "edit", "read"], ability = current_ability)
