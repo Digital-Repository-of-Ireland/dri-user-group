@@ -47,18 +47,18 @@ module Blacklight::AccessControls
 
       can [:edit, :update, :destroy], DRI::DigitalObject do |obj|
         Rails.logger.debug("[EDITPERM] Checking from DigitalObject")
-        test_edit(obj.noid)
+        test_edit(obj.alternate_id)
       end
 
       can [:edit, :update, :destroy], DRI::GenericFile do |obj|
         Rails.logger.debug("[EDITPERM] Checking from GenericFile")
-        test_edit(obj.noid)
+        test_edit(obj.alternate_id)
       end
 
       can :edit, SolrDocument do |obj|
         Rails.logger.debug("[EDITPERM] Checking from SOLRDOC")
-        cache.put(obj.id, obj)
-        test_edit(obj.id)
+        cache.put(obj.alternate_id, obj)
+        test_edit(obj.alternate_id)
       end
     end
 
@@ -71,14 +71,14 @@ module Blacklight::AccessControls
 
       can :read, [DRI::DigitalObject] do |obj|
         Rails.logger.debug("[READPERM] Checking from Object")
-        test_read(obj.noid)
+        test_read(obj.alternate_id)
       end
 
 
       can :read, SolrDocument do |obj|
         Rails.logger.debug("[READPERM] Checking from SolrDoc")
-        cache.put(obj.id, obj)
-        test_read(obj.id)
+        cache.put(obj.alternate_id, obj)
+        test_read(obj.alternate_id)
       end
     end
 
@@ -94,13 +94,13 @@ module Blacklight::AccessControls
 
       can :search, [DRI::DigitalObject] do |obj|
         Rails.logger.debug("[SEARCHPERM] Checking from Object")
-        test_search(obj.noid)
+        test_search(obj.alternate_id)
       end
 
       can :search, SolrDocument do |obj|
         Rails.logger.debug("[SEARCHPERM] Checking from SolrDoc")
-        cache.put(obj.id, obj)
-        test_search(obj.id)
+        cache.put(obj.alternate_id, obj)
+        test_search(obj.alternate_id)
       end
     end
 
@@ -114,13 +114,13 @@ module Blacklight::AccessControls
 
       can :manage_collection, DRI::DigitalObject do |obj|
         Rails.logger.debug("[MANPERM] Checking from Object")
-        test_manager(obj.noid)
+        test_manager(obj.alternate_id)
       end
 
       can :manage_collection, SolrDocument do |obj|
         Rails.logger.debug("[MANPERM] Checking from SolrDoc")
-        cache.put(obj.id, obj)
-        test_manager(obj.id)
+        cache.put(obj.alternate_id, obj)
+        test_manager(obj.alternate_id)
       end
 
       can :manage, String do |pid|
@@ -130,13 +130,13 @@ module Blacklight::AccessControls
 
       can :manage, DRI::DigitalObject do |obj|
         Rails.logger.debug("[MANPERM] Checking from Object")
-        test_manager(obj.noid)
+        test_manager(obj.alternate_id)
       end
 
       can :manage, SolrDocument do |obj|
         Rails.logger.debug("[MANPERM] Checking from SolrDoc")
-        cache.put(obj.id, obj)
-        test_manager(obj.id)
+        cache.put(obj.alternate_id, obj)
+        test_manager(obj.alternate_id)
       end
     end
 
