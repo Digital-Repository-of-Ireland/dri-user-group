@@ -125,7 +125,7 @@ module Blacklight::AccessControls
       end
 
       def solr_name(*args)
-        ActiveFedora.index_field_mapper.solr_name(*args)
+        Solrizer.solr_name(*args)
       end
 
       class EmbargoConfig
@@ -138,7 +138,7 @@ module Blacklight::AccessControls
         end
 
         def solr_name(*args)
-          ActiveFedora.index_field_mapper.solr_name(*args)
+          Solrizer.solr_name(*args)
         end
       end
 
@@ -152,7 +152,7 @@ module Blacklight::AccessControls
         end
 
         def solr_name(*args)
-          ActiveFedora.index_field_mapper.solr_name(*args)
+          Solrizer.solr_name(*args)
         end
       end
 
