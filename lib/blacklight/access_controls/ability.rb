@@ -3,15 +3,12 @@ module Blacklight::AccessControls
   module Ability
     extend ActiveSupport::Concern
 
-     #include Blacklight::AccessControls::Ability
-
     # once you include Hydra::Ability you can add custom permission methods by appending to ability_logic like so:
     #
     # self.ability_logic +=[:setup_my_permissions]
 
     included do
       include Blacklight::AccessControls::PermissionsQuery
-      include Blacklight::SearchHelper
       include UserGroup::InheritanceMethods
       include UserGroup::SharedAbility
 
