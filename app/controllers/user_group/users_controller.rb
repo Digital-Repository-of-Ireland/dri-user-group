@@ -95,7 +95,7 @@ module UserGroup
         params[:user].delete(:password_confirmation)
       end
       #Update user
-      if @user.update_attributes(user_params)
+      if @user.update(user_params)
         flash[:success] = I18n.t("user_groups.shared.updated")
         bypass_sign_in @user if modifying_current_user?(@user)
         redirect_to @user

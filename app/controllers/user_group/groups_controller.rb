@@ -34,7 +34,7 @@ module UserGroup
     def update
       @group = Group.find(params[:id])
       return if is_locked?(@group)
-      if @group.update_attributes(group_params)
+      if @group.update(group_params)
         flash[:success] = I18n.t("user_groups.shared.updated")
         redirect_to @group
       else
