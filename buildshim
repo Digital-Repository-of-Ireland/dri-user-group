@@ -24,6 +24,7 @@ install_deps)
 configure)
     rm -f Gemfile.lock
     bundle install --quiet
+    bundle exec rake app:blacklight:install:migrations
     bundle exec rake app:db:migrate
     bundle exec rake app:db:test:prepare
     ;;
