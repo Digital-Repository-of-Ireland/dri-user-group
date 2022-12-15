@@ -24,14 +24,14 @@ Gem::Specification.new do |s|
   s.add_dependency "kaminari"
   s.add_dependency "rb-gravatar"
   s.add_dependency "fastimage"
-  s.add_dependency "omniauth", "~> 1.9.1"
+  s.add_dependency "omniauth"
   s.add_dependency "omniauth-shibboleth"
   s.add_dependency "paper_trail"
   s.add_dependency "blacklight-access_controls"
 
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'ci_reporter_rspec'
+  s.add_development_dependency 'rspec_junit_formatter'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'factory_bot_rails'

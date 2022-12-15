@@ -25,11 +25,10 @@ end
 APP_RAKEFILE = File.expand_path("../spec/test_app/Rakefile", __FILE__)
 load 'rails/tasks/engine.rake'
 
-require 'ci/reporter/rake/rspec'
 require 'rspec/core/rake_task'
 
 desc "Run all specs in spec directory (excluding plugin specs)"
-RSpec::Core::RakeTask.new(:rspec => ["ci:setup:rspec"]) do |spec|
+RSpec::Core::RakeTask.new(:rspec) do |spec|
   spec.pattern  = FileList['spec/**/*_spec.rb']
   spec.pattern += FileList['spec/*_spec.rb']
 end
