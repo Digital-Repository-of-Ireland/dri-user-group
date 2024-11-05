@@ -35,10 +35,6 @@ module UserGroup
       validates :password, presence: true, confirmation: true, length: {minimum: 6}, :on => :create, if: :password_required?
     end
 
-    def to_s
-      return "UserGroup:: "+ self.full_name
-    end
-
     def full_name
       return self.first_name.to_s + " " + self.second_name.to_s
     end
