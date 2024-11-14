@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
   s.require_path = 'lib'
 
-  s.add_dependency "rails", "~> 6.0"
   s.add_dependency "devise"
   s.add_dependency "devise-i18n-views"
   s.add_dependency "devise-guests", "~> 0.3"
@@ -29,6 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency "paper_trail"
   s.add_dependency "blacklight-access_controls"
 
+  s.add_development_dependency 'rails', '> 5.1', '< 8.0'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'rspec_junit_formatter'
