@@ -5,6 +5,7 @@ require 'fastimage'
 require 'omniauth'
 require 'omniauth-shibboleth'
 require 'blacklight-access_controls'
+require 'rails_cloudflare_turnstile'
 
 module UserGroup
   class Engine < ::Rails::Engine

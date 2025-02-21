@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency "omniauth-shibboleth"
   s.add_dependency "paper_trail"
   s.add_dependency "blacklight-access_controls"
+  s.add_dependency "rails_cloudflare_turnstile"
 
   s.add_development_dependency 'rails', '> 5.1', '< 8.0'
   s.add_development_dependency 'sqlite3'

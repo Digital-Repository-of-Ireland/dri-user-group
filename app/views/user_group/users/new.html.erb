@@ -23,6 +23,8 @@
   <div><%= f.label :locale, (t :'user_groups.views.shared.locale') %><br />
   <%= f.select(:locale, [[t('dri.application.lang.en'), 'en'], [t('dri.application.lang.ga'), 'ga']]) %></div>
 
+  <%= cloudflare_turnstile %>
+
   <% if cookies[:accept_cookies] %>
     <div><%= f.submit t :'user_groups.views.shared.register' %></div>
   <% else %>

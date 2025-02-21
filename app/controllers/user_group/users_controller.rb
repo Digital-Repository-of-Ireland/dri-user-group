@@ -3,6 +3,7 @@ require_dependency "user_group/application_controller"
 module UserGroup
   class UsersController < ApplicationController
     before_action :set_initials, only: [:index]
+    before_action :validate_cloudflare_turnstile, only: [:create]
     before_action :authenticate_user!, except: [:new, :create, :show]
     #:can_modify (through can_modify_base) also sets @user
     before_action :can_modify, only: [:edit, :update, :destroy, :create_token, :destroy_token]
