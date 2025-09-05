@@ -25,11 +25,12 @@ Gem::Specification.new do |s|
   s.add_dependency "fastimage"
   s.add_dependency "omniauth"
   s.add_dependency "omniauth-shibboleth"
-  s.add_dependency "paper_trail"
+  s.add_dependency "paper_trail", "> 14"
   s.add_dependency "blacklight-access_controls"
   s.add_dependency "rails_cloudflare_turnstile"
 
-  s.add_development_dependency 'rails', '> 5.1', '< 8.0'
+  s.add_development_dependency 'rails', '~> 7.2'
+  s.add_development_dependency 'sprockets-rails'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'rspec_junit_formatter'
