@@ -7,7 +7,7 @@ module UserGroup
 
       begin
         doc = permissions_doc(pid)
-      rescue Blacklight::Exceptions::InvalidSolrID
+      rescue Blacklight::Exceptions::RecordNotFound
         return nil
       end
 
@@ -22,7 +22,7 @@ module UserGroup
 
       begin
         doc = permissions_doc(pid)
-      rescue Blacklight::Exceptions::InvalidSolrID
+      rescue Blacklight::Exceptions::RecordNotFound
         return nil
       end
 
