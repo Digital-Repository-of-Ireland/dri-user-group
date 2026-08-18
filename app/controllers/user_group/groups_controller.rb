@@ -1,9 +1,9 @@
-require_dependency "user_group/application_controller"
+require_dependency 'user_group/application_controller'
 
 module UserGroup
   class GroupsController < ApplicationController
     before_action :authenticate_user!
-    before_action :admin_users, except: [:index, :manage]
+    before_action :admin_users, except: %i[index manage]
 
     def index
       @groups = Group.search(params[:search]).order(SETTING_ORDER_GROUP).page(params[:page])
@@ -20,7 +20,7 @@ module UserGroup
     def create
       @group = Group.new(group_params)
       if @group.valid? && @group.save
-        flash[:success] = I18n.t("user_groups.groups.created")
+        flash[:success] = I18n.t('user_groups.groups.created')
         redirect_to @group
       else
         render 'new'
@@ -33,9 +33,10 @@ module UserGroup
 
     def update
       @group = Group.find(params[:id])
-      return if is_locked?(@group)
+      return if locked?(@group)
+
       if @group.update(group_params)
-        flash[:success] = I18n.t("user_groups.shared.updated")
+        flash[:success] = I18n.t('user_groups.shared.updated')
         redirect_to @group
       else
         render 'edit'
@@ -44,9 +45,10 @@ module UserGroup
 
     def destroy
       deleting_group = Group.find(params[:id])
-      return if is_locked?(deleting_group)
+      return if locked?(deleting_group)
+
       deleting_group.destroy
-      flash[:success] = I18n.t("user_groups.groups.deleted")
+      flash[:success] = I18n.t('user_groups.groups.deleted')
       redirect_to groups_path
     end
 
@@ -62,17 +64,18 @@ module UserGroup
     end
 
     private
+
     def group_params
       params.require(:group).permit(:name, :description, :is_locked)
     end
 
-    def is_locked?(group)
+    def locked?(group)
       if group.is_locked?
-        flash[:error] = I18n.t("user_groups.groups.errors.locked")
+        flash[:error] = I18n.t('user_groups.groups.errors.locked')
         redirect_to group
         return true
       end
-      return false
+      false
     end
   end
 end

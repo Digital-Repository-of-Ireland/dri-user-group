@@ -1,7 +1,6 @@
 require 'active_support/concern'
 
 module UserGroup
-
   module Helpers
     extend ActiveSupport::Concern
 
@@ -12,10 +11,9 @@ module UserGroup
       # Notice how we use Devise.secure_compare to compare the token
       # in the database with the token given in the params, mitigating
       # timing attacks.
-      if user && Devise.secure_compare(user.authentication_token, params[:auth_token])
-        sign_in user, store: false
-      end
-    end        
-  end
+      return unless user && Devise.secure_compare(user.authentication_token, params[:auth_token])
 
+      sign_in user, store: false
+    end
+  end
 end

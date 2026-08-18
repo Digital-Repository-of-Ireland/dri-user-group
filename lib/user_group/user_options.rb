@@ -5,13 +5,13 @@ module UserGroup
 
     included do
       before_save :set_locale
-      #attr_accessible :locale, :view_level, :about_me, :image_link
+      # attr_accessible :locale, :view_level, :about_me, :image_link
 
       validates_with ImageLinkValidator
     end
 
     def set_locale
-      self.locale = I18n.locale if self.locale.blank?
+      self.locale = I18n.locale if locale.blank?
     end
 
     def set_view_level(level)
@@ -20,8 +20,8 @@ module UserGroup
     end
 
     def get_view_level
-      level =  PROFILE_VIEW_LEVELS[self.view_level]
-      return level.nil? ? PROFILE_VIEW_LEVELS[0] : level
+      level = PROFILE_VIEW_LEVELS[view_level]
+      level.nil? ? PROFILE_VIEW_LEVELS[0] : level
     end
   end
 end

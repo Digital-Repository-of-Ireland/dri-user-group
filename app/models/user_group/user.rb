@@ -1,6 +1,7 @@
 module UserGroup
   class UserGroup::User < ActiveRecord::Base
-    has_paper_trail ignore: [:updated_at, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :sign_in_count]
+    has_paper_trail ignore: %i[updated_at current_sign_in_at last_sign_in_at current_sign_in_ip last_sign_in_ip
+                               sign_in_count]
 
     include Blacklight::User
     include Blacklight::AccessControls::User
@@ -9,7 +10,9 @@ module UserGroup
     include UserGroup::UserOptions
 
     scope :by_letter, ->(initial) { where("second_name LIKE \'#{initial}%\'").order(:second_name) }
-    scope :search, ->(search) { where("email LIKE :search OR first_name LIKE :search OR second_name LIKE :search", { search: "%#{search}%" }) }
+    scope :search, lambda { |search|
+      where('email LIKE :search OR first_name LIKE :search OR second_name LIKE :search', { search: "%#{search}%" })
+    }
 
     def self.create_for_shibboleth(access_token)
       u = UserGroup::User.new
@@ -35,7 +38,5 @@ module UserGroup
         send("find_by_#{Devise.authentication_keys.first}".to_sym, key)
       end
     end
-
-
   end
 end

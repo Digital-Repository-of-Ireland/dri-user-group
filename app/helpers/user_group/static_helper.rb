@@ -1,4 +1,4 @@
-#Delete this file?
+# Delete this file?
 module UserGroup
   module StaticHelper
   end

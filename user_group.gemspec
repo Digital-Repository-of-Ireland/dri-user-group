@@ -29,9 +29,9 @@ Gem::Specification.new do |s|
   s.add_dependency "blacklight-access_controls"
   s.add_dependency "rails_cloudflare_turnstile"
 
-  s.add_development_dependency 'rails', '~> 7.2'
+  s.add_development_dependency 'rails', '~> 8.0'
   s.add_development_dependency 'sprockets-rails'
-  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'sqlite3', '>= 2'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'rspec_junit_formatter'
   s.add_development_dependency 'rspec-rails'
