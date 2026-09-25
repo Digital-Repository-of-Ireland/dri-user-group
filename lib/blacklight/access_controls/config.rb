@@ -41,8 +41,8 @@ module Blacklight::AccessControls
         @values = {}
         %i[discover read edit manager].each do |key|
           @values[key] = GroupPermission.new(
-            group: solr_name("#{prefix}#{key}_access_group", :symbol),
-            individual: solr_name("#{prefix}#{key}_access_person", :symbol)
+            group: "#{prefix}#{key}_access_group_ssim",
+            individual: "#{prefix}#{key}_access_person_ssim"
           )
         end
         @embargo = EmbargoConfig.new({}, prefix: prefix)
@@ -125,22 +125,14 @@ module Blacklight::AccessControls
         @values[key].merge!(val)
       end
 
-      def solr_name(*args)
-        Solrizer.solr_name(*args)
-      end
-
       class EmbargoConfig
         attr_accessor :release_date, :visibility_during, :visibility_after, :history
 
         def initialize(_values = {}, attributes = { prefix: '' })
-          @release_date = solr_name("#{attributes[:prefix]}embargo_release_date", :stored_sortable, type: :date)
-          @visibility_during = solr_name('visibility_during_embargo', :symbol)
-          @visibility_after = solr_name('visibility_after_embargo', :symbol)
-          @history = solr_name('embargo_history', :symbol)
-        end
-
-        def solr_name(*args)
-          Solrizer.solr_name(*args)
+          @release_date = "#{attributes[:prefix]}embargo_release_date_dtsi"
+          @visibility_during = 'visibility_during_embargo_ssim'
+          @visibility_after = 'visibility_after_embargo_ssim'
+          @history = 'embargo_history_ssim'
         end
       end
 
@@ -148,14 +140,10 @@ module Blacklight::AccessControls
         attr_accessor :expiration_date, :visibility_during, :visibility_after, :history
 
         def initialize(_values = {}, attributes = { prefix: '' })
-          @expiration_date = solr_name("#{attributes[:prefix]}lease_expiration_date", :stored_sortable, type: :date)
-          @visibility_during = solr_name('visibility_during_lease', :symbol)
-          @visibility_after = solr_name('visibility_after_lease', :symbol)
-          @history = solr_name('lease_history', :symbol)
-        end
-
-        def solr_name(*args)
-          Solrizer.solr_name(*args)
+          @expiration_date = "#{attributes[:prefix]}lease_expiration_date_dtsi"
+          @visibility_during = 'visibility_during_lease_ssim'
+          @visibility_after = 'visibility_after_lease_ssim'
+          @history = 'lease_history_ssim', :symbol
         end
       end
 
